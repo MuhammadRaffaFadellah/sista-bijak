@@ -1,10 +1,8 @@
 @extends('layouts.master')
+@section('body')
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/>
 <!--Replace with your tailwind.css once created-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js" integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
-
-@section('body')
     <h3 class="text-gray-700 text-3xl font-medium">Dashboard</h3>
 
     <div class="mt-4">
@@ -66,6 +64,7 @@
 
                 <div class="w-1/2 md:w-1/2 p-3">
                     <!--Graph Card-->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js" integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
                     <div class="bg-white border rounded shadow">
                         <div class="border-b p-3">
                             <h5 class="font-bold uppercase text-gray-600">Graph</h5>
