@@ -16,6 +16,7 @@ Route::get('/import', function () {
 Route::post('/import', [PendudukController::class, 'importData'])->name('import.data');
 
 Route::get('/dashboard', [PendudukController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get("/resident-table", [PendudukController::class, 'resident_table'])->middleware('auth', 'verified')->name('table');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -35,4 +35,7 @@ class PendudukController extends Controller
     $proporsiPR = number_format(($totalPerempuan / $totalPenduduk) * 100, 2);
     return view('dashboard', compact('totalPenduduk', 'totalLakiLaki', 'totalPerempuan', 'proporsiLK', 'proporsiPR'));
     }
+    public function resident_table(){
+        return view('resident-table');
+    }
 }
