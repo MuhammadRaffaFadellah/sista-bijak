@@ -24,6 +24,7 @@ class Penduduk extends Model
         'rw',
         'rt',
         'kelurahan',
+        'status_kependudukan',
     ]; 
 
     // Define the relationship with Rw
@@ -31,6 +32,11 @@ class Penduduk extends Model
     {
         return $this->belongsTo(Rw::class, 'rw_id');
     }
+
+    public function user()
+{
+    return $this->belongsTo(User::class, 'rw', 'rw_id'); // Pastikan kunci asing benar
+}
 
     // Define the relationship with Jk
     // public function rt()

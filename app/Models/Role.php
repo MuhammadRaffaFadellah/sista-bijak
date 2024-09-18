@@ -16,7 +16,7 @@ class Role extends Model
     public function user(){
         //Hubungan one to many
         //satu Role memiliki banyak User
-        return $this->hasMany(User::class,'user_id');
+        return $this->hasMany(User::class,foreignKey: 'user_id');
     }
 
 }

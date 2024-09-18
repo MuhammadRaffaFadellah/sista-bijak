@@ -20,18 +20,20 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'rw_id',
+        'role_id',
     ];
 
     public function role(){
         //Hubungan one to one
         //satu User memiliki satu Role
-        return $this->belongsTo(Role::class,'role_id');
+        return $this->belongsTo(Role::class, 'role_id');
     }
 
     public function rw(){
         //Hubungan one to one
         //satu User memiliki satu Rw
-        return $this->belongsTo(rw::class,'rw_id');
+        return $this->belongsTo(Rw::class,'rw_id');
     }
 
     /**

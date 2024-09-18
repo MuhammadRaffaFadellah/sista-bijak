@@ -27,6 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('rw');
             $table->unsignedBigInteger('rt');
             $table->string('kelurahan');
+            $table->string('status_kependudukan');
             $table->timestamps();
         
             $table->foreign('rw')->references('id')->on('rw')->onDelete('cascade');
