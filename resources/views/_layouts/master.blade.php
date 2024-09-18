@@ -8,14 +8,11 @@
         <meta name="description" content="Surat Pengadaan">
         <link rel="icon" href="{{ asset('img/Logo Si-PBJ.png') }}">
         @vite(['resources/css/app.css','resources/js/app.js'])
-
-        <title>Si-PBJ</title>
+        <title>Sista Bijak - Login</title>
         <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css"  rel="stylesheet" />
-        
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
         @vite('resources/css/app.css')
-
         @yield('style')
     </head>
     <body>
@@ -25,7 +22,6 @@
             
             <div class="flex-1 flex flex-col overflow-hidden">
                 @include('_layouts.header')
-
                 <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                     <div class="button-container flex justify-between">
                         <h2 class="text-xl text-gray-600 font-bold px-4 pt-4">@yield('page-title', 'Si-PBJ')</h2>
@@ -37,7 +33,6 @@
                 </main>
             </div>
         </div>
-
         <!-- Bootstrap JS Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>

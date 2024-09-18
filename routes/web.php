@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PendudukController;
+use App\Http\Controllers\ManagementController;
+use App\Models\Penduduk;
 use Illuminate\Support\Facades\Route;
 
 // Route untuk halaman utama
@@ -17,9 +19,20 @@ Route::post('/import', [PendudukController::class, 'importData'])->name('import.
 
 // Route untuk dashboard
 Route::get('/dashboard', [PendudukController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get("/resident-table", [PendudukController::class, 'resident_table'])->middleware('auth', 'verified')->name('table');
+// Manajemen CRUD Route (VIEW)
+Route::get("/user-management", [ManagementController::class, 'users_management'])->middleware('auth', 'verified')->name('user-management');
+// Manajemen CRUD Route (ADD)
+Route::get("/form-add-user", [ManagementController::class, "form_add_users"])->middleware('auth', 'verified')->name("form-add-users");
+Route::get("/process-add-users", [ManagementController::class, "process_add_users"])->middleware('auth', 'verified')->name("process-add-users");
+Route::post("/process-add-users", [ManagementController::class, "process_add_users"])->middleware('auth', 'verified')->name("process-add-users");
+// Manajemen CRUD Route (EDIT)
+Route::get("/user-management/{id}/editUser", [ManagementController::class, 'form_edit_users'])->middleware('auth', 'verified')->name("form_edit_user");
+Route::get("/process-edit-users", [ManagementController::class, 'process_edit_users'])->middleware('auth', 'verified')->name("process_edit_user");
+Route::post("/process-edit-users", [ManagementController::class, 'process_edit_users'])->middleware('auth', 'verified')->name("process_edit_user");
 
-// Route untuk resident table
-Route::get('/resident-table', [PendudukController::class, 'resident_table'])->middleware(['auth', 'verified'])->name('resident.table');
+// Manajemen CRUD Route (DELETE)
+Route::get("/user-management/{id}/deleteUser", [ManagementController::class, "process_delete_users"])->middleware('auth', 'verified')->name("process-delete-users");
 
 // Route untuk penduduk
 Route::middleware('auth')->group(function () {
