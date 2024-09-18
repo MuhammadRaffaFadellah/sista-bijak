@@ -1,0 +1,127 @@
+@extends('layouts.master')
+@section('dashboard-title')
+    Sista Bijak - Manajemen User
+@endsection
+@section('body')
+    <div class="container mx-auto">
+        <!-- Card -->
+        <div class="bg-white p-6 rounded-lg shadow-md ">
+            <!-- Add User -->
+            <div class="flex justify-between mb-7">
+                <h3 class="text-gray-700 text-3xl font-medium items-center align-center">Manajemen User</h3>
+                <a href="/form-add-user" title="Tambah User"
+                    class="inline-flex items-center px-2 mr-1 py-1 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition ease-in-out duration-150">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                </a>
+            </div>
+            <!-- Table -->
+            <div class="overflow-x-auto rounded-t-lg rounded-b-md">
+                <table class="min-w-full divide-y divide-gray-200 border ">
+                    <thead>
+                        <tr class="text-xs text-white uppercase bg-gray-800 ">
+                            <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                <b>No.</b>
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                <b>Name</b>
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                <b>Email</b>
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                <b>RW</b>
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                <b>Role</b>
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                <b>Actions</b>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body" class="bg-white divide-y divide-gray-200">
+                        @php $no = ($users->currentPage() - 1) * $users->perPage() + 1; @endphp
+                        @foreach ($users as $user)
+                            <tr class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }}">
+                                <td class="text-center px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+                                    {{ $no++ }}.
+                                </td>
+                                <td class="text-center px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $user->name }}
+                                </td>
+                                <td class="text-center px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $user->email }}
+                                </td>
+                                <td class="text-center px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $user->rw_id }}
+                                </td>
+                                <td class="text-center px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    Operator
+                                </td>
+                                <td class="text-center px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <a href="{{ url('user-management/'.$user->id.'/editUser') }}" title="Edit User" class="text-blue-500 hover:text-blue-700">
+                                        <svg class="w-5 h-5 inline-block" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15.232 5.232a3.5 3.5 0 00-4.95 0l-4.242 4.242a3.5 3.5 0 000 4.95L4.68 16.34a1 1 0 01-1.415 0L2.12 15.664a1 1 0 010-1.415l1.05-1.05a1 1 0 011.415 0l1.78 1.779a1 1 0 001.415 0l6.707-6.707a1 1 0 00-1.415-1.415l-6.707 6.707a1 1 0 01-1.415-1.415l6.707-6.707a1 1 0 000-1.415z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                    <a href="{{ url('user-management/' . $user->id . '/deleteUser') }}"
+                                        title="Hapus User" class="text-red-500 hover:text-red-700 ml-4"
+                                        onclick="deleteConfirm(event, this.href)">
+                                        <svg class="w-5 h-5 inline-block" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>                
+            </div>
+            <!-- Pagination -->
+            <div class="mt-10 mb-3 flex justify-center">
+                {{ $users->links() }}
+            </div>
+        </div>
+    </div>
+    <p class="text-gray-400 mt-2 ml-1">Copyright &copy; SISTA BIJAK 2024.</p>
+    @include('sweetalert')
+    <script>
+        function deleteConfirm(event, url) {
+            event.preventDefault(); // Mencegah aksi default
+            Swal.fire({
+                title: "Kamu yakin hapus user ini?",
+                text: "Kamu tidak akan bisa mengulang aksi ini!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, hapus.",
+                cancelButtonText: "Tidak."
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika dikonfirmasi, redirect ke URL penghapusan
+                    Swal.fire({
+                    title: "Berhasil!",
+                    text: "User berhasil dihapus.",
+                    icon: "success"
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#D5ED9F",
+                }).then(() => {
+                    // Submit the form after success message
+                    window.location.href = url;
+                });
+                    
+                }
+            });
+        }
+    </script>
+@endsection
+
