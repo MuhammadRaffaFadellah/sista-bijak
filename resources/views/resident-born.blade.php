@@ -23,8 +23,8 @@
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Kepala Keluarga</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">NIK</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Alamat</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">RT</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">RW</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">RT</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Ayah Kandung</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Ibu Kandung</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Anak Lahir</th>
@@ -47,8 +47,8 @@
                                         <td class="px-4 py-2 whitespace-nowrap">{{ $lahir->nama_kepala_keluarga }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap">{{ $lahir->nik }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap">{{ $lahir->alamat }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap">{{ $lahir->rt }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap">{{ $lahir->rw }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap">{{ $lahir->rt }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap">{{ $lahir->nama_ayah_kandung }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap">{{ $lahir->nama_ibu_kandung }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap">{{ $lahir->nama_anak_lahir }}</td>
@@ -141,12 +141,12 @@
                                         <input type="text" name="alamat[]" id="alamat_${i}" placeholder="Silakan masukkan alamat" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                                     </div>
                                     <div>
-                                        <label for="rt_${i}" class="block text-sm font-medium text-gray-700">RT</label>
-                                        <input type="text" name="rt[]" id="rt_${i}" placeholder="Silakan masukkan RT" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                                    </div>
-                                    <div>
                                         <label for="rw_${i}" class="block text-sm font-medium text-gray-700">RW</label>
                                         <input type="text" name="rw[]" id="rw_${i}" placeholder="Silakan masukkan RW" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                                    </div>
+                                    <div>
+                                        <label for="rt_${i}" class="block text-sm font-medium text-gray-700">RT</label>
+                                        <input type="text" name="rt[]" id="rt_${i}" placeholder="Silakan masukkan RT" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                                     </div>
                                     <div>
                                         <label for="nama_ayah_kandung_${i}" class="block text-sm font-medium text-gray-700">Nama Ayah Kandung</label>

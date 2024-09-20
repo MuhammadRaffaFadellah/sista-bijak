@@ -45,12 +45,12 @@
                             <input type="text" name="alamat" id="alamat" placeholder="Silakan masukkan alamat" value="{{ $lahir->alamat ?? '' }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
                         <div>
-                            <label for="rt" class="block text-sm font-medium text-gray-700">RT</label>
-                            <input type="text" name="rt" id="rt" placeholder="Silakan masukkan RT" value="{{ $lahir->rt ?? '' }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                        </div>
-                        <div>
                             <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
                             <input type="text" name="rw" id="rw" placeholder="Silakan masukkan RW" value="{{ $lahir->rw ?? '' }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                        </div>
+                        <div>
+                            <label for="rt" class="block text-sm font-medium text-gray-700">RT</label>
+                            <input type="text" name="rt" id="rt" placeholder="Silakan masukkan RT" value="{{ $lahir->rt ?? '' }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
                         <div>
                             <label for="nama_ayah_kandung" class="block text-sm font-medium text-gray-700">Nama Ayah Kandung</label>

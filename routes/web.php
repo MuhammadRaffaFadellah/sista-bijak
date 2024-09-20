@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\LahirController;
+use App\Http\Controllers\MeninggalController;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Route;
 
@@ -52,5 +53,9 @@ Route::get('/resident-table', [PendudukController::class, 'resident_table'])->mi
 Route::get('/resident-born', [LahirController::class, 'resident_born'])->middleware(['auth', 'verified'])->name('resident-born');
 // Route for creating Lahir
 Route::resource('lahir', LahirController::class);
+
+// Route untuk resident died table
+Route::get('/resident-died', [MeninggalController::class, 'resident_died'])->middleware(['auth', 'verified'])->name('resident-died');
+Route::resource('meninggal', MeninggalController::class)->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';
