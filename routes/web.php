@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\ManagementController;
+use App\Http\Controllers\UmkmController;
+
+
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Route;
 
@@ -23,16 +26,20 @@ Route::get("/resident-table", [PendudukController::class, 'resident_table'])->mi
 // Manajemen CRUD Route (VIEW)
 Route::get("/user-management", [ManagementController::class, 'users_management'])->middleware('auth', 'verified')->name('user-management');
 // Manajemen CRUD Route (ADD)
-Route::get("/form-add-user", [ManagementController::class, "form_add_users"])->middleware('auth', 'verified')->name("form-add-users");
-Route::get("/process-add-users", [ManagementController::class, "process_add_users"])->middleware('auth', 'verified')->name("process-add-users");
-Route::post("/process-add-users", [ManagementController::class, "process_add_users"])->middleware('auth', 'verified')->name("process-add-users");
+Route::get("/form-add-user", [ManagementController::class, "form_add_users"])->middleware('auth', 'verified')->name("add-users");
+Route::get("/process-add-users", [ManagementController::class, "process_add_users"])->middleware('auth', 'verified')->name("add-users");
+Route::post("/process-add-users", [ManagementController::class, "process_add_users"])->middleware('auth', 'verified')->name("add-users");
 // Manajemen CRUD Route (EDIT)
-Route::get("/user-management/{id}/editUser", [ManagementController::class, 'form_edit_users'])->middleware('auth', 'verified')->name("form_edit_user");
-Route::get("/process-edit-users", [ManagementController::class, 'process_edit_users'])->middleware('auth', 'verified')->name("process_edit_user");
-Route::post("/process-edit-users", [ManagementController::class, 'process_edit_users'])->middleware('auth', 'verified')->name("process_edit_user");
+Route::get("/user-management/{id}/editUser", [ManagementController::class, 'form_edit_users'])->middleware('auth', 'verified')->name("form-edit");
+Route::get("/process-edit-users", [ManagementController::class, 'process_edit_users'])->middleware('auth', 'verified')->name("edit-users");
+Route::post("/process-edit-users", [ManagementController::class, 'process_edit_users'])->middleware('auth', 'verified')->name("edit-users");
 
 // Manajemen CRUD Route (DELETE)
-Route::get("/user-management/{id}/deleteUser", [ManagementController::class, "process_delete_users"])->middleware('auth', 'verified')->name("process-delete-users");
+Route::get("/user-management/{id}/deleteUser", [ManagementController::class, "process_delete_users"])->middleware('auth', 'verified')->name("delete-users");
+
+// UMKM CRUD Route
+Route::get("/umkm-table",[UmkmController::class, "umkm_table"])->middleware("auth", "verified")->name("umkm");
+
 
 // Route untuk penduduk
 Route::middleware('auth')->group(function () {
