@@ -3,9 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\ManagementController;
+use App\Http\Controllers\LahirController;
+use App\Http\Controllers\MeninggalController;
 use App\Http\Controllers\UmkmController;
-
-
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Route;
 
@@ -50,10 +50,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::delete('/penduduk/{id}', [PendudukController::class, 'destroy'])->name('penduduk.destroy');
 
 // Route untuk resident table
 Route::get('/resident-table', [PendudukController::class, 'resident_table'])->middleware(['auth', 'verified'])->name('resident.table');
+// Route untuk resident born table
+Route::get('/resident-born', [LahirController::class, 'resident_born'])->middleware(['auth', 'verified'])->name('resident-born');
+// Route for creating Lahir
+Route::resource('lahir', LahirController::class);
 
-Route::delete('/penduduk/{id}', [PendudukController::class, 'destroy'])->name('penduduk.destroy');
+// Route untuk resident died table
+Route::get('/resident-died', [MeninggalController::class, 'resident_died'])->middleware(['auth', 'verified'])->name('resident-died');
+Route::resource('meninggal', MeninggalController::class)->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';

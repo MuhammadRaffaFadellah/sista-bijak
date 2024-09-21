@@ -79,7 +79,8 @@
                     title: "Error!",
                     text: "Semua data harus diisi!",
                     icon: "error",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#D5ED9F",
                 });
             } else {
                 // Jika semua data terisi
