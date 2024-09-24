@@ -40,8 +40,7 @@ Route::get("/user-management/{id}/deleteUser", [ManagementController::class, "pr
 // UMKM CRUD Route
 Route::get("/umkm-table",[UmkmController::class, "umkm_table"])->middleware("auth", "verified")->name("umkm");
 
-
-// Route untuk penduduk
+// Resident Route
 Route::middleware('auth')->group(function () {
     Route::resource('penduduk', PendudukController::class);
     

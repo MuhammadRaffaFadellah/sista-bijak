@@ -3,7 +3,7 @@
 @section('page-title', 'Buat Akun Baru')
 
 @section('body')
-<div class="w-full rounded-lg bg-white p-8 rounded-lg shadow-md mx-2 mt-5">
+<div class="w-full rounded-lg bg-white p-8 shadow-md mx-2 mt-5">
     <form action="{{ route('user.store') }}" method="POST">
         @csrf
         <div class="mb-4">

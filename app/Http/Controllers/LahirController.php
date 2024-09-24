@@ -24,7 +24,7 @@ class LahirController extends Controller
 
         $statusKependudukanOptions = ['MENETAP', 'KELUAR', 'MASUK', 'LAHIR'];
 
-        return view('resident-born', compact('dataLahir', 'statusKependudukanOptions'));
+        return view('resident.resident-born', compact('dataLahir', 'statusKependudukanOptions'));
     }
 
     // Show the form for creating a new Lahir entry

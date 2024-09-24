@@ -21,13 +21,13 @@ class MeninggalController extends Controller
             $dataMeninggal = Meninggals::where('rw', $user->rw_id)->paginate(10);
         }
 
-        return view('resident-died', compact('dataMeninggal'));
+        return view('resident.resident-died', compact('dataMeninggal'));
     }
 
     public function index()
     {
         $dataMeninggal = Meninggals::paginate(10);
-        return view('resident-died', compact('dataMeninggal'));
+        return view('resident.resident-died', compact('dataMeninggal'));
     }
 
     public function store(Request $request)

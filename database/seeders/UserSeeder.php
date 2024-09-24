@@ -32,6 +32,48 @@ class UserSeeder extends Seeder
                 'role_id' => 2,  // Assuming 2 is the role ID for a regular user
                 'password' => 'password123',
             ],
+            [
+                'name' => 'RW 2',
+                'email' => 'rw2@gmail.com',
+                'rw_id' => 2, // Assuming this is related to a foreign key
+                'role_id' => 2,  // Assuming 2 is the role ID for a regular user
+                'password' => 'password123',
+            ],
+            [
+                'name' => 'RW 3',
+                'email' => 'rw3@gmail.com',
+                'rw_id' => 3, // Assuming this is related to a foreign key
+                'role_id' => 2,  // Assuming 2 is the role ID for a regular user
+                'password' => 'password123',
+            ],
+            [
+                'name' => 'RW 4',
+                'email' => 'rw4@gmail.com',
+                'rw_id' => 4, // Assuming this is related to a foreign key
+                'role_id' => 2,  // Assuming 2 is the role ID for a regular user
+                'password' => 'password123',
+            ],
+            [
+                'name' => 'RW 5',
+                'email' => 'rw5@gmail.com',
+                'rw_id' => 5, // Assuming this is related to a foreign key
+                'role_id' => 2,  // Assuming 2 is the role ID for a regular user
+                'password' => 'password123',
+            ],
+            [
+                'name' => 'RW 6',
+                'email' => 'rw6@gmail.com',
+                'rw_id' => 6, // Assuming this is related to a foreign key
+                'role_id' => 2,  // Assuming 2 is the role ID for a regular user
+                'password' => 'password123',
+            ],
+            [
+                'name' => 'RW 7',
+                'email' => 'rw7@gmail.com',
+                'rw_id' => 7, // Assuming this is related to a foreign key
+                'role_id' => 2,  // Assuming 2 is the role ID for a regular user
+                'password' => 'password123',
+            ],
             // Add more users as needed
         ];
 

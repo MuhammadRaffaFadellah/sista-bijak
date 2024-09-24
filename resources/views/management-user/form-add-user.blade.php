@@ -80,7 +80,7 @@
                     text: "Semua data harus diisi!",
                     icon: "error",
                     confirmButtonText: "OK",
-                    confirmButtonColor: "#D5ED9F",
+                    confirmButtonColor: "##3085d6",
                 });
             } else {
                 // Jika semua data terisi
@@ -89,7 +89,7 @@
                     text: "User berhasil ditambahkan!",
                     icon: "success",
                     confirmButtonText: "OK",
-                    confirmButtonColor: "#D5ED9F",
+                    confirmButtonColor: "##3085d6",
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Submit form setelah konfirmasi

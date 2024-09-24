@@ -70,14 +70,14 @@
     function editConfirm(event) {
         event.preventDefault(); // Prevent the default form submission
         Swal.fire({
-            title: "Are you sure?",
-            text: "Do you want to save changes?",
+            title: "Apakah kamu yakin?",
+            text: "Apakah kamu ingin menyimpan perubahan?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, save changes!",
-            cancelButtonText: "No, cancel"
+            confirmButtonText: "Ya",
+            cancelButtonText: "Tidak"
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
@@ -85,7 +85,7 @@
                     text: "User berhasil diubah.",
                     icon: "success"
                     confirmButtonText: "OK",
-                    confirmButtonColor: "#D5ED9F",
+                    confirmButtonColor: "##3085d6",
                 }).then(() => {
                     // Submit the form after success message
                     event.target.closest('form').submit();
