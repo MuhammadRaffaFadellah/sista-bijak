@@ -5,6 +5,7 @@ use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\LahirController;
 use App\Http\Controllers\MeninggalController;
+use App\Http\Controllers\MigrasiController;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Route;
 
@@ -57,5 +58,10 @@ Route::resource('lahir', LahirController::class);
 // Route untuk resident died table
 Route::get('/resident-died', [MeninggalController::class, 'resident_died'])->middleware(['auth', 'verified'])->name('resident-died');
 Route::resource('meninggal', MeninggalController::class)->middleware(['auth', 'verified']);
+
+Route::get('/resident-migration', [MigrasiController::class, 'resident_migration'])->middleware(['auth', 'verified'])->name('resident-migration');
+Route::resource('migrasi', MigrasiController::class)->middleware(['auth', 'verified']);
+Route::get('/resident-migration/{id}', [MigrasiController::class, 'show'])->middleware(['auth', 'verified'])->name('migrasi.show');
+Route::get('/resident-migration/{id}/edit', [MigrasiController::class, 'edit'])->middleware(['auth', 'verified'])->name('migrasi.edit');
 
 require __DIR__.'/auth.php';
