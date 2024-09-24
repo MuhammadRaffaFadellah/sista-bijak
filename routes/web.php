@@ -40,6 +40,12 @@ Route::get("/user-management/{id}/deleteUser", [ManagementController::class, "pr
 
 // UMKM CRUD Route
 Route::get("/umkm-table",[UmkmController::class, "umkm_table"])->middleware("auth", "verified")->name("umkm");
+Route::get("/umkm-table",[UmkmController::class, "umkm_table"])->middleware("auth", "verified")->name("umkm");
+Route::post('/umkm-store', [UmkmController::class, 'store'])->name('umkm.store');
+Route::get('/umkm/{id}/edit', [UmkmController::class, 'edit'])->name('umkm.edit');
+Route::put('/umkm/{id}', [UmkmController::class, 'update'])->name('umkm.update');
+// Route untuk hapus UMKM
+Route::delete('/umkm/{id}', [UmkmController::class, 'destroy'])->name('umkm.destroy');
 
 // Resident Route
 Route::middleware('auth')->group(function () {
