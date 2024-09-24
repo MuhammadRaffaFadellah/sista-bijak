@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('img/Logo Si-PBJ.png') }}">
 
-    <title>{{ config('APP.NAME', 'Si-PBJ') }}</title>
+    <title>{{ config('APP.NAME', 'Sista Bijak - Login') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

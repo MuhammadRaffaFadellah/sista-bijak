@@ -31,7 +31,7 @@ class LahirController extends Controller
     public function create()
     {
         $statusKependudukanOptions = ['LAHIR','MENETAP', 'KELUAR', 'MASUK'];
-        return view('create_born', compact('statusKependudukanOptions'));
+        return view('create.create_born', compact('statusKependudukanOptions'));
     }
 
     // Store a newly created Lahir entry in storage
@@ -78,7 +78,7 @@ class LahirController extends Controller
     {
         $lahir = Lahir::findOrFail($id);
         $statusKependudukanOptions = ['LAHIR','MENETAP', 'KELUAR', 'MASUK'];
-        return view('create_born', compact('lahir', 'statusKependudukanOptions'));
+        return view('create.create_born', compact('lahir', 'statusKependudukanOptions'));
     }
 
     // Update the specified Lahir entry in storage

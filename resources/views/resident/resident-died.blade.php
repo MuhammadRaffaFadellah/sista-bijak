@@ -151,7 +151,7 @@
                 <h2 class="text-lg font-bold mb-4">Berapa banyak data yang ingin ditambah?</h2>
                 <input type="number" id="dataAmount" min="1"
                     class="border border-gray-300 rounded-md p-2 w-full mb-4" placeholder="Masukkan jumlah data">
-                <button id="createFormButton" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Buat
+                <button id="createFormButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Buat
                     Form</button>
             </div>
         </div>

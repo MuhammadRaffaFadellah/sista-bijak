@@ -72,7 +72,7 @@ class MeninggalController extends Controller
     public function edit($id)
     {
         $meninggal = Meninggals::findOrFail($id);
-        return view('create_died', compact('meninggal'));
+        return view('create.create_died', compact('meninggal'));
     }
     public function update(Request $request, $id)
     {

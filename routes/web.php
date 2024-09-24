@@ -5,11 +5,8 @@ use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\LahirController;
 use App\Http\Controllers\MeninggalController;
-<<<<<<< HEAD
 use App\Http\Controllers\MigrasiController;
-=======
 use App\Http\Controllers\UmkmController;
->>>>>>> 4b3d6099304cdcb25d032000520aef639da6e692
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Route;
 

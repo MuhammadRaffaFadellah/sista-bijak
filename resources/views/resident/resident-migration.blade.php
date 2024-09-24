@@ -10,8 +10,7 @@
             <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
                 <h3 class="text-lg font-bold">Tabel Migrasi</h3>
                 <button id="addDataButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
-                    <i class="fas fa-plus mr-2"></i> <!-- Ikon tambah -->
-                    Tambah Data
+                    <i class="fas fa-plus"></i>
                 </button>
             </div>
             <div class="p-4">
@@ -32,7 +31,7 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @if($dataMigrasi->isEmpty())
                                 <tr>
-                                    <td colspan="8" class="text-center px-4 py-2">Tidak ada data migrasi.</td>
+                                    <td colspan="8" class="text-center px-4 py-2 uppercase font-bold">Tidak ada data</td>
                                 </tr>
                             @else
                                 @foreach($dataMigrasi as $index => $migrasi)
@@ -109,7 +108,7 @@
                 </button>
                 <h2 class="text-lg font-bold mb-4">Berapa banyak data yang ingin ditambah?</h2>
                 <input type="number" id="dataCount" min="1" class="border border-gray-300 rounded-md p-2 w-full mb-4" placeholder="Masukkan jumlah data">
-                <button id="generateFormButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Generate Form</button>
+                <button id="generateFormButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Buat Form</button>
             </div>
         </div>
 

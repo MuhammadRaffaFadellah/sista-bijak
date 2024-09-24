@@ -177,7 +177,7 @@
                     <input type="number" id="dataAmount" min="1"
                         class="border border-gray-300 rounded-md p-2 w-full mb-4" placeholder="Masukkan jumlah data">
                     <button id="createFormButton" type="button"
-                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
                         Buat Form
                     </button>
                 </form>

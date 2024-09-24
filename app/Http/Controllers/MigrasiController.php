@@ -12,20 +12,18 @@ class MigrasiController extends Controller
     public function resident_migration()
     {
         $user = Auth::user();
-
         if ($user->role->id === 1) {
             $dataMigrasi = Migrasi::paginate(10);
         } else {
             $dataMigrasi = Migrasi::where('rw', $user->rw_id)->paginate(10);
         }
-
-        return view('resident-migration', compact('dataMigrasi'));
+        return view('resident.resident-migration', compact('dataMigrasi'));
     }
 
     public function index()
     {
         $dataMigrasi = Migrasi::paginate(10);
-        return view('resident-migration', compact('dataMigrasi'));
+        return view('resident.resident-migration', compact('dataMigrasi'));
     }
 
     public function store(Request $request)
@@ -96,13 +94,11 @@ class MigrasiController extends Controller
         // Update migrasi
         $migrasi = Migrasi::findOrFail($id);
         $migrasi->update($request->only('jenis_migrasi', 'nama_kepala_keluarga', 'nik', 'rw', 'rt'));
-
         // Hapus anggota yang ada dan tambahkan yang baru
         $migrasi->anggotaMigrasi()->delete();
         foreach ($request->anggota as $anggota) {
             $migrasi->anggotaMigrasi()->create($anggota);
         }
-
         return redirect()->route('resident-migration')->with('success', 'Data berhasil diupdate');
     }
 
