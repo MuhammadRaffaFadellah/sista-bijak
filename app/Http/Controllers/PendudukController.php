@@ -52,7 +52,7 @@ class PendudukController extends Controller
             $penduduks = Penduduk::where('rw', $user->rw_id)->paginate(10);
         }
     
-        return view('resident-table', compact('penduduks'));
+        return view('resident.resident-table', compact('penduduks'));
     }
 
     public function create()
@@ -90,7 +90,7 @@ class PendudukController extends Controller
         Penduduk::create($request->all());
 
         // Redirect dengan pesan sukses
-        return redirect()->route('resident.table')->with('success', 'Data penduduk berhasil ditambahkan.');
+        return redirect()->route('resident.resident.table')->with('success', 'Data penduduk berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -146,7 +146,7 @@ public function destroy($id)
         return redirect()->route('resident.table')->with('success', 'Data penduduk berhasil dihapus.');
     } catch (\Exception $e) {
         // Tangani jika ada kesalahan
-        return redirect()->route('resident.table')->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+        return redirect()->route('resident.resident.table')->with('error', 'Gagal menghapus data: ' . $e->getMessage());
     }
 }
 }

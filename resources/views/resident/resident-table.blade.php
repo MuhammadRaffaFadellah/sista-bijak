@@ -111,8 +111,8 @@
         function deleteConfirm(event, button) {
             event.preventDefault();
             Swal.fire({
-                title: "Kamu yakin hapus user ini?",
-                text: "Kamu tidak akan bisa mengulang aksi ini!",
+                title: "Kamu yakin hapus ini?",
+                text: "Kamu tidak akan bisa mengulang ini!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",

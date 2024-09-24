@@ -2,12 +2,11 @@
 
 @section('dashboard-title')
     @if(isset($lahir))
-        Edit Data Lahir
+        Sista Bijak - Edit Data Lahir
     @else
-        Tambah Data Lahir
+        Sista Bijak - Tambah Data Lahir
     @endif
 @endsection
-
 @section('body')
     <div class="container mx-auto px-4 py-6">
         <div class="card shadow-lg rounded-lg overflow-hidden">
@@ -90,7 +89,7 @@
                     </div>
                     <div class="mt-4 flex justify-between">
                         <a href="{{ route('resident-born') }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Kembali</a>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        <button type="submit" onclick="editConfirm(event)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                             @if(isset($lahir))
                                 Update Data
                             @else
@@ -102,8 +101,34 @@
             </div>
         </div>
     </div>
-
+    @include('sweetalert')
     <script>
+        function editConfirm(event) {
+            event.preventDefault(); // Mencegah submit form secara default
+            Swal.fire({
+                title: "Apakah kamu yakin?",
+                text: "Apakah kamu ingin menyimpan perubahan?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Simpan",
+                cancelButtonText: "Tidak"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: "Perubahan berhasil disimpan",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                        confirmButtonColor: "#3085d6"
+                    }).then(() => {
+                        // Submit the form setelah pesan sukses muncul
+                        event.target.closest('form').submit();
+                    });
+                }
+            });
+        }
         document.getElementById('nik').addEventListener('click', function() {
             if (this.readOnly) {
                 document.getElementById('nik-warning').style.display = 'block';

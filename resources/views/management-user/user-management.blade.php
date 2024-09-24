@@ -90,7 +90,7 @@
             event.preventDefault(); // Mencegah aksi default
             Swal.fire({
                 title: "Kamu yakin hapus user ini?",
-                text: "Kamu tidak akan bisa mengulang aksi ini!",
+                text: "Kamu tidak akan bisa mengulang ini!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -105,7 +105,7 @@
                         text: "User berhasil dihapus.",
                         icon: "success"
                         confirmButtonText: "OK",
-                        confirmButtonColor: "#D5ED9F",
+                        confirmButtonColor: "##3085d6",
                     }).then(() => {
                         // Submit the form after success message
                         window.location.href = url;

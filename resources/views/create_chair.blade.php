@@ -191,11 +191,11 @@
             Swal.fire({
                 title: "Apakah kamu yakin?",
                 text: "Apakah kamu ingin menyimpan perubahan?",
-                icon: "warning",
+                icon: "question",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Ya, simpan perubahan!",
+                confirmButtonText: "Ya, simpan perubahan",
                 cancelButtonText: "Tidak, batalkan"
             }).then((result) => {
                 if (result.isConfirmed) {
