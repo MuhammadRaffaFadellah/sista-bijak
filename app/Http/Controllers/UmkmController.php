@@ -23,4 +23,56 @@ class UmkmController extends Controller
         }
         return view("umkm.umkm-table", compact('umkms'));
     }
+//     public function create()
+// {
+//     return view('create_umkm');
+// }
+
+public function edit($id)
+{
+    $umkm = Umkm::findOrFail($id);
+    return view('create_umkm', compact('umkm'));
+}
+
+public function store(Request $request)
+{
+    $data = $request->all();
+    foreach ($data['nama_rw'] as $index => $value) {
+        Umkm::create([
+            'nama_rw' => $data['nama_rw'][$index],
+            'rw' => $data['rw'][$index],
+            'jumlah_umkm' => $data['jumlah_umkm'][$index],
+            'jenis_umkm' => $data['jenis_umkm'][$index],
+            'nama_pemilik' => $data['nama_pemilik'][$index],
+            'nik' => $data['nik'][$index],
+            'alamat' => $data['alamat'][$index],
+        ]);
+    }
+    return redirect()->route('umkm')->with('success', 'Data berhasil ditambahkan');
+}
+
+public function update(Request $request, $id)
+{
+    $data = $request->validate([
+        'nama_rw' => 'required|string|max:255',
+        'rw' => 'required|string|max:255',
+        'jumlah_umkm' => 'required|integer',
+        'jenis_umkm' => 'required|string|max:255',
+        'nama_pemilik' => 'required|string|max:255',
+        'nik' => 'required|string|max:255',
+        'alamat' => 'required|string|max:255',
+    ]);
+
+    $umkm = Umkm::findOrFail($id);
+    $umkm->update($data);
+
+    return redirect()->route('umkm')->with('success', 'Data berhasil diperbarui');
+}
+public function destroy($id)
+{
+    $umkm = Umkm::findOrFail($id);
+    $umkm->delete();
+
+    return redirect()->route('umkm')->with('success', 'Data berhasil dihapus');
+}
 }

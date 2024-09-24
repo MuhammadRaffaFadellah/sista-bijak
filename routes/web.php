@@ -5,11 +5,8 @@ use App\Http\Controllers\PendudukController;
 use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\LahirController;
 use App\Http\Controllers\MeninggalController;
-<<<<<<< HEAD
 use App\Http\Controllers\MigrasiController;
-=======
 use App\Http\Controllers\UmkmController;
->>>>>>> 4b3d6099304cdcb25d032000520aef639da6e692
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +40,12 @@ Route::get("/user-management/{id}/deleteUser", [ManagementController::class, "pr
 
 // UMKM CRUD Route
 Route::get("/umkm-table",[UmkmController::class, "umkm_table"])->middleware("auth", "verified")->name("umkm");
+Route::get("/umkm-table",[UmkmController::class, "umkm_table"])->middleware("auth", "verified")->name("umkm");
+Route::post('/umkm-store', [UmkmController::class, 'store'])->name('umkm.store');
+Route::get('/umkm/{id}/edit', [UmkmController::class, 'edit'])->name('umkm.edit');
+Route::put('/umkm/{id}', [UmkmController::class, 'update'])->name('umkm.update');
+// Route untuk hapus UMKM
+Route::delete('/umkm/{id}', [UmkmController::class, 'destroy'])->name('umkm.destroy');
 
 // Resident Route
 Route::middleware('auth')->group(function () {
