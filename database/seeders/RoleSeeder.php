@@ -15,6 +15,7 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $roles = [
+            
             ['nama' => 'Admin', 'created_at' => Carbon::now('Asia/Jakarta'), 'updated_at' => Carbon::now('Asia/Jakarta')],
             ['nama' => 'Operator', 'created_at' => Carbon::now('Asia/Jakarta'), 'updated_at' => Carbon::now('Asia/Jakarta')],
         ];

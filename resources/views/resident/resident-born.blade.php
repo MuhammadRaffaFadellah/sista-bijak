@@ -9,52 +9,61 @@
                 opacity: 0;
                 transform: scale(0.9);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
             }
         }
+
         @keyframes modalOut {
             from {
                 opacity: 1;
                 transform: scale(1);
             }
+
             to {
                 opacity: 0;
                 transform: scale(0.9);
             }
         }
+
         .modal-enter {
             animation: modalIn 0.3s ease-out forwards;
         }
+
         .modal-leave {
             animation: modalOut 0.2s ease-in forwards;
         }
-    </style>
-    <style>
+
         @keyframes fadeInModal {
             from {
                 opacity: 0;
                 transform: scale(0.9);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
             }
         }
+
         @keyframes fadeOutModal {
             from {
                 opacity: 1;
                 transform: scale(1);
             }
+
             to {
                 opacity: 0;
                 transform: scale(0.9);
             }
         }
+
         .fadeIn {
             animation: fadeInModal 0.3s ease-out forwards;
         }
+
         .fadeOut {
             animation: fadeOutModal 0.2s ease-in forwards;
         }
@@ -167,8 +176,7 @@
         <!-- Modal Tambah Data -->
         <div id="dataEntryModal"
             class="fixed inset-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-60 hidden">
-            <div id="dataEntryContent"
-                class="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-xl opacity-0 scale-90">
+            <div id="dataEntryContent" class="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-xl fadeIn">
                 <button id="closeDataModalButton" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
                 </button>
@@ -177,7 +185,7 @@
                     <input type="number" id="dataAmount" min="1"
                         class="border border-gray-300 rounded-md p-2 w-full mb-4" placeholder="Masukkan jumlah data">
                     <button id="createFormButton" type="button"
-                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                         Buat Form
                     </button>
                 </form>
@@ -208,6 +216,7 @@
                 modalContent.classList.remove('opacity-0', 'modal-leave'); // Reset kelas animasi
                 modalContent.classList.add('modal-enter'); // Tambahkan kelas animasi masuk
             }
+
             function closeAddressModal() {
                 const modal = document.getElementById('addressModal');
                 const modalContent = document.getElementById('modalContent');
@@ -278,11 +287,11 @@
             <div class="p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     ${['nik', 'nama_kepala_keluarga', 'alamat', 'rw', 'rt', 'nama_ayah_kandung', 'nama_ibu_kandung', 'nama_anak_lahir', 'tempat_lahir', 'tanggal_lahir'].map(field => `
-                                                                        <div>
-                                                                            <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
-                                                                            <input type="${field === 'tanggal_lahir' ? 'date' : 'text'}" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                                                                        </div>
-                                                                    `).join('')}
+                                                                                        <div>
+                                                                                            <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
+                                                                                            <input type="${field === 'tanggal_lahir' ? 'date' : 'text'}" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                                                                                        </div>
+                                                                                    `).join('')}
                     <div>
                         <label for="jenis_kelamin_${index}" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
                         <select name="jenis_kelamin[]" id="jenis_kelamin_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
@@ -380,11 +389,11 @@
             }
         </script>
     </div>
-    <!-- Modal (hidden by default) -->
+    <!-- Modal Show -->
     <div id="addressModal"
         class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50 transition-opacity">
         <div id="modalContent"
-            class="bg-white rounded-lg shadow-lg w-11/12 max-w-lg max-h-[80vh] overflow-y-auto opacity-0">
+            class="bg-white rounded-lg shadow-lg w-11/12 max-w-lg max-h-[80vh] overflow-y-auto modal-enter">
             <div class="flex justify-between items-center p-4 border-b">
                 <h5 class="text-lg font-bold">Alamat</h5>
                 <button onclick="closeAddressModal()" class="text-gray-400 hover:text-gray-600">&times;</button>
@@ -398,4 +407,5 @@
             </div>
         </div>
     </div>
+
 @endsection

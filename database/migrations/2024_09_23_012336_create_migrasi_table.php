@@ -17,7 +17,6 @@ class CreateMigrasiTable extends Migration
             $table->unsignedBigInteger('rt');
             $table->timestamps();
         });
-
         Schema::create('anggota_migrasi', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('migrasi_id');
