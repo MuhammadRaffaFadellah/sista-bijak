@@ -11,6 +11,8 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!--Replace with your tailwind.css once created-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js" integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
 
@@ -124,11 +126,11 @@
                     <div class="bg-white border rounded shadow p-2">
                         <div class="flex flex-row items-center">
                             <div class="flex-shrink pr-4">
-                                <div class="rounded p-3 bg-green-600"><i class="fa fa-wallet fa-2x fa-fw fa-inverse"></i></div>
+                                <div class="rounded p-3 bg-green-600"><i class="fa fa-users fa-2x fa-fw fa-inverse"></i></div>
                             </div>
                             <div class="flex-1 text-right md:text-center">
-                                <h5 class="font-bold uppercase text-gray-500">Total Revenue</h5>
-                                <h3 class="font-bold text-3xl">$3249 <span class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
+                                <h5 class="font-bold uppercase text-gray-500">Jumlah Penduduk</h5>
+                                <h3 class="font-bold text-3xl"> {{ $totalPenduduk }} <span class="text-green-500"><i class="fa fa-users"></i></span></h3>
                             </div>
                         </div>
                     </div>
@@ -139,11 +141,11 @@
                     <div class="bg-white border rounded shadow p-2">
                         <div class="flex flex-row items-center">
                             <div class="flex-shrink pr-4">
-                                <div class="rounded p-3 bg-pink-600"><i class="fas fa-users fa-2x fa-fw fa-inverse"></i></div>
+                                <div class="rounded p-3 bg-yellow-600"><i class="fas fa-male fa-2x fa-fw fa-inverse"></i></div>
                             </div>
                             <div class="flex-1 text-right md:text-center">
-                                <h5 class="font-bold uppercase text-gray-500">Total Users</h5>
-                                <h3 class="font-bold text-3xl">249 <span class="text-pink-500"><i class="fas fa-exchange-alt"></i></span></h3>
+                                <h5 class="font-bold uppercase text-gray-500">Jumlah Laki-Laki</h5>
+                                <h3 class="font-bold text-3xl"> {{ $totalLakiLaki }} <span class="text-yellow-600"><i class="fa fa-male"></i></span></h3>
                             </div>
                         </div>
                     </div>
@@ -154,11 +156,11 @@
                     <div class="bg-white border rounded shadow p-2">
                         <div class="flex flex-row items-center">
                             <div class="flex-shrink pr-4">
-                                <div class="rounded p-3 bg-yellow-600"><i class="fas fa-user-plus fa-2x fa-fw fa-inverse"></i></div>
+                                <div class="rounded p-3 bg-pink-600"><i class="fas fa-female fa-2x fa-fw fa-inverse"></i></div>
                             </div>
                             <div class="flex-1 text-right md:text-center">
-                                <h5 class="font-bold uppercase text-gray-500">New Users</h5>
-                                <h3 class="font-bold text-3xl">2 <span class="text-yellow-600"><i class="fas fa-caret-up"></i></span></h3>
+                                <h5 class="font-bold uppercase text-gray-500">Jumlah Perempuan</h5>
+                                <h3 class="font-bold text-3xl"> {{ $totalPerempuan }} <span class="text-pink-500"><i class="fa fa-female"></i></span></h3>
                             </div>
                         </div>
                     </div>
@@ -169,11 +171,11 @@
                     <div class="bg-white border rounded shadow p-2">
                         <div class="flex flex-row items-center">
                             <div class="flex-shrink pr-4">
-                                <div class="rounded p-3 bg-blue-600"><i class="fas fa-server fa-2x fa-fw fa-inverse"></i></div>
+                                <div class="rounded p-3 bg-blue-600"><i class="fas fa-baby fa-2x fa-fw fa-inverse"></i></div>
                             </div>
                             <div class="flex-1 text-right md:text-center">
-                                <h5 class="font-bold uppercase text-gray-500">Server Uptime</h5>
-                                <h3 class="font-bold text-3xl">152 days</h3>
+                                <h5 class="font-bold uppercase text-gray-500">Jumlah Lahir</h5>
+                                <h3 class="font-bold text-3xl"> {{ $totalLahir }} <span class="text-blue-500"><i class="fa fa-baby"></i></span></h3>
                             </div>
                         </div>
                     </div>
@@ -184,11 +186,11 @@
                     <div class="bg-white border rounded shadow p-2">
                         <div class="flex flex-row items-center">
                             <div class="flex-shrink pr-4">
-                                <div class="rounded p-3 bg-indigo-600"><i class="fas fa-tasks fa-2x fa-fw fa-inverse"></i></div>
+                                <div class="rounded p-3 bg-red-600"><i class="fas fa-monument fa-2x fa-fw fa-inverse"></i></div>
                             </div>
                             <div class="flex-1 text-right md:text-center">
-                                <h5 class="font-bold uppercase text-gray-500">To Do List</h5>
-                                <h3 class="font-bold text-3xl">7 tasks</h3>
+                                <h5 class="font-bold uppercase text-gray-500">Jumlah Meninggal</h5>
+                                <h3 class="font-bold text-3xl"> {{ $totalMeninggal }} <span class="text-red-500"><i class="fa fa-monument"></i></span></h3>
                             </div>
                         </div>
                     </div>
@@ -199,17 +201,33 @@
                     <div class="bg-white border rounded shadow p-2">
                         <div class="flex flex-row items-center">
                             <div class="flex-shrink pr-4">
-                                <div class="rounded p-3 bg-red-600"><i class="fas fa-inbox fa-2x fa-fw fa-inverse"></i></div>
+                                <div class="rounded p-3 bg-green-600"><i class="fas fa-sign-in-alt fa-2x fa-fw fa-inverse"></i></div>
                             </div>
                             <div class="flex-1 text-right md:text-center">
-                                <h5 class="font-bold uppercase text-gray-500">Issues</h5>
-                                <h3 class="font-bold text-3xl">3 <span class="text-red-500"><i class="fas fa-caret-up"></i></span></h3>
+                                <h5 class="font-bold uppercase text-gray-500">Jumlah Migrasi Masuk</h5>
+                                <h3 class="font-bold text-3xl">{{$totalMigrasiMasuk}} <span class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Metric Card-->
+                </div>
+                <div class="w-full md:w-1/2 xl:w-1/3 p-3">
+                    <!--Metric Card-->
+                    <div class="bg-white border rounded shadow p-2">
+                        <div class="flex flex-row items-center">
+                            <div class="flex-shrink pr-4">
+                                <div class="rounded p-3 bg-red-900"><i class="fas fa-sign-out-alt fa-2x fa-fw fa-inverse"></i></div>
+                            </div>
+                            <div class="flex-1 text-right md:text-center">
+                                <h5 class="font-bold uppercase text-gray-500">Jumlah Migrasi Keluar</h5>
+                                <h3 class="font-bold text-3xl">{{$totalMigrasiKeluar}} <span class="text-red-500"><i class="fas fa-caret-down"></i></span></h3>
                             </div>
                         </div>
                     </div>
                     <!--/Metric Card-->
                 </div>
             </div>
+
 
             <!--Divider-->
             <hr class="border-b-2 border-gray-400 my-8 mx-4">

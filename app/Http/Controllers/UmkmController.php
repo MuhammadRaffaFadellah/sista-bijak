@@ -10,17 +10,34 @@ use App\Models\rw;
 
 class UmkmController extends Controller
 {
-    public function umkm_table(){
+    public function umkm_table(Request $request)
+    {
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
 
         // Cek apakah user adalah admin berdasarkan ID role
         if ($user->role->id === 1) { // pastikan membandingkan dengan id, bukan role_id
-            // Jika admin, ambil semua penduduk
-            $umkms = Umkm::paginate(10); // 10 entri per halaman
+            // Jika admin, ambil semua UMKM
+            $umkms = Umkm::query(); // Inisialisasi query
         } else {
-            // Jika bukan admin, ambil penduduk sesuai RW pengguna
-            $umkms = Umkm::where('rw', $user->rw_id)->paginate(10);
+            // Jika bukan admin, ambil UMKM sesuai RW pengguna
+            $umkms = Umkm::where('rw', $user->rw_id);
         }
+
+        // Pencarian berdasarkan nama pemilik atau NIK
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $umkms->where(function($q) use ($search) {
+                $q->where('nama_pemilik', 'like', "%{$search}%")
+                ->orWhere('nik', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter berdasarkan RW
+        if ($request->has('filter_rw') && $request->input('filter_rw') != '') {
+            $umkms->where('rw', $request->input('filter_rw'));
+        }
+
+        $umkms = $umkms->paginate(10);
         return view("umkm.umkm-table", compact('umkms'));
     }
 //     public function create()
@@ -42,6 +59,7 @@ public function store(Request $request)
             'nama_rw' => $data['nama_rw'][$index],
             'rw' => $data['rw'][$index],
             'jumlah_umkm' => $data['jumlah_umkm'][$index],
+            'kategori_umkm' => $data['kategori_umkm'][$index],
             'jenis_umkm' => $data['jenis_umkm'][$index],
             'nama_pemilik' => $data['nama_pemilik'][$index],
             'nik' => $data['nik'][$index],
@@ -57,6 +75,7 @@ public function update(Request $request, $id)
         'nama_rw' => 'required|string|max:255',
         'rw' => 'required|string|max:255',
         'jumlah_umkm' => 'required|integer',
+        'kategori_umkm' => 'required|string|max:255',
         'jenis_umkm' => 'required|string|max:255',
         'nama_pemilik' => 'required|string|max:255',
         'nik' => 'required|string|max:255',

@@ -73,5 +73,7 @@ Route::get('/resident-migration', [MigrasiController::class, 'resident_migration
 Route::resource('migrasi', MigrasiController::class)->middleware(['auth', 'verified']);
 Route::get('/resident-migration/{id}', [MigrasiController::class, 'show'])->middleware(['auth', 'verified'])->name('migrasi.show');
 Route::get('/resident-migration/{id}/edit', [MigrasiController::class, 'edit'])->middleware(['auth', 'verified'])->name('migrasi.edit');
+Route::get('/dashboard', [PendudukController::class, 'dashboard'])->name('dashboard');
+Route::get('/', [PendudukController::class, 'index'])->name('index');
 
 require __DIR__.'/auth.php';

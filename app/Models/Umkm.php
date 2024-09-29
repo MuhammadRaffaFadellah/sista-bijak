@@ -16,6 +16,7 @@ class Umkm extends Model
         'nama_rw',
         'rw',
         'jumlah_umkm',
+        'kategori_umkm',
         'jenis_umkm',
         'nama_pemilik',
         'nik',

@@ -56,11 +56,18 @@
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
                         <div>
-                            <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
-                            <input type="text" name="rw" id="rw" placeholder="Silakan masukkan RW"
-                                value="{{ $meninggal->rw ?? '' }}" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                        </div>
+                        <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
+                        <select name="rw" id="rw" required
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                            <option value="1" {{ (isset($meninggal) && $meninggal->rw == '1') ? 'selected' : '' }}>1</option>
+                            <option value="2" {{ (isset($meninggal) && $meninggal->rw == '2') ? 'selected' : '' }}>2</option>
+                            <option value="3" {{ (isset($meninggal) && $meninggal->rw == '3') ? 'selected' : '' }}>3</option>
+                            <option value="4" {{ (isset($meninggal) && $meninggal->rw == '4') ? 'selected' : '' }}>4</option>
+                            <option value="5" {{ (isset($meninggal) && $meninggal->rw == '5') ? 'selected' : '' }}>5</option>
+                            <option value="6" {{ (isset($meninggal) && $meninggal->rw == '6') ? 'selected' : '' }}>6</option>
+                            <option value="7" {{ (isset($meninggal) && $meninggal->rw == '7') ? 'selected' : '' }}>7</option>
+                        </select>
+                    </div>
                         <div>
                             <label for="rt" class="block text-sm font-medium text-gray-700">RT</label>
                             <input type="text" name="rt" id="rt" placeholder="Silakan masukkan RT"
@@ -122,6 +129,16 @@
                                 <option value="PEREMPUAN"
                                     {{ isset($meninggal) && $meninggal->jenis_kelamin == 'PEREMPUAN' ? 'selected' : '' }}>
                                     PEREMPUAN</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="status_kependudukan" class="block text-sm font-medium text-gray-700">Status
+                                Kependudukan</label>
+                            <select name="status_kependudukan" id="status_kependudukan" required
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                <option value="MENINGGAL"
+                                    {{ isset($meninggal) && $meninggal->status_kependudukan == 'MENINGGAL' ? 'selected' : '' }}>
+                                    MENINGGAL</option>
                             </select>
                         </div>
                     </div>

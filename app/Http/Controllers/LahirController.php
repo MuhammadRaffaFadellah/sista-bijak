@@ -9,20 +9,31 @@ use Illuminate\Support\Facades\Auth;
 class LahirController extends Controller
 {
     // Display the list of Lahir entries
-    public function resident_born()
+    public function resident_born(Request $request)
     {
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
 
         // Cek apakah user adalah admin berdasarkan ID role
         if ($user->role->id === 1) { // pastikan membandingkan dengan id, bukan role_id
             // Jika admin, ambil semua data lahir
-            $dataLahir = Lahir::paginate(10); // 10 entri per halaman
+            $query = Lahir::query();
         } else {
             // Jika bukan admin, ambil data lahir sesuai RW pengguna
-            $dataLahir = Lahir::where('rw', $user->rw_id)->paginate(10);
+            $query = Lahir::where('rw', $user->rw_id);
         }
 
-        $statusKependudukanOptions = ['MENETAP', 'KELUAR', 'MASUK', 'LAHIR'];
+        // Pencarian berdasarkan nama kepala keluarga atau NIK
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('nama_kepala_keluarga', 'like', "%{$search}%")
+                ->orWhere('nama_anak_lahir', 'like', "%{$search}%")
+                ->orWhere('nik', 'like', "%{$search}%");
+            });
+        }
+
+        $dataLahir = $query->paginate(10); // 10 entri per halaman
+        $statusKependudukanOptions = ['LAHIR'];
 
         return view('resident.resident-born', compact('dataLahir', 'statusKependudukanOptions'));
     }
@@ -30,7 +41,7 @@ class LahirController extends Controller
     // Show the form for creating a new Lahir entry
     public function create()
     {
-        $statusKependudukanOptions = ['LAHIR','MENETAP', 'KELUAR', 'MASUK'];
+        $statusKependudukanOptions = ['LAHIR'];
         return view('create_born', compact('statusKependudukanOptions'));
     }
 
@@ -77,7 +88,7 @@ class LahirController extends Controller
     public function edit($id)
     {
         $lahir = Lahir::findOrFail($id);
-        $statusKependudukanOptions = ['LAHIR','MENETAP', 'KELUAR', 'MASUK'];
+        $statusKependudukanOptions = ['LAHIR'];
         return view('create_born', compact('lahir', 'statusKependudukanOptions'));
     }
 

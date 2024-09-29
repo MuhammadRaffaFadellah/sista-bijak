@@ -13,33 +13,56 @@
                 </button>
             </div>
             <div class="p-4">
+                <!-- Form Filter -->
+                <form method="GET" action="{{ route('umkm') }}" class="mb-4">
+                    <div class="flex items-center">
+                        <input type="text" name="search" placeholder="Cari Nama Pemilik atau NIK" class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
+                        @if (Auth::user()->role->id === 1) <!-- Tampilkan filter RW hanya untuk admin -->
+                            <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
+                                <option value="">Semua</option>
+                                @for ($i = 1; $i <= 10; $i++)
+                                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>RW {{ $i }}</option>
+                                @endfor
+                            </select>
+                        @endif
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Cari</button>
+                        <a href="{{ route('umkm') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">Reset</a>
+                    </div>
+                </form>
+                <!-- End Form Filter -->
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white divide-y divide-gray-200 w-full">
                         <thead class="bg-gray-100">
                             <tr>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    No.
+                                    NO.
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Nama RW
+                                    NAMA RW
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
                                     RW
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Jumlah UMKM
+                                    JUMLAH UMKM
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Jenis UMKM
+                                    KATEGORI UMKM
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Nama Pemilik
+                                    JENIS UMKM
+                                </th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    NAMA PEMILIK
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
                                     NIK
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Alamat
+                                    ALAMAT
+                                </th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    AKSI
                                 </th>
                             </tr>
                         </thead>
@@ -55,12 +78,13 @@
                                             {{ $umkms->firstItem() + $index }}.</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->nama_rw }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->rw }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->kategori_umkm }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->jumlah_umkm }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->jenis_umkm }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->nama_pemilik }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->nik }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
-                                            <button class="bg-gray-500 text-white px-4 py-2 rounded"
+                                            <button class="bg-blue-500 text-white px-4 py-2 rounded"
                                                 onclick="showAddressModal('{{ $umkm->alamat }}')">
                                                 Lihat Alamat
                                             </button>
@@ -182,24 +206,50 @@
             });
             // Fungsi untuk membuat form
             function createForm(index) {
-                return `
-            <div class="card shadow-lg rounded-lg overflow-hidden mb-4">
-                <div class="bg-gray-800 text-white p-4">
-                    <h3 class="text-lg font-bold">Data UMKM ${index + 1}</h3>
-                </div>
-                <div class="p-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        ${['nama_rw', 'rw', 'jumlah_umkm', 'jenis_umkm', 'nama_pemilik', 'nik', 'alamat'].map(field => `
-                                                                            <div>
-                                                                                <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
-                                                                                <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                                                                            </div>
-                                                                        `).join('')}
+        return `
+        <div class="card shadow-lg rounded-lg overflow-hidden mb-4">
+            <div class="bg-gray-800 text-white p-4">
+                <h3 class="text-lg font-bold">Data UMKM ${index + 1}</h3>
+            </div>
+            <div class="p-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    ${['nama_rw', 'rw', 'jumlah_umkm', 'jenis_umkm', 'kategori_umkm', 'nama_pemilik', 'nik', 'alamat'].map(field => `
+                    <div>
+                    <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
+                    ${field === 'jenis_umkm' ? `
+                    <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="Industri Pengolahan">Industri Pengolahan</option>
+                        <option value="Perdagangan besar/eceran">Perdagangan besar/eceran</option>
+                        <option value="Penyedia Akomodasi & Makan Minum">Penyedia Akomodasi & Makan Minum</option>
+                        <option value="Konstruksi">Konstruksi</option>
+                        <option value="Jasa Lainnya">Jasa Lainnya</option>
+                    </select>
+                    ` : field === 'rw' ? `
+                    <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                    </select>
+                    ` : field === 'kategori_umkm' ? `
+                    <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="Mikro">Mikro (penjualan < 300 juta/tahun)</option>
+                        <option value="Kecil">Kecil (penjualan 300 juta - 2,5M/tahun)</option>
+                        <option value="Menengah">Menengah (penjualan 2,5M - 30M/tahun)</option>
+                    </select>
+                    ` : `
+                    <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                    `}
                     </div>
+                    `).join('')}
                 </div>
             </div>
+        </div>
         `;
-            }
+    }
             // Event Listener untuk tombol "Batal"
             document.getElementById('cancelButton').addEventListener('click', () => {
                 // Bersihkan isi dari formContainer
