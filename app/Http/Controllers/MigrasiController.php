@@ -6,18 +6,39 @@ use App\Models\Migrasi;
 use App\Models\AnggotaMigrasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Rw;
 
 class MigrasiController extends Controller
 {
-    public function resident_migration()
+    public function resident_migration(Request $request)
     {
         $user = Auth::user();
-        if ($user->role->id === 1) {
-            $dataMigrasi = Migrasi::paginate(10);
-        } else {
-            $dataMigrasi = Migrasi::where('rw', $user->rw_id)->paginate(10);
+        $rws = Rw::all();
+        $query = Migrasi::query();
+
+        // Pencarian berdasarkan nama atau NIK
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('jenis_migrasi', 'like', "%{$search}%")
+                    ->orWhere('nik', 'like', "%{$search}%")
+                    ->orWhere('nama_kepala_keluarga', 'like', "%{$search}%");
+            });
         }
-        return view('resident.resident-migration', compact('dataMigrasi'));
+
+        // Filter berdasarkan RW
+        if ($request->has('filter_rw') && $request->input('filter_rw') != '') {
+            $query->where('rw', $request->input('filter_rw'));
+        }
+
+        // Filter berdasarkan role user
+        if ($user->role->id !== 1) {
+            $query->where('rw', $user->rw_id);
+        }
+
+        $dataMigrasi = $query->paginate(10);
+
+        return view('resident.resident-migration', compact('dataMigrasi', 'rws'));
     }
 
     public function store(Request $request)
@@ -69,25 +90,27 @@ class MigrasiController extends Controller
     public function edit($id)
     {
         $migrasi = Migrasi::with('anggotaMigrasi')->findOrFail($id);
-        return view('create.create_migration', compact('migrasi'));
+        $rws = Rw::all();
+        return view('create.create_migration', compact('migrasi', 'rws'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            // Validasi untuk data migrasi
-            'jenis_migrasi' => 'required',
+            'jenis_migrasi' => 'required|string',
             'nama_kepala_keluarga' => 'required|string',
-            // Validasi untuk anggota
+            'nik' => 'required|numeric',
+            'rw' => 'required|numeric',
+            'rt' => 'required|numeric',
+            'jumlah_anggota_keluarga' => 'required|numeric',
             'anggota.*.nama' => 'required|string',
             'anggota.*.tempat_lahir' => 'required|string',
             'anggota.*.tanggal_lahir' => 'required|date',
-            'anggota.*.jenis_kelamin' => 'required|string',
+            'anggota.*.jenis_kelamin' => 'required|in:LAKI-LAKI,PEREMPUAN',
             'anggota.*.hubungan_dengan_kk' => 'required|string',
             'anggota.*.pendidikan' => 'required|string',
             'anggota.*.pekerjaan' => 'required|string',
         ]);
-
 
         // Temukan dan update data migrasi
         $migrasi = Migrasi::findOrFail($id);
@@ -96,17 +119,18 @@ class MigrasiController extends Controller
             'nama_kepala_keluarga',
             'nik',
             'rw',
-            'rt'
+            'rt',
+            'jumlah_anggota_keluarga'
         ]));
 
-        if ($request->has('anggota')) {
-            $this->updateAnggotaMigrasi($migrasi, $request->anggota, $id);
+        // Update anggota migrasi
+        foreach ($request->anggota as $anggota) {
+            $anggotaMigrasi = AnggotaMigrasi::findOrFail($anggota['id']);
+            $anggotaMigrasi->update($anggota);
         }
 
-        // Redirect ke tabel migrasi
-        return redirect()->route('resident-migration')->with('success', 'Data migrasi berhasil diperbarui.');
+        return redirect()->route('resident-migration')->with('success', 'Data migrasi berhasil diupdate.');
     }
-    
     private function updateAnggotaMigrasi(Migrasi $migrasi, array $anggotaData, $id)
     {
         foreach ($anggotaData as $anggota) {

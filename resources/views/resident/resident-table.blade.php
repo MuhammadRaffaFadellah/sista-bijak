@@ -19,7 +19,7 @@
                     @if (Auth::user()->role->id === 1) <!-- Tampilkan filter RW hanya untuk admin -->
                         <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
                             <option value="">Semua</option>
-                            @for ($i = 1; $i <= 10; $i++)
+                            @for ($i = 1; $i <= 7; $i++)
                                 <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>RW {{ $i }}</option>
                             @endfor
                         </select>

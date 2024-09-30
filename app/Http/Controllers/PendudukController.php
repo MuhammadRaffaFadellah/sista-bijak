@@ -8,6 +8,7 @@ use App\Imports\PendudukImport;
 use App\Models\Lahir;
 use App\Models\Meninggals;
 use App\Models\Migrasi; 
+use App\Models\AnggotaMigrasi;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,91 +30,62 @@ class PendudukController extends Controller
 
     public function dashboard()
 {
-    $user = Auth::user(); // Mendapatkan pengguna yang sedang login
-    $rw_id = $user->rw_id; // Mendapatkan rw_id dari pengguna yang sedang login
-    
-    // Cek apakah user adalah admin berdasarkan ID role
-    if ($user->role->id === 1) { // Pastikan membandingkan dengan role id untuk admin
-        $penduduks = Penduduk::paginate(10);
-        $totalPenduduk = Penduduk::whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
-        $totalLakiLaki = Penduduk::where('jenis_kelamin', 'LAKI-LAKI')
-            ->whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
-        $totalPerempuan = Penduduk::where('jenis_kelamin', 'PEREMPUAN')
-            ->whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
-        $totalLahir = Lahir::where('status_kependudukan', 'LAHIR')->count();
-        $totalLahirLakiLaki = Lahir::where('status_kependudukan', 'LAHIR')
-            ->where('jenis_kelamin', 'LAKI-LAKI')->count();
-        $totalLahirPerempuan = Lahir::where('status_kependudukan', 'LAHIR')
-            ->where('jenis_kelamin', 'PEREMPUAN')->count();
-        $totalMeninggal = Meninggals::where('status_kependudukan', 'MENINGGAL')->count();
-        $totalMeninggalLakiLaki = Meninggals::where('status_kependudukan', 'MENINGGAL')
-            ->where('jenis_kelamin', 'LAKI-LAKI')->count();
-        $totalMeninggalPerempuan = Meninggals::where('status_kependudukan', 'MENINGGAL')
-            ->where('jenis_kelamin', 'PEREMPUAN')->count();
+    // Ambil semua data yang diperlukan tanpa memerlukan login pengguna
+    $penduduks = Penduduk::paginate(10);
+    $totalPenduduk = Penduduk::whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
+    $totalLakiLaki = Penduduk::where('jenis_kelamin', 'LAKI-LAKI')
+        ->whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
+    $totalPerempuan = Penduduk::where('jenis_kelamin', 'PEREMPUAN')
+        ->whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
+    $totalLahir = Lahir::where('status_kependudukan', 'LAHIR')->count();
+    $totalLahirLakiLaki = Lahir::where('status_kependudukan', 'LAHIR')
+        ->where('jenis_kelamin', 'LAKI-LAKI')->count();
+    $totalLahirPerempuan = Lahir::where('status_kependudukan', 'LAHIR')
+        ->where('jenis_kelamin', 'PEREMPUAN')->count();
+    $totalMeninggal = Meninggals::where('status_kependudukan', 'MENINGGAL')->count();
+    $totalMeninggalLakiLaki = Meninggals::where('status_kependudukan', 'MENINGGAL')
+        ->where('jenis_kelamin', 'LAKI-LAKI')->count();
+    $totalMeninggalPerempuan = Meninggals::where('status_kependudukan', 'MENINGGAL')
+        ->where('jenis_kelamin', 'PEREMPUAN')->count();
 
-        // Mengganti jenis_kelamin dengan nama_kepala_keluarga di tabel migrasi
-        $totalMigrasiMasuk = Migrasi::where('jenis_migrasi', 'MASUK')->count();
-        $totalMigrasiMasukLakiLaki = Migrasi::where('jenis_migrasi', 'MASUK')
-            ->where('nama_kepala_keluarga', 'LIKE', '%Bapak%')->count();
-        $totalMigrasiKeluar = Migrasi::where('jenis_migrasi', 'KELUAR')->count();
-        $totalMigrasiKeluarLakiLaki = Migrasi::where('jenis_migrasi', 'KELUAR')
-            ->where('nama_kepala_keluarga', 'LIKE', '%Bapak%')->count();
-    } else {
-        // Jika pengguna adalah rw, ambil data berdasarkan rw_id
-        $penduduks = Penduduk::where('rw', $rw_id)->paginate(10);
-        $totalPenduduk = Penduduk::where('rw', $rw_id)
-            ->whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
-        $totalLakiLaki = Penduduk::where('rw', $rw_id)
-            ->where('jenis_kelamin', 'LAKI-LAKI')
-            ->whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
-        $totalPerempuan = Penduduk::where('rw', $rw_id)
-            ->where('jenis_kelamin', 'PEREMPUAN')
-            ->whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
-        $totalLahir = Lahir::where('rw', $rw_id)
-            ->where('status_kependudukan', 'LAHIR')->count();
-        $totalLahirLakiLaki = Lahir::where('rw', $rw_id)
-            ->where('status_kependudukan', 'LAHIR')
-            ->where('jenis_kelamin', 'LAKI-LAKI')->count();
-        $totalLahirPerempuan = Lahir::where('rw', $rw_id)
-            ->where('status_kependudukan', 'LAHIR')
-            ->where('jenis_kelamin', 'PEREMPUAN')->count();
-        $totalMeninggal = Meninggals::where('rw', $rw_id)
-            ->where('status_kependudukan', 'MENINGGAL')->count();
-        $totalMeninggalLakiLaki = Meninggals::where('rw', $rw_id)
-            ->where('status_kependudukan', 'MENINGGAL')
-            ->where('jenis_kelamin', 'LAKI-LAKI')->count();
-        $totalMeninggalPerempuan = Meninggals::where('rw', $rw_id)
-            ->where('status_kependudukan', 'MENINGGAL')
-            ->where('jenis_kelamin', 'PEREMPUAN')->count();
+    // Menghitung jumlah anggota keluarga yang bermigrasi
+    $totalMigrasiMasuk = AnggotaMigrasi::whereHas('migrasi', function($query) {
+        $query->where('jenis_migrasi', 'masuk');
+    })->count();
 
-        // Mengganti jenis_kelamin dengan nama_kepala_keluarga di tabel migrasi
-        $totalMigrasiMasuk = Migrasi::where('rw', $rw_id)
-            ->where('jenis_migrasi', 'MASUK')->count();
-        $totalMigrasiMasukLakiLaki = Migrasi::where('rw', $rw_id)
-            ->where('jenis_migrasi', 'MASUK')
-            ->where('nama_kepala_keluarga', 'LIKE', '%Bapak%')->count();
-        $totalMigrasiKeluar = Migrasi::where('rw', $rw_id)
-            ->where('jenis_migrasi', 'KELUAR')->count();
-        $totalMigrasiKeluarLakiLaki = Migrasi::where('rw', $rw_id)
-            ->where('jenis_migrasi', 'KELUAR')
-            ->where('nama_kepala_keluarga', 'LIKE', '%Bapak%')->count();
-    }
+    $totalMigrasiMasukLakiLaki = AnggotaMigrasi::whereHas('migrasi', function($query) {
+        $query->where('jenis_migrasi', 'masuk');
+    })->where('jenis_kelamin', 'LAKI-LAKI')->count();
+
+    $totalMigrasiKeluar = AnggotaMigrasi::whereHas('migrasi', function($query) {
+        $query->where('jenis_migrasi', 'keluar');
+    })->count();
+
+    $totalMigrasiKeluarLakiLaki = AnggotaMigrasi::whereHas('migrasi', function($query) {
+        $query->where('jenis_migrasi', 'keluar');
+    })->where('jenis_kelamin', 'LAKI-LAKI')->count();
+
+    $totalMigrasiMasukPerempuan = AnggotaMigrasi::whereHas('migrasi', function($query) {
+        $query->where('jenis_migrasi', 'masuk');
+    })->where('jenis_kelamin', 'PEREMPUAN')->count();
+
+    $totalMigrasiKeluarPerempuan = AnggotaMigrasi::whereHas('migrasi', function($query) {
+        $query->where('jenis_migrasi', 'keluar');
+    })->where('jenis_kelamin', 'PEREMPUAN')->count();
 
     $proporsiLK = $totalPenduduk > 0 ? number_format(($totalLakiLaki / $totalPenduduk) * 100, 2) : 0;
     $proporsiPR = $totalPenduduk > 0 ? number_format(($totalPerempuan / $totalPenduduk) * 100, 2) : 0;
 
-    $totalPenduduk += $totalLahir;
-    $totalLakiLaki += $totalLahirLakiLaki;
-    $totalPerempuan += $totalLahirPerempuan;
-    $totalPenduduk -= $totalMeninggal;
-    $totalLakiLaki -= $totalMeninggalLakiLaki;
-    $totalPerempuan -= $totalMeninggalPerempuan;
+    // Update total penduduk dan jenis kelamin berdasarkan migrasi
+    $totalPenduduk += $totalLahir - $totalMeninggal + $totalMigrasiMasuk - $totalMigrasiKeluar;
+    $totalLakiLaki += $totalLahirLakiLaki - $totalMeninggalLakiLaki + $totalMigrasiMasukLakiLaki - $totalMigrasiKeluarLakiLaki;
+    $totalPerempuan += $totalLahirPerempuan - $totalMeninggalPerempuan + $totalMigrasiMasukPerempuan - $totalMigrasiKeluarPerempuan;
 
     return view('dashboard', compact(
         'penduduks', 'totalPenduduk', 'totalLakiLaki', 'totalPerempuan', 'proporsiLK', 'proporsiPR',
         'totalLahir', 'totalLahirLakiLaki', 'totalLahirPerempuan',
         'totalMeninggal', 'totalMeninggalLakiLaki', 'totalMeninggalPerempuan',
-        'totalMigrasiMasuk', 'totalMigrasiKeluar'
+        'totalMigrasiMasuk', 'totalMigrasiKeluar', 'totalMigrasiMasukPerempuan', 'totalMigrasiKeluarPerempuan', 'totalMigrasiMasukLakiLaki', 'totalMigrasiKeluarLakiLaki'
     ));
 }
 
@@ -137,31 +109,46 @@ public function index()
     $totalMeninggalPerempuan = Meninggals::where('status_kependudukan', 'MENINGGAL')
         ->where('jenis_kelamin', 'PEREMPUAN')->count();
 
-    // Mengganti jenis_kelamin dengan nama_kepala_keluarga di tabel migrasi
-    $totalMigrasiMasuk = Migrasi::where('jenis_migrasi', 'MASUK')->count();
-    $totalMigrasiMasukLakiLaki = Migrasi::where('jenis_migrasi', 'MASUK')
-        ->where('nama_kepala_keluarga', 'LIKE', '%Bapak%')->count();
-    $totalMigrasiKeluar = Migrasi::where('jenis_migrasi', 'KELUAR')->count();
-    $totalMigrasiKeluarLakiLaki = Migrasi::where('jenis_migrasi', 'KELUAR')
-        ->where('nama_kepala_keluarga', 'LIKE', '%Bapak%')->count();
+    // Menghitung jumlah anggota keluarga yang bermigrasi
+    $totalMigrasiMasuk = AnggotaMigrasi::whereHas('migrasi', function($query) {
+        $query->where('jenis_migrasi', 'masuk');
+    })->count();
+
+    $totalMigrasiMasukLakiLaki = AnggotaMigrasi::whereHas('migrasi', function($query) {
+        $query->where('jenis_migrasi', 'masuk');
+    })->where('jenis_kelamin', 'LAKI-LAKI')->count();
+
+    $totalMigrasiKeluar = AnggotaMigrasi::whereHas('migrasi', function($query) {
+        $query->where('jenis_migrasi', 'keluar');
+    })->count();
+
+    $totalMigrasiKeluarLakiLaki = AnggotaMigrasi::whereHas('migrasi', function($query) {
+        $query->where('jenis_migrasi', 'keluar');
+    })->where('jenis_kelamin', 'LAKI-LAKI')->count();
+
+    $totalMigrasiMasukPerempuan = AnggotaMigrasi::whereHas('migrasi', function($query) {
+        $query->where('jenis_migrasi', 'masuk');
+    })->where('jenis_kelamin', 'PEREMPUAN')->count();
+
+    $totalMigrasiKeluarPerempuan = AnggotaMigrasi::whereHas('migrasi', function($query) {
+        $query->where('jenis_migrasi', 'keluar');
+    })->where('jenis_kelamin', 'PEREMPUAN')->count();
 
     $proporsiLK = $totalPenduduk > 0 ? number_format(($totalLakiLaki / $totalPenduduk) * 100, 2) : 0;
     $proporsiPR = $totalPenduduk > 0 ? number_format(($totalPerempuan / $totalPenduduk) * 100, 2) : 0;
 
-    $totalPenduduk += $totalLahir;
-    $totalLakiLaki += $totalLahirLakiLaki;
-    $totalPerempuan += $totalLahirPerempuan;
-    $totalPenduduk -= $totalMeninggal;
-    $totalLakiLaki -= $totalMeninggalLakiLaki;
-    $totalPerempuan -= $totalMeninggalPerempuan;
+    // Update total penduduk dan jenis kelamin berdasarkan migrasi
+    $totalPenduduk += $totalLahir - $totalMeninggal + $totalMigrasiMasuk - $totalMigrasiKeluar;
+    $totalLakiLaki += $totalLahirLakiLaki - $totalMeninggalLakiLaki + $totalMigrasiMasukLakiLaki - $totalMigrasiKeluarLakiLaki;
+    $totalPerempuan += $totalLahirPerempuan - $totalMeninggalPerempuan + $totalMigrasiMasukPerempuan - $totalMigrasiKeluarPerempuan;
 
     return view('index', compact(
         'penduduks', 'totalPenduduk', 'totalLakiLaki', 'totalPerempuan', 'proporsiLK', 'proporsiPR',
         'totalLahir', 'totalLahirLakiLaki', 'totalLahirPerempuan',
         'totalMeninggal', 'totalMeninggalLakiLaki', 'totalMeninggalPerempuan',
-        'totalMigrasiMasuk', 'totalMigrasiKeluar'
+        'totalMigrasiMasuk', 'totalMigrasiKeluar', 'totalMigrasiMasukPerempuan', 'totalMigrasiKeluarPerempuan', 'totalMigrasiMasukLakiLaki', 'totalMigrasiKeluarLakiLaki'
     ));
-    }
+}
 
     public function resident_table(Request $request)
     {

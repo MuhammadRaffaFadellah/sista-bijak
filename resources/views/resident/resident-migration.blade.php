@@ -67,6 +67,23 @@
                 </button>
             </div>
             <div class="p-4">
+                <!-- Form Filter -->
+                <form method="GET" action="{{ route('resident-migration') }}" class="mb-4">
+                <div class="flex items-center">
+                        <input type="text" name="search" placeholder="Cari Jenis Migrasi, Nama Kepala Keluarga atau NIK" class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
+                        @if (Auth::user()->role->id === 1) <!-- Tampilkan filter RW hanya untuk admin -->
+                            <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
+                                <option value="">Semua</option>
+                                @for ($i = 1; $i <= 7; $i++)
+                                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>RW {{ $i }}</option>
+                                @endfor
+                            </select>
+                        @endif
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Cari</button>
+                        <a href="{{ route('resident-died') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">Reset</a>
+                    </div>
+                </form>
+                <!-- End Form Filter -->
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white divide-y divide-gray-200 w-full">
                         <thead class="bg-gray-100">
@@ -76,9 +93,9 @@
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
                                     Jenis Migrasi</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Nama Kepala Keluarga</th>
+                                        NIK</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    NIK</th>
+                                    Nama Kepala Keluarga</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
                                     RW</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
@@ -99,10 +116,12 @@
                                     <tr class="hover:bg-gray-100 transition duration-200">
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
                                             {{ $dataMigrasi->firstItem() + $index }}.</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
+                                            <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
                                             <span
                                                 class="
-                                                    @if ($migrasi->jenis_migrasi == 'masuk')
+                                                    @if ($migrasi->status == 'menetap')
+                                                        bg-blue-500
+                                                    @elseif ($migrasi->jenis_migrasi == 'masuk')
                                                         bg-green-500 
                                                     @elseif($migrasi->jenis_migrasi == 'keluar') 
                                                         bg-red-500 
@@ -110,13 +129,12 @@
                                                         bg-gray-200 
                                                     @endif
                                                     text-white font-medium px-2 py-1 rounded-xl">
-                                                {{ $migrasi->jenis_migrasi }}
+                                                {{ $migrasi->status == 'menetap' ? 'menetap' : $migrasi->jenis_migrasi }}
                                             </span>
                                         </td>
-                                        </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->nik }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
                                             {{ $migrasi->nama_kepala_keluarga }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->nik }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->rw }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->rt }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
@@ -254,16 +272,24 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="nama_kepala_keluarga_${i}" class="block text-sm font-medium text-gray-700">Nama Kepala Keluarga</label>
-                                <input type="text" name="nama_kepala_keluarga[]" id="nama_kepala_keluarga_${i}" placeholder="Silakan masukkan nama kepala keluarga" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                            </div>
-                            <div>
                                 <label for="nik_${i}" class="block text-sm font-medium text-gray-700">NIK</label>
                                 <input type="number" maxlength="16" name="nik[]" id="nik_${i}" placeholder="Silakan masukkan NIK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                             </div>
                             <div>
+                                <label for="nama_kepala_keluarga_${i}" class="block text-sm font-medium text-gray-700">Nama Kepala Keluarga</label>
+                                <input type="text" name="nama_kepala_keluarga[]" id="nama_kepala_keluarga_${i}" placeholder="Silakan masukkan nama kepala keluarga" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                            </div>
+                            <div>
                                 <label for="rw_${i}" class="block text-sm font-medium text-gray-700">RW</label>
-                                <input type="text" name="rw[]" id="rw_${i}" placeholder="Silakan masukkan RW" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                                <select name="rw[]" id="rw_${i}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                    @if (Auth::user()->role->id === 1) <!-- Admin -->
+                            @foreach ($rws as $rw)
+                                <option value="{{ $rw->id }}">{{ $rw->rukun_warga }}</option>
+                            @endforeach
+                        @else <!-- RW -->
+                            <option value="{{ Auth::user()->rw->id }}">{{ Auth::user()->rw->rukun_warga }}</option>
+                        @endif
+                    </select>
                             </div>
                             <div>
                                 <label for="rt_${i}" class="block text-sm font-medium text-gray-700">RT</label>
@@ -418,7 +444,7 @@
         function addConfirm(event, button) {
             event.preventDefault(); // Mencegah pengiriman form secara default
             // Mengambil semua input dalam form
-            const inputs = document.querySelectorAll('input, select, textarea');
+            const inputs = document.querySelectorAll('input, select');
             let isEmpty = false;
             // Memeriksa apakah ada input yang kosong
             inputs.forEach(input => {

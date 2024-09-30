@@ -29,7 +29,7 @@
                         @method('PUT')
                     @endif
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        @foreach ([['jenis_migrasi', 'Jenis Migrasi', 'select', ['masuk' => 'Masuk', 'keluar' => 'Keluar'], $migrasi->jenis_migrasi ?? null], ['nama_kepala_keluarga', 'Nama Kepala Keluarga', 'text', '', $migrasi->nama_kepala_keluarga ?? ''], ['nik', 'NIK', 'text', '', $migrasi->nik ?? '', isset($migrasi) ? 'readonly' : ''], ['rw', 'RW', 'text', '', $migrasi->rw ?? ''], ['rt', 'RT', 'text', '', $migrasi->rt ?? '']] as $input)
+                        @foreach ([['jenis_migrasi', 'Jenis Migrasi', 'select', ['masuk' => 'Masuk', 'keluar' => 'Keluar'], $migrasi->jenis_migrasi ?? null], ['nama_kepala_keluarga', 'Nama Kepala Keluarga', 'text', '', $migrasi->nama_kepala_keluarga ?? ''], ['nik', 'NIK', 'text', '', $migrasi->nik ?? '', isset($migrasi) ? 'readonly' : ''], ['rt', 'RT', 'text', '', $migrasi->rt ?? '']] as $input)
                             <div>
                                 <label for="{{ $input[0] }}"
                                     class="block text-sm font-medium text-gray-700">{{ $input[1] }}</label>
@@ -61,6 +61,24 @@
                                 @endif
                             </div>
                         @endforeach
+                        <!-- RW Dropdown -->
+                        <div>
+                            <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
+                            <select name="rw" id="rw" required
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                @if (Auth::user()->role->id === 1) <!-- Admin -->
+                                    @foreach ($rws as $rw)
+                                        <option value="{{ $rw->id }}" {{ (isset($migrasi) && $migrasi->rw == $rw->id) ? 'selected' : '' }}>
+                                            {{ $rw->rukun_warga }}
+                                        </option>
+                                    @endforeach
+                                @else <!-- RW -->
+                                    <option value="{{ Auth::user()->rw->id }}" {{ (isset($migrasi) && $migrasi->rw == Auth::user()->rw->id) ? 'selected' : '' }}>
+                                        {{ Auth::user()->rw->rukun_warga }}
+                                    </option>
+                                @endif
+                            </select>
+                        </div>
                     </div>
                     <div class="mt-20">
                         <h4 class="text-lg font-bold mb-4">Anggota Keluarga yang Migrasi</h4>

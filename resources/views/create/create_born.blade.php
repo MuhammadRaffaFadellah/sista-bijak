@@ -47,13 +47,19 @@
                         <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
                         <select name="rw" id="rw" required
                             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                            <option value="1" {{ (isset($lahir) && $lahir->rw == '1') ? 'selected' : '' }}>1</option>
-                            <option value="2" {{ (isset($lahir) && $lahir->rw == '2') ? 'selected' : '' }}>2</option>
-                            <option value="3" {{ (isset($lahir) && $lahir->rw == '3') ? 'selected' : '' }}>3</option>
-                            <option value="4" {{ (isset($lahir) && $lahir->rw == '4') ? 'selected' : '' }}>4</option>
-                            <option value="5" {{ (isset($lahir) && $lahir->rw == '5') ? 'selected' : '' }}>5</option>
-                            <option value="6" {{ (isset($lahir) && $lahir->rw == '6') ? 'selected' : '' }}>6</option>
-                            <option value="7" {{ (isset($lahir) && $lahir->rw == '7') ? 'selected' : '' }}>7</option>
+                            @if (Auth::user()->role->id === 1) <!-- Admin -->
+                                <option value="1" {{ (isset($lahir) && $lahir->rw == '1') ? 'selected' : '' }}>1</option>
+                                <option value="2" {{ (isset($lahir) && $lahir->rw == '2') ? 'selected' : '' }}>2</option>
+                                <option value="3" {{ (isset($lahir) && $lahir->rw == '3') ? 'selected' : '' }}>3</option>
+                                <option value="4" {{ (isset($lahir) && $lahir->rw == '4') ? 'selected' : '' }}>4</option>
+                                <option value="5" {{ (isset($lahir) && $lahir->rw == '5') ? 'selected' : '' }}>5</option>
+                                <option value="6" {{ (isset($lahir) && $lahir->rw == '6') ? 'selected' : '' }}>6</option>
+                                <option value="7" {{ (isset($lahir) && $lahir->rw == '7') ? 'selected' : '' }}>7</option>
+                            @else <!-- RW -->
+                                <option value="{{ Auth::user()->rw->id }}" {{ (isset($lahir) && $lahir->rw == Auth::user()->rw->id) ? 'selected' : '' }}>
+                                    {{ Auth::user()->rw->rukun_warga }}
+                                </option>
+                            @endif
                         </select>
                     </div>
                         <div>

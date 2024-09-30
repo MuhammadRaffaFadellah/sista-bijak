@@ -88,8 +88,6 @@ class LahirController extends Controller
     public function edit($id)
     {
         $lahir = Lahir::findOrFail($id);
-        $statusKependudukanOptions = ['LAHIR','MENETAP', 'KELUAR', 'MASUK'];
-        return view('create.create_born', compact('lahir', 'statusKependudukanOptions'));
         $statusKependudukanOptions = ['LAHIR'];
         return view('create_born', compact('lahir', 'statusKependudukanOptions'));
     }
