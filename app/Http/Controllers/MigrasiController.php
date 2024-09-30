@@ -3,21 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Models\Migrasi;
+use App\Models\rw;
 use App\Models\AnggotaMigrasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class MigrasiController extends Controller
 {
-    public function resident_migration()
+    public function resident_migration(Request $request)
     {
         $user = Auth::user();
-        if ($user->role->id === 1) {
-            $dataMigrasi = Migrasi::paginate(10);
-        } else {
-            $dataMigrasi = Migrasi::where('rw', $user->rw_id)->paginate(10);
+        $rws = Rw::all();
+        $query = Migrasi::query();
+        // Pencarian berdasarkan nama atau NIK
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('jenis_migrasi', 'like', "%{$search}%")
+                    ->orWhere('nik', 'like', "%{$search}%")
+                    ->orWhere('nama_kepala_keluarga', 'like', "%{$search}%");
+            });
         }
-        return view('resident.resident-migration', compact('dataMigrasi'));
+        // Filter berdasarkan RW
+        if ($request->has('filter_rw') && $request->input('filter_rw') != '') {
+            $query->where('rw', $request->input('filter_rw'));
+        }
+        // Filter berdasarkan role user
+        if ($user->role->id !== 1) {
+            $query->where('rw', $user->rw_id);
+        }
+        $dataMigrasi = $query->paginate(10);
+        return view('resident.resident-migration', compact('dataMigrasi', 'rws'));
     }
 
     public function store(Request $request)
@@ -32,7 +48,7 @@ class MigrasiController extends Controller
             'jumlah_anggota_keluarga.*' => 'required|integer|min:1',
             // Tambahkan validasi untuk anggota jika diperlukan
         ]);
-
+        
         // Simpan data ke database
         foreach ($request->input('jenis_migrasi') as $index => $jenis_migrasi) {
             // Simpan setiap record migrasi
