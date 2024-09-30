@@ -102,11 +102,13 @@
                                         <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
                                             <span
                                                 class="
-                                                    @if ($migrasi->jenis_migrasi == 'masuk') bg-green-500 
+                                                    @if ($migrasi->jenis_migrasi == 'masuk')
+                                                        bg-green-500 
                                                     @elseif($migrasi->jenis_migrasi == 'keluar') 
                                                         bg-red-500 
                                                     @else 
-                                                        bg-gray-200 @endif
+                                                        bg-gray-200 
+                                                    @endif
                                                     text-white font-medium px-2 py-1 rounded-xl">
                                                 {{ $migrasi->jenis_migrasi }}
                                             </span>

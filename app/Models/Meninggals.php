@@ -23,6 +23,7 @@ class Meninggals extends Model
         'tempat_meninggal',
         'tanggal_meninggal',
         'jenis_kelamin',
+        'status_kependudukan',
     ];
 
     public function rw()

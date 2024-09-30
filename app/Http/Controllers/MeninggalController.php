@@ -8,21 +8,38 @@ use Illuminate\Support\Facades\Auth;
 
 class MeninggalController extends Controller
 {
-    public function resident_died()
-    {
-        $user = Auth::user(); // Mendapatkan pengguna yang sedang login
+    public function resident_died(Request $request)
+{
+    $user = Auth::user(); // Mendapatkan pengguna yang sedang login
 
-        // Cek apakah user adalah admin berdasarkan ID role
-        if ($user->role->id === 1) { // pastikan membandingkan dengan id, bukan role_id
-            // Jika admin, ambil semua data meninggal
-            $dataMeninggal = Meninggals::paginate(10); // 10 entri per halaman
-        } else {
-            // Jika bukan admin, ambil data meninggal sesuai RW pengguna
-            $dataMeninggal = Meninggals::where('rw', $user->rw_id)->paginate(10);
-        }
-
-        return view('resident.resident-died', compact('dataMeninggal'));
+    // Cek apakah user adalah admin berdasarkan ID role
+    if ($user->role->id === 1) { // pastikan membandingkan dengan id, bukan role_id
+        // Jika admin, ambil semua data meninggal
+        $dataMeninggal = Meninggals::query(); // Inisialisasi query
+    } else {
+        // Jika bukan admin, ambil data meninggal sesuai RW pengguna
+        $dataMeninggal = Meninggals::where('rw', $user->rw_id);
     }
+
+    // Pencarian berdasarkan nama atau NIK
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $dataMeninggal->where(function($q) use ($search) {
+            $q->where('nama_almarhum', 'like', "%{$search}%")
+            ->orWhere('nama_kepala_keluarga', 'like', "%{$search}%")
+            ->orWhere('nik', 'like', "%{$search}%");
+        });
+    }
+
+    // Filter berdasarkan RW
+    if ($request->has('filter_rw') && $request->input('filter_rw') != '') {
+        $dataMeninggal->where('rw', $request->input('filter_rw'));
+    }
+
+    $dataMeninggal = $dataMeninggal->paginate(10);
+
+    return view('resident.resident-died', compact('dataMeninggal'));
+}
 
     public function index()
     {
@@ -45,6 +62,7 @@ class MeninggalController extends Controller
             'tempat_meninggal.*' => 'required|string',
             'tanggal_meninggal.*' => 'required|date',
             'jenis_kelamin.*' => 'required|string',
+            'status_kependudukan.*' => 'required|string',
         ]);
 
         // Iterasi setiap item data untuk dimasukkan satu per satu
@@ -62,6 +80,7 @@ class MeninggalController extends Controller
                 'tempat_meninggal' => $request->tempat_meninggal[$index],
                 'tanggal_meninggal' => $request->tanggal_meninggal[$index],
                 'jenis_kelamin' => $request->jenis_kelamin[$index],
+                'status_kependudukan' => $request->status_kependudukan[$index],
             ]);
         }
 
@@ -89,6 +108,7 @@ class MeninggalController extends Controller
             'tempat_meninggal' => 'required|string',
             'tanggal_meninggal' => 'required|date',
             'jenis_kelamin' => 'required|string',
+            'status_kependudukan' => 'required|string',
         ]);
     
         $meninggal = Meninggals::findOrFail($id);

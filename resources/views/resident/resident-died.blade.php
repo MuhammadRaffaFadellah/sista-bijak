@@ -69,11 +69,28 @@
                 </button>
             </div>
             <div class="p-4">
+                <!-- Form Filter -->
+                <form method="GET" action="{{ route('resident-died') }}" class="mb-4">
+                <div class="flex items-center">
+                        <input type="text" name="search" placeholder="Cari Nama Kepala Keluarga, Nama Almarhum/Almarhumah atau NIK" class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
+                        @if (Auth::user()->role->id === 1) <!-- Tampilkan filter RW hanya untuk admin -->
+                            <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
+                                <option value="">Semua</option>
+                                @for ($i = 1; $i <= 10; $i++)
+                                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>RW {{ $i }}</option>
+                                @endfor
+                            </select>
+                        @endif
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Cari</button>
+                        <a href="{{ route('resident-died') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">Reset</a>
+                    </div>
+                </form>
+                <!-- End Form Filter -->
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white divide-y divide-gray-200 w-full">
                         <thead class="bg-gray-100">
                             <tr>
-                                @foreach (['No', 'Nama Kepala Keluarga', 'Nomer NIK', 'Alamat', 'RW', 'RT', 'Nama Almarhum/Almarhumah', 'Hubungan dengan KK', 'Tempat Lahir', 'Tanggal Lahir', 'Tempat Meninggal', 'Tanggal Meninggal', 'Jenis Kelamin', 'Aksi'] as $header)
+                                @foreach (['No', 'Nama Kepala Keluarga', 'Nomer NIK', 'Alamat', 'RW', 'RT', 'Nama Almarhum/Almarhumah', 'Hubungan dengan KK', 'Tempat Lahir', 'Tanggal Lahir', 'Tempat Meninggal', 'Tanggal Meninggal', 'Jenis Kelamin', 'Status Kependudukan', 'Aksi'] as $header)
                                     <th
                                         class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
                                         {{ $header }}</th>
@@ -83,7 +100,7 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @if ($dataMeninggal->isEmpty())
                                 <tr>
-                                    <td colspan="14" class="text-center px-4 py-2 font-bold">TIDAK ADA DATA</td>
+                                    <td colspan="15" class="text-center px-4 py-2 font-bold">TIDAK ADA DATA</td>
                                 </tr>
                             @else
                                 @foreach ($dataMeninggal as $index => $meninggal)
@@ -116,8 +133,10 @@
                                             {{ $meninggal->tanggal_meninggal }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $meninggal->jenis_kelamin }}
                                         </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $meninggal->status_kependudukan }}
+                                        </td>
                                         <td class="px-4 py-2 whitespace-nowrap flex space-x-2">
-                                            <a href="{{ route('meninggal.edit', $meninggal->id) }}"
+                                            <a href="{{ route('meninggal.edit', $meninggal->id) }}" title="Edit data"
                                                 class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded">
                                                 <i class="fas fa-edit"></i>
                                             </a>
@@ -125,7 +144,7 @@
                                                 class="inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" onclick="deleteConfirm(event, this)"
+                                                <button type="submit" onclick="deleteConfirm(event, this)" title="Hapus data"
                                                     class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -164,9 +183,9 @@
             <div id="formContainer" class="mt-6"></div>
             <div id="formActions" class="mt-6 justify-between flex hidden">
                 <button id="cancelButton" type="button"
-                    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Batal</button>
+                    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Batal</button>
                 <button id="saveAllButton" type="submit" onclick="addConfirm(event)"
-                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Simpan Semua</button>
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Simpan Semua</button>
             </div>
         </form>
         @include('sweetalert')
@@ -241,11 +260,23 @@
                 <div class="p-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         ${['nama_kepala_keluarga', 'nik', 'alamat', 'rw', 'rt', 'nama_almarhum', 'hubungan_dengan_kk', 'tempat_lahir', 'tanggal_lahir', 'tempat_meninggal', 'tanggal_meninggal'].map(field => `
-                                                                            <div>
-                                                                                <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
-                                                                                <input type="${field === 'tanggal_lahir' || field === 'tanggal_meninggal' ? 'date' : 'text'}" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                                                                            </div>
-                                                                        `).join('')}
+                            <div>
+                                <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
+                                ${field === 'rw' ? `
+                                <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                </select>
+                                ` : `
+                                <input type="${field === 'tanggal_lahir' || field === 'tanggal_meninggal' ? 'date' : 'text'}" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                                `}
+                            </div>
+                        `).join('')}
                         <div>
                             <label for="jenis_kelamin_${index}" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
                             <select name="jenis_kelamin[]" id="jenis_kelamin_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
@@ -253,11 +284,17 @@
                                 <option value="PEREMPUAN">PEREMPUAN</option>
                             </select>
                         </div>
+                        <div>
+                            <label for="status_kependudukan_${index}" class="block text-sm font-medium text-gray-700">Status Kependudukan</label>
+                            <select name="status_kependudukan[]" id="status_kependudukan_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                <option value="MENINGGAL">MENINGGAL</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
-        `;
-            }
+            `;
+        }
             // Event Listener untuk tombol "Batal"
             document.getElementById('cancelButton').addEventListener('click', () => {
                 // Bersihkan isi dari formContainer
@@ -285,7 +322,7 @@
                         `rw_${index}`, `rt_${index}`, `nama_almarhum_${index}`,
                         `hubungan_dengan_kk_${index}`, `tempat_lahir_${index}`,
                         `tanggal_lahir_${index}`, `tempat_meninggal_${index}`,
-                        `jenis_kelamin_${index}`
+                        `jenis_kelamin_${index}`, `status_kependudukan_${index}`
                     ];
                     // Check if all fields in the current form are filled
                     const filled = requiredFields.every(fieldId => {

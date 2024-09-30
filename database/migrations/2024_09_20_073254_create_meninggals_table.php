@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('tempat_meninggal');
             $table->date('tanggal_meninggal');
             $table->string('jenis_kelamin');
+            $table->string('status_kependudukan'); 
             $table->timestamps();
 
             $table->foreign('rw')->references('id')->on('rw')->onDelete('cascade');

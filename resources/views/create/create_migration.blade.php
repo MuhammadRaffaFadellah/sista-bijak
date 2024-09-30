@@ -133,9 +133,9 @@
         <div class="form-anggota grid grid-cols-1 md:grid-cols-2 gap-6 mb-4" id="form-anggota-${index}">
             <input type="hidden" name="anggota[${index}][id]" />
             ${['nama', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'hubungan_dengan_kk', 'pendidikan', 'pekerjaan'].map((field) => `
-                        <div>
-                            <label for="anggota[${index}][${field}]" class="block text-sm font-medium text-gray-700">${field.replace('_', ' ').toUpperCase()}</label>
-                            ${field === 'jenis_kelamin' ? `
+                            <div>
+                                <label for="anggota[${index}][${field}]" class="block text-sm font-medium text-gray-700">${field.replace('_', ' ').toUpperCase()}</label>
+                                ${field === 'jenis_kelamin' ? `
                         <select name="anggota[${index}][${field}]" id="anggota[${index}][${field}]" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
                             <option value="LAKI-LAKI">LAKI-LAKI</option>
                             <option value="PEREMPUAN">PEREMPUAN</option>
@@ -143,8 +143,8 @@
                     ` : `
                         <input type="${field === 'tanggal_lahir' ? 'date' : 'text'}" name="anggota[${index}][${field}]" id="anggota[${index}][${field}]" placeholder="Silakan masukkan ${field.replace('_', ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                     `}
-                        </div>
-                    `).join('')}
+                            </div>
+                        `).join('')}
         </div>
     `;
 

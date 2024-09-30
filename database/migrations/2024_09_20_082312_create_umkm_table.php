@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("nama_rw");
             $table->unsignedBigInteger("rw");
             $table->string("jumlah_umkm");
+            $table->string("kategori_umkm");
             $table->string("jenis_umkm");
             $table->string("nama_pemilik");
             $table->string("nik");

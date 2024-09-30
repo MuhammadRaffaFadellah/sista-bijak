@@ -44,9 +44,18 @@
                             <input type="text" name="alamat" id="alamat" placeholder="Silakan masukkan alamat" value="{{ $lahir->alamat ?? '' }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
                         <div>
-                            <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
-                            <input type="text" name="rw" id="rw" placeholder="Silakan masukkan RW" value="{{ $lahir->rw ?? '' }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                        </div>
+                        <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
+                        <select name="rw" id="rw" required
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                            <option value="1" {{ (isset($lahir) && $lahir->rw == '1') ? 'selected' : '' }}>1</option>
+                            <option value="2" {{ (isset($lahir) && $lahir->rw == '2') ? 'selected' : '' }}>2</option>
+                            <option value="3" {{ (isset($lahir) && $lahir->rw == '3') ? 'selected' : '' }}>3</option>
+                            <option value="4" {{ (isset($lahir) && $lahir->rw == '4') ? 'selected' : '' }}>4</option>
+                            <option value="5" {{ (isset($lahir) && $lahir->rw == '5') ? 'selected' : '' }}>5</option>
+                            <option value="6" {{ (isset($lahir) && $lahir->rw == '6') ? 'selected' : '' }}>6</option>
+                            <option value="7" {{ (isset($lahir) && $lahir->rw == '7') ? 'selected' : '' }}>7</option>
+                        </select>
+                    </div>
                         <div>
                             <label for="rt" class="block text-sm font-medium text-gray-700">RT</label>
                             <input type="text" name="rt" id="rt" placeholder="Silakan masukkan RT" value="{{ $lahir->rt ?? '' }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
@@ -88,8 +97,8 @@
                         </div>
                     </div>
                     <div class="mt-4 flex justify-between">
-                        <a href="{{ route('resident-born') }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Kembali</a>
-                        <button type="submit" onclick="editConfirm(event)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        <a href="{{ route('resident-born') }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Kembali</a>
+                        <button type="submit" onclick="editConfirm(event)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ">
                             @if(isset($lahir))
                                 Update Data
                             @else
