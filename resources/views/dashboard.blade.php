@@ -111,7 +111,7 @@
                     </div>
                     <div class="mx-5">
                         <h4 class="text-2xl font-semibold text-gray-700">{{ $totalUmkm }}</h4>
-                        <div class="text-gray-500">Jumlah Total UMKM</div>
+                        <div class="text-gray-500">Jumlah UMKM</div>
                     </div>
                 </div>
             </div>

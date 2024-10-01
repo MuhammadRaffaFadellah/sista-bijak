@@ -47,10 +47,10 @@
                                     RW
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    JUMLAH UMKM
+                                    KATEGORI UMKM
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    KATEGORI UMKM
+                                    JUMLAH UMKM
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
                                     JENIS UMKM
