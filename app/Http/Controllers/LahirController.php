@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Lahir;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Rw;
 class LahirController extends Controller
 {
     // Display the list of Lahir entries
     public function resident_born(Request $request)
     {
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
+        $rws = Rw::all();
 
         // Cek apakah user adalah admin berdasarkan ID role
         if ($user->role->id === 1) { // pastikan membandingkan dengan id, bukan role_id
@@ -35,7 +36,7 @@ class LahirController extends Controller
         $dataLahir = $query->paginate(10); // 10 entri per halaman
         $statusKependudukanOptions = ['LAHIR'];
 
-        return view('resident.resident-born', compact('dataLahir', 'statusKependudukanOptions'));
+        return view('resident.resident-born', compact('dataLahir', 'statusKependudukanOptions', 'rws'));
     }
 
     // Show the form for creating a new Lahir entry
@@ -62,7 +63,6 @@ class LahirController extends Controller
             'jenis_kelamin.*' => 'required',
             'status_kependudukan.*' => 'required',
         ]);
-
         $data = $request->all();
         foreach ($data['nik'] as $index => $nik) {
             Lahir::create([
@@ -88,10 +88,8 @@ class LahirController extends Controller
     public function edit($id)
     {
         $lahir = Lahir::findOrFail($id);
-        $statusKependudukanOptions = ['LAHIR','MENETAP', 'KELUAR', 'MASUK'];
-        return view('create.create_born', compact('lahir', 'statusKependudukanOptions'));
         $statusKependudukanOptions = ['LAHIR'];
-        return view('create_born', compact('lahir', 'statusKependudukanOptions'));
+        return view('create.create_born', compact('lahir', 'statusKependudukanOptions'));
     }
 
     // Update the specified Lahir entry in storage

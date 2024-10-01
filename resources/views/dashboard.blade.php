@@ -86,6 +86,7 @@
                 </div>
             </div>
         </div>
+        
     </div>
 </div>
 
@@ -99,6 +100,85 @@
                 <div class="mx-5">
                     <h4 class="text-2xl font-semibold text-gray-700">{{ $totalMigrasiKeluar }}</h4>
                     <div class="text-gray-500">Total Migrasi Keluar</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full mt-6 px-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
+                <div class="flex items-center px-5 py-6 shadow-sm rounded-md bg-white">
+                    <div class="flex items-center justify-center p-3 rounded-full bg-pink-600 bg-opacity-75 h-16 w-16">
+                        <i class="fas fa-store text-white text-3xl"></i>
+                    </div>
+                    <div class="mx-5">
+                        <h4 class="text-2xl font-semibold text-gray-700">{{ $totalUmkm }}</h4>
+                        <div class="text-gray-500">Jumlah Total UMKM</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full mt-6 px-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
+                <div class="flex items-center px-5 py-6 shadow-sm rounded-md bg-white">
+                    <div class="flex items-center justify-center p-3 rounded-full bg-red-900 bg-opacity-75 h-16 w-16">
+                        <i class="fas fa-warehouse  text-white text-3xl"></i>
+                    </div>
+                    <div class="mx-5">
+                        <h4 class="text-2xl font-semibold text-gray-700">{{ $totalUmkmIndustri }}</h4>
+                        <div class="text-gray-500">Total UMKM Industri</div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <div class="flex flex-wrap -mx-6">
+            <div class="w-full mt-6 px-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
+                <div class="flex items-center px-5 py-6 shadow-sm rounded-md bg-white">
+                    <div class="flex items-center justify-center p-3 rounded-full bg-purple-900 bg-opacity-75 h-16 w-16">
+                        <i class="fas fa-hotel text-white text-3xl"></i>
+                    </div>
+                    <div class="mx-5">
+                        <h4 class="text-2xl font-semibold text-gray-700">{{ $totalUmkmPenyediaAkomodasi }}</h4>
+                        <div class="text-gray-500">Total UMKM Penyedia Akomodasi</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full mt-6 px-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
+                <div class="flex items-center px-5 py-6 shadow-sm rounded-md bg-white">
+                    <div class="flex items-center justify-center p-3 rounded-full bg-green-900 bg-opacity-75 h-16 w-16">
+                        <i class="fas fa-shopping-cart text-white text-3xl"></i>
+                    </div>
+                    <div class="mx-5">
+                        <h4 class="text-2xl font-semibold text-gray-700">{{ $totalUmkmPerdagangan }}</h4>
+                        <div class="text-gray-500">Total UMKM Perdagangan</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full mt-6 px-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
+                <div class="flex items-center px-5 py-6 shadow-sm rounded-md bg-white">
+                    <div class="flex items-center justify-center p-3 rounded-full bg-yellow-900 bg-opacity-75 h-16 w-16">
+                        <i class="fas fa-hard-hat text-white text-3xl"></i>
+                    </div>
+                    <div class="mx-5">
+                        <h4 class="text-2xl font-semibold text-gray-700">{{ $totalUmkmKonstruksi }}</h4>
+                        <div class="text-gray-500">Total UMKM Konstruksi</div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <div class="flex flex-wrap -mx-6">
+        <div class="w-full mt-6 px-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
+            <div class="flex items-center px-5 py-6 shadow-sm rounded-md bg-white">
+                <div class="flex items-center justify-center p-3 rounded-full bg-gray-600 bg-opacity-75 h-16 w-16">
+                    <i class="fas fa-list text-white text-3xl"></i>
+                </div>
+                <div class="mx-5">
+                    <h4 class="text-2xl font-semibold text-gray-700">{{ $totalUmkmJasaLainnya }}</h4>
+                    <div class="text-gray-500">Total UMKM Jasa Lainnya</div>
                 </div>
             </div>
         </div>

@@ -89,9 +89,8 @@
                             <!-- Tampilkan filter RW hanya untuk admin -->
                             <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
                                 <option value="">Semua</option>
-                                @for ($i = 1; $i <= 10; $i++)
-                                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>
-                                        RW {{ $i }}</option>
+                                @for ($i = 1; $i <= 7; $i++)
+                                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>RW {{ $i }}</option>
                                 @endfor
                             </select>
                         @endif
@@ -110,7 +109,7 @@
                     <table class="min-w-full bg-white divide-y divide-gray-200 w-full">
                         <thead class="bg-gray-100">
                             <tr>
-                                @foreach (['No', 'Nama Kepala Keluarga', 'Nomer NIK', 'Alamat', 'RW', 'RT', 'Nama Almarhum/Almarhumah', 'Hubungan dengan KK', 'Tempat Lahir', 'Tanggal Lahir', 'Tempat Meninggal', 'Tanggal Meninggal', 'Jenis Kelamin', 'Status Kependudukan', 'Aksi'] as $header)
+                                @foreach (['No', 'NIK', 'Nama Kepala Keluarga', 'Alamat', 'RW', 'RT', 'Nama Almarhum/Almarhumah', 'Hubungan dengan KK', 'Tempat Lahir', 'Tanggal Lahir', 'Tempat Meninggal', 'Tanggal Meninggal', 'Jenis Kelamin', 'Status Kependudukan', 'Aksi'] as $header)
                                     <th
                                         class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
                                         {{ $header }}</th>
@@ -128,9 +127,9 @@
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
                                             {{ $dataMeninggal->firstItem() + $index }}.
                                         </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $meninggal->nik }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
                                             {{ $meninggal->nama_kepala_keluarga }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $meninggal->nik }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap">
                                             <button class="bg-blue-500 text-white px-4 py-2 rounded"
                                                 onclick="showAddressModal('{{ $meninggal->alamat }}')">
@@ -282,18 +281,18 @@
                 </div>
                 <div class="p-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        ${['nama_kepala_keluarga', 'nik', 'alamat', 'rw', 'rt', 'nama_almarhum', 'hubungan_dengan_kk', 'tempat_lahir', 'tanggal_lahir', 'tempat_meninggal', 'tanggal_meninggal'].map(field => `
-                                    <div>
-                                        <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
-                                        ${field === 'rw' ? `
+                        ${['nik', 'nama_kepala_keluarga', 'alamat', 'rw', 'rt', 'nama_almarhum', 'hubungan_dengan_kk', 'tempat_lahir', 'tanggal_lahir', 'tempat_meninggal', 'tanggal_meninggal'].map(field => `
+                            <div>
+                                <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
+                                ${field === 'rw' ? `
                                 <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
+                                    @if (Auth::user()->role->id === 1) <!-- Admin -->
+                                        @foreach ($rws as $rw)
+                                            <option value="{{ $rw->id }}">{{ $rw->rukun_warga }}</option>
+                                        @endforeach
+                                    @else <!-- RW -->
+                                        <option value="{{ Auth::user()->rw->id }}">{{ Auth::user()->rw->rukun_warga }}</option>
+                                    @endif
                                 </select>
                                 ` : `
                                 <input type="${field === 'tanggal_lahir' || field === 'tanggal_meninggal' ? 'date' : 'text'}" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />

@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Meninggals;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Rw;
 
 class MeninggalController extends Controller
 {
     public function resident_died(Request $request)
 {
     $user = Auth::user(); // Mendapatkan pengguna yang sedang login
+    $rws = Rw::all();
 
     // Cek apakah user adalah admin berdasarkan ID role
     if ($user->role->id === 1) { // pastikan membandingkan dengan id, bukan role_id
@@ -38,7 +40,7 @@ class MeninggalController extends Controller
 
     $dataMeninggal = $dataMeninggal->paginate(10);
 
-    return view('resident.resident-died', compact('dataMeninggal'));
+    return view('resident.resident-died', compact('dataMeninggal', 'rws'));
 }
 
     public function index()

@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Umkm;
-use App\Models\rw;
+use App\Models\Rw;
+
 
 
 class UmkmController extends Controller
@@ -13,7 +14,7 @@ class UmkmController extends Controller
     public function umkm_table(Request $request)
     {
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
-
+        $rws = Rw::all();
         // Cek apakah user adalah admin berdasarkan ID role
         if ($user->role->id === 1) { // pastikan membandingkan dengan id, bukan role_id
             // Jika admin, ambil semua UMKM
@@ -38,7 +39,7 @@ class UmkmController extends Controller
         }
 
         $umkms = $umkms->paginate(10);
-        return view("umkm.umkm-table", compact('umkms'));
+        return view("umkm.umkm-table", compact('umkms', 'rws'));
     }
 //     public function create()
 // {
@@ -48,7 +49,7 @@ class UmkmController extends Controller
 public function edit($id)
 {
     $umkm = Umkm::findOrFail($id);
-    return view('create_umkm', compact('umkm'));
+    return view('create.create_umkm', compact('umkm'));
 }
 
 public function store(Request $request)

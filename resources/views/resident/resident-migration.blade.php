@@ -7,29 +7,24 @@
         .addFadeIn {
             animation: fadeIn 0.2s forwards;
         }
-
         .addFadeOut {
             animation: fadeOut 0.2s forwards;
         }
-
         @keyframes fadeIn {
             from {
                 opacity: 0;
                 visibility: visible;
             }
-
             to {
                 opacity: 1;
                 visibility: visible;
             }
         }
-
         @keyframes fadeOut {
             from {
                 opacity: 1;
                 visibility: visible;
             }
-
             to {
                 opacity: 0;
                 visibility: hidden;
@@ -141,7 +136,8 @@
                                                     @elseif($migrasi->jenis_migrasi == 'keluar') 
                                                         bg-red-500 
                                                     @else 
-                                                        bg-gray-200 @endif
+                                                        bg-gray-200 
+                                                    @endif
                                                     text-white font-medium px-2 py-1 rounded-xl">
                                                 {{ $migrasi->jenis_migrasi }}
                                             </span>
@@ -231,6 +227,19 @@
             </div>
         </div>
     </div>
+    <!-- Modal Lihat Anggota -->
+    <div id="showModal"
+        class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50 transition-opacity modal-enter">
+        <div class="bg-white p-6 rounded-lg shadow-lg relative w-1/2 max-h-screen overflow-y-auto addFadeIn">
+            <button id="closeModalShowButton" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-lg font-bold mb-4">Data Anggota Keluarga Migrasi</h2>
+            <div id="modalContent" class="max-h-[70vh] overflow-y-auto">
+                <!-- Data anggota keluarga migrasi akan ditampilkan di sini -->
+            </div>
+        </div>
+    </div>
 
     @include('sweetalert')
     <script>
@@ -249,7 +258,17 @@
                     overlay.classList.add('hidden'); // Sembunyikan overlay setelah animasi
                 }, 200); // Sesuaikan durasi ini dengan durasi animasi di CSS (0.2s)
             }
+                // Setelah animasi selesai, sembunyikan modal dan overlay
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    overlay.classList.add('hidden'); // Sembunyikan overlay setelah animasi
+                }, 200); // Sesuaikan durasi ini dengan durasi animasi di CSS (0.2s)
+            }
 
+            // Event listener untuk tombol tambah data
+            document.getElementById('addDataButton').addEventListener('click', function() {
+                const modal = document.getElementById('AddDataModal');
+                const overlay = document.getElementById('modalOverlay');
             // Event listener untuk tombol tambah data
             document.getElementById('addDataButton').addEventListener('click', function() {
                 const modal = document.getElementById('AddDataModal');
@@ -261,7 +280,15 @@
                 modal.classList.remove('hidden', 'addFadeOut');
                 modal.classList.add('addFadeIn');
             });
+                // Tampilkan modal dan overlay dengan animasi
+                overlay.classList.remove('hidden');
+                overlay.classList.add('show');
+                modal.classList.remove('hidden', 'addFadeOut');
+                modal.classList.add('addFadeIn');
+            });
 
+            // Event listener untuk tombol tutup modal
+            document.getElementById('closeModalButton').addEventListener('click', closeModal);
             // Event listener untuk tombol tutup modal
             document.getElementById('closeModalButton').addEventListener('click', closeModal);
 
@@ -270,7 +297,15 @@
                 const dataCount = document.getElementById('dataCount').value;
                 const formContainer = document.getElementById('formContainer');
                 formContainer.innerHTML = ''; // Hapus form sebelumnya
+            // Event listener untuk tombol buat form
+            document.getElementById('generateFormButton').addEventListener('click', function() {
+                const dataCount = document.getElementById('dataCount').value;
+                const formContainer = document.getElementById('formContainer');
+                formContainer.innerHTML = ''; // Hapus form sebelumnya
 
+                // Buat form dinamis
+                for (let i = 0; i < dataCount; i++) {
+                    const form = `
                 // Buat form dinamis
                 for (let i = 0; i < dataCount; i++) {
                     const form = `
@@ -297,7 +332,15 @@
                             </div>
                             <div>
                                 <label for="rw_${i}" class="block text-sm font-medium text-gray-700">RW</label>
-                                <input type="text" name="rw[]" id="rw_${i}" placeholder="Silakan masukkan RW" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                                <select name="rw[]" id="rw_${i}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                    @if (Auth::user()->role->id === 1) <!-- Admin -->
+                            @foreach ($rws as $rw)
+                                <option value="{{ $rw->id }}">{{ $rw->rukun_warga }}</option>
+                            @endforeach
+                        @else <!-- RW -->
+                            <option value="{{ Auth::user()->rw->id }}">{{ Auth::user()->rw->rukun_warga }}</option>
+                        @endif
+                    </select>
                             </div>
                             <div>
                                 <label for="rt_${i}" class="block text-sm font-medium text-gray-700">RT</label>
@@ -316,7 +359,12 @@
             `;
                     formContainer.insertAdjacentHTML('beforeend', form);
                 }
+                    formContainer.insertAdjacentHTML('beforeend', form);
+                }
 
+                // Sembunyikan modal
+                closeModal();
+            });
                 // Sembunyikan modal
                 closeModal();
             });
@@ -328,7 +376,16 @@
                     const anggotaCount = e.target.value;
                     const anggotaContainer = document.getElementById(`anggotaContainer_${i}`);
                     anggotaContainer.innerHTML = ''; // Hapus form anggota sebelumnya
+            // Delegasi event listener untuk input jumlah anggota keluarga
+            document.addEventListener('input', function(e) {
+                if (e.target && e.target.matches('[id^="jumlah_anggota_keluarga_"]')) {
+                    const i = e.target.id.split('_').pop();
+                    const anggotaCount = e.target.value;
+                    const anggotaContainer = document.getElementById(`anggotaContainer_${i}`);
+                    anggotaContainer.innerHTML = ''; // Hapus form anggota sebelumnya
 
+                    for (let j = 0; j < anggotaCount; j++) {
+                        const anggotaForm = `
                     for (let j = 0; j < anggotaCount; j++) {
                         const anggotaForm = `
                     <div class="card shadow-lg rounded-lg overflow-hidden mb-4">
@@ -376,7 +433,18 @@
                     }
                 }
             });
+                        anggotaContainer.insertAdjacentHTML('beforeend', anggotaForm);
+                    }
+                }
+            });
 
+            // Event listener untuk tombol Batal
+            document.getElementById('cancelButton').addEventListener('click', function() {
+                document.getElementById('formContainer').innerHTML = ''; // Hapus form yang di-generate
+                document.getElementById('formActions').classList.add(
+                    'hidden'); // Sembunyikan tombol simpan dan batal
+            });
+        });
             // Event listener untuk tombol Batal
             document.getElementById('cancelButton').addEventListener('click', function() {
                 document.getElementById('formContainer').innerHTML = ''; // Hapus form yang di-generate
@@ -392,13 +460,40 @@
             var familyMemberModal = document.getElementById('familyMemberModal');
             var closeFamilyModalButtons = document.querySelectorAll('.close-family-modal');
             var familyMemberTableBody = document.getElementById('familyMemberTableBody');
+        // Lihat Anggota Keluarga 
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menggunakan ID dan kelas baru
+            var showFamilyMemberButtons = document.querySelectorAll('.show-family-member');
+            var familyMemberModal = document.getElementById('familyMemberModal');
+            var closeFamilyModalButtons = document.querySelectorAll('.close-family-modal');
+            var familyMemberTableBody = document.getElementById('familyMemberTableBody');
 
             showFamilyMemberButtons.forEach(function(button) {
                 button.addEventListener('click', function() {
                     var migrasiId = this.getAttribute('data-id');
                     console.log('Tombol untuk melihat anggota diklik, ID: ',
                         migrasiId); // Debug log
+            showFamilyMemberButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var migrasiId = this.getAttribute('data-id');
+                    console.log('Tombol untuk melihat anggota diklik, ID: ',
+                        migrasiId); // Debug log
 
+                    fetch(`/resident-migration/${migrasiId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok ' + response
+                                    .statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log(data); // Cek data yang diterima
+                            familyMemberTableBody.innerHTML = '';
+                            // Pastikan data.anggota_migrasi ada
+                            if (data.anggota_migrasi) {
+                                data.anggota_migrasi.forEach(function(anggota) {
+                                    var row = `
                     fetch(`/resident-migration/${migrasiId}`)
                         .then(response => {
                             if (!response.ok) {
@@ -434,13 +529,34 @@
                         .catch(error => console.error('Error:', error));
                 });
             });
+                                    familyMemberTableBody.innerHTML += row;
+                                });
+                            } else {
+                                console.error('Data anggota migrasi tidak ditemukan');
+                            }
+                            familyMemberModal.classList.remove('hidden'); // Tampilkan modal
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
 
             closeFamilyModalButtons.forEach(function(button) {
                 button.addEventListener('click', function() {
                     familyMemberModal.classList.add('hidden'); // Sembunyikan modal
                 });
             });
+            closeFamilyModalButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    familyMemberModal.classList.add('hidden'); // Sembunyikan modal
+                });
+            });
 
+            window.addEventListener('click', function(event) {
+                if (event.target === familyMemberModal) {
+                    familyMemberModal.classList.add('hidden'); // Sembunyikan modal jika area luar diklik
+                }
+            });
+        });
             window.addEventListener('click', function(event) {
                 if (event.target === familyMemberModal) {
                     familyMemberModal.classList.add('hidden'); // Sembunyikan modal jika area luar diklik
@@ -577,10 +693,28 @@
                 const modalContent = document.getElementById('modalContent');
                 const modal = document.getElementById('showModal');
                 const overlay = document.getElementById('modalOverlay');
+                formContainer.insertAdjacentHTML('beforeend', form);
+            }
+            // Tampilkan tombol simpan dan batal hanya setelah form di-generate
+            document.getElementById('formActions').classList.remove('hidden');
+        }
+        // Menampilkan modal untuk melihat anggota migrasi
+        document.querySelectorAll('.showModalButton').forEach(button => {
+            button.addEventListener('click', function() {
+                const anggotaMigrasi = JSON.parse(this.getAttribute('data-anggota'));
+                const modalContent = document.getElementById('modalContent');
+                const modal = document.getElementById('showModal');
+                const overlay = document.getElementById('modalOverlay');
 
                 // Kosongkan konten modal sebelumnya
                 modalContent.innerHTML = '';
+                // Kosongkan konten modal sebelumnya
+                modalContent.innerHTML = '';
 
+                // Menampilkan data anggota migrasi
+                if (anggotaMigrasi.length > 0) {
+                    anggotaMigrasi.forEach((anggota, index) => {
+                        modalContent.innerHTML += `
                 // Menampilkan data anggota migrasi
                 if (anggotaMigrasi.length > 0) {
                     anggotaMigrasi.forEach((anggota, index) => {
@@ -600,7 +734,18 @@
                 } else {
                     modalContent.innerHTML = '<p>Tidak ada anggota keluarga.</p>';
                 }
+                    });
+                } else {
+                    modalContent.innerHTML = '<p>Tidak ada anggota keluarga.</p>';
+                }
 
+                // Tampilkan modal dengan animasi fadeIn
+                modal.classList.remove('hidden');
+                modal.classList.remove('modal-leave');
+                modal.classList.add('fadeIn');
+                overlay.classList.remove('hidden'); // Tampilkan overlay
+            });
+        });
                 // Tampilkan modal dengan animasi fadeIn
                 modal.classList.remove('hidden');
                 modal.classList.remove('modal-leave');
@@ -614,7 +759,15 @@
             console.log("Tombol tutup modal diklik"); // Debugging
             const modal = document.getElementById('showModal');
             const overlay = document.getElementById('modalOverlay');
+        // Menutup modal lihat anggota
+        document.getElementById('closeModalShowButton').addEventListener('click', function() {
+            console.log("Tombol tutup modal diklik"); // Debugging
+            const modal = document.getElementById('showModal');
+            const overlay = document.getElementById('modalOverlay');
 
+            // Tambahkan animasi fadeOut
+            modal.classList.remove('fadeIn');
+            modal.classList.add('fadeOut');
             // Tambahkan animasi fadeOut
             modal.classList.remove('fadeIn');
             modal.classList.add('fadeOut');
@@ -638,7 +791,35 @@
         function openAddDataModal() {
             const modal = document.getElementById('AddDataModal');
             const overlay = document.getElementById('modalOverlay');
+            // Sembunyikan modal dan overlay setelah animasi selesai
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                overlay.classList.add('hidden'); // Sembunyikan overlay gelap
+            }, 200); // Durasi harus sama dengan durasi fadeOut di CSS
+        });
+        // Fungsi menutup modal tambah data
+        function closeAddDataModal() {
+            const modal = document.getElementById('AddDataModal');
+            modal.classList.add('modal-leave');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('modal-leave');
+            }, 200);
+        }
+        // Fungsi untuk menampilkan modal tambah data
+        function openAddDataModal() {
+            const modal = document.getElementById('AddDataModal');
+            const overlay = document.getElementById('modalOverlay');
 
+            // Tampilkan overlay dan modal dengan animasi addFadeIn
+            overlay.classList.remove('hidden');
+            overlay.classList.add('show'); // Tampilkan overlay
+            modal.classList.remove('hidden');
+            modal.classList.remove('addFadeOut'); // Hapus kelas addFadeOut jika ada
+            modal.classList.add('addFadeIn'); // Tambahkan animasi addFadeIn
+        }
+    </script>
+@endsection
             // Tampilkan overlay dan modal dengan animasi addFadeIn
             overlay.classList.remove('hidden');
             overlay.classList.add('show'); // Tampilkan overlay

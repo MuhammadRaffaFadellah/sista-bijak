@@ -7,7 +7,6 @@
         Sista Bijak - Tambah Data UMKM
     @endif
 @endsection
-
 @section('body')
     <div class="container mx-auto px-4 py-6">
     <div class="card shadow-lg rounded-lg overflow-hidden">
@@ -27,6 +26,18 @@
                     @method('PUT')
                 @endif
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                        <label for="nik" class="block text-sm font-medium text-gray-700">NIK</label>
+                        @if (isset($umkm))
+                            <input type="text" name="nik" id="nik" value="{{ $umkm->nik }}" readonly
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                            <span class="text-red-500 text-sm" id="nik-warning" style="display: none;">Tidak dapat mengubah NIK</span>
+                        @else
+                            <input type="text" name="nik" id="nik" placeholder="Silakan masukkan NIK"
+                                required
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                        @endif
+                    </div>
                     <div>
                         <label for="nama_rw" class="block text-sm font-medium text-gray-700">Nama RW</label>
                         <input type="text" name="nama_rw" id="nama_rw" placeholder="Silakan masukkan nama RW"
@@ -40,16 +51,22 @@
                             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                     </div> -->
                     <div>
-                        <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
+                    <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
                         <select name="rw" id="rw" required
                             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                            <option value="1" {{ (isset($umkm) && $umkm->rw == '1') ? 'selected' : '' }}>1</option>
-                            <option value="2" {{ (isset($umkm) && $umkm->rw == '2') ? 'selected' : '' }}>2</option>
-                            <option value="3" {{ (isset($umkm) && $umkm->rw == '3') ? 'selected' : '' }}>3</option>
-                            <option value="4" {{ (isset($umkm) && $umkm->rw == '4') ? 'selected' : '' }}>4</option>
-                            <option value="5" {{ (isset($umkm) && $umkm->rw == '5') ? 'selected' : '' }}>5</option>
-                            <option value="6" {{ (isset($umkm) && $umkm->rw == '6') ? 'selected' : '' }}>6</option>
-                            <option value="7" {{ (isset($umkm) && $umkm->rw == '7') ? 'selected' : '' }}>7</option>
+                            @if (Auth::user()->role->id === 1) <!-- Admin -->
+                                <option value="1" {{ (isset($umkm) && $umkm->rw == '1') ? 'selected' : '' }}>1</option>
+                                <option value="2" {{ (isset($umkm) && $umkm->rw == '2') ? 'selected' : '' }}>2</option>
+                                <option value="3" {{ (isset($umkm) && $umkm->rw == '3') ? 'selected' : '' }}>3</option>
+                                <option value="4" {{ (isset($umkm) && $umkm->rw == '4') ? 'selected' : '' }}>4</option>
+                                <option value="5" {{ (isset($umkm) && $umkm->rw == '5') ? 'selected' : '' }}>5</option>
+                                <option value="6" {{ (isset($umkm) && $umkm->rw == '6') ? 'selected' : '' }}>6</option>
+                                <option value="7" {{ (isset($umkm) && $umkm->rw == '7') ? 'selected' : '' }}>7</option>
+                            @else <!-- RW -->
+                                <option value="{{ Auth::user()->rw->id }}" {{ (isset($umkm) && $umkm->rw == Auth::user()->rw->id) ? 'selected' : '' }}>
+                                    {{ Auth::user()->rw->rukun_warga }}
+                                </option>
+                            @endif
                         </select>
                     </div>
                     <div>
@@ -70,22 +87,19 @@
                         </select>
                     </div>
                     <div>
+                        <label for="kategori_umkm" class="block text-sm font-medium text-gray-700">Kategori UMKM</label>
+                        <select name="kategori_umkm" id="kategori_umkm" required
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                            <option value="Mikro" {{ (isset($umkm) && $umkm->kategori_umkm == 'Mikro') ? 'selected' : '' }}>Mikro</option>
+                            <option value="Kecil" {{ (isset($umkm) && $umkm->kategori_umkm == 'Kecil') ? 'selected' : '' }}>Kecil</option>
+                            <option value="Menengah" {{ (isset($umkm) && $umkm->kategori_umkm == 'Menengah') ? 'selected' : '' }}>Menengah</option>
+                        </select>
+                    </div>
+                    <div>
                         <label for="nama_pemilik" class="block text-sm font-medium text-gray-700">Nama Pemilik</label>
                         <input type="text" name="nama_pemilik" id="nama_pemilik" placeholder="Silakan masukkan nama pemilik"
                             value="{{ $umkm->nama_pemilik ?? '' }}" required
                             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                    </div>
-                    <div>
-                        <label for="nik" class="block text-sm font-medium text-gray-700">NIK</label>
-                        @if (isset($umkm))
-                            <input type="text" name="nik" id="nik" value="{{ $umkm->nik }}" readonly
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                            <span class="text-red-500 text-sm" id="nik-warning" style="display: none;">Tidak dapat mengubah NIK</span>
-                        @else
-                            <input type="text" name="nik" id="nik" placeholder="Silakan masukkan NIK"
-                                required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                        @endif
                     </div>
                     <div>
                         <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>

@@ -38,6 +38,9 @@
                                     NO.
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    NIK
+                                </th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
                                     NAMA RW
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
@@ -54,9 +57,6 @@
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
                                     NAMA PEMILIK
-                                </th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    NIK
                                 </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
                                     ALAMAT
@@ -76,13 +76,13 @@
                                     <tr class="hover:bg-gray-100 transition duration-200">
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
                                             {{ $umkms->firstItem() + $index }}.</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->nik }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->nama_rw }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->rw }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->kategori_umkm }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->jumlah_umkm }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->jenis_umkm }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->nama_pemilik }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->nik }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
                                             <button class="bg-blue-500 text-white px-4 py-2 rounded"
                                                 onclick="showAddressModal('{{ $umkm->alamat }}')">
@@ -213,7 +213,7 @@
             </div>
             <div class="p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    ${['nama_rw', 'rw', 'jumlah_umkm', 'jenis_umkm', 'kategori_umkm', 'nama_pemilik', 'nik', 'alamat'].map(field => `
+                    ${[ 'nik', 'nama_rw', 'rw', 'jumlah_umkm', 'jenis_umkm', 'kategori_umkm', 'nama_pemilik', 'alamat'].map(field => `
                     <div>
                     <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
                     ${field === 'jenis_umkm' ? `
@@ -226,13 +226,13 @@
                     </select>
                     ` : field === 'rw' ? `
                     <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
+                        @if (Auth::user()->role->id === 1) <!-- Admin -->
+                            @foreach ($rws as $rw)
+                                <option value="{{ $rw->id }}">{{ $rw->rukun_warga }}</option>
+                            @endforeach
+                        @else <!-- RW -->
+                            <option value="{{ Auth::user()->rw->id }}">{{ Auth::user()->rw->rukun_warga }}</option>
+                        @endif
                     </select>
                     ` : field === 'kategori_umkm' ? `
                     <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
