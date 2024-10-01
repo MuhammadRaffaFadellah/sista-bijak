@@ -56,11 +56,23 @@
                                     {{ $user->email }}
                                 </td>
                                 <td class="text-center px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $user->rw_id }}
+                                    @if ($user->role_id == 1)
+                                        -
+                                    @elseif ($user->role_id == 2)
+                                        {{ $user->rw_id }}
+                                    @else
+                                    -
+                                    @endif
                                 </td>
                                 <td class="text-center px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    Operator
-                                </td>
+                                    @if ($user->role_id == 1)
+                                        Admin
+                                    @elseif ($user->role_id == 2)
+                                        Operator
+                                    @else
+                                        Tidak Diketahui
+                                    @endif
+                                </td>                                
                                 <td class="text-center flex justify-center py-3 space-x-4">
                                     <a href="{{ url('user-management/' . $user->id . '/editUser') }}" title="Edit User"
                                         class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded">
@@ -95,17 +107,17 @@
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Ya, hapus.",
-                cancelButtonText: "Tidak."
+                confirmButtonText: "Ya, hapus",
+                cancelButtonText: "Tidak"
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Jika dikonfirmasi, redirect ke URL penghapusan
                     Swal.fire({
                         title: "Berhasil!",
                         text: "User berhasil dihapus.",
-                        icon: "success"
+                        icon: "success",
                         confirmButtonText: "OK",
-                        confirmButtonColor: "##3085d6",
+                        confirmButtonColor: "#3085d6",
                     }).then(() => {
                         // Submit the form after success message
                         window.location.href = url;

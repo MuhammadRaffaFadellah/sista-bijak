@@ -7,7 +7,6 @@
         Sista Bijak - Tambah Data UMKM
     @endif
 @endsection
-
 @section('body')
     <div class="container mx-auto px-4 py-6">
     <div class="card shadow-lg rounded-lg overflow-hidden">

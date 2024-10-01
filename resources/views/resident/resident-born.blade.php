@@ -80,8 +80,11 @@
             <div class="p-4">
                 <form method="GET" action="{{ route('resident-born') }}" class="mb-4">
                     <div class="flex items-center">
-                        <input type="text" name="search" placeholder="Cari Nama Kepala Keluarga, Nama Anak Lahir atau NIK" class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
-                        @if (Auth::user()->role->id === 1) <!-- Tampilkan filter RW hanya untuk admin -->
+                        <input type="text" name="search"
+                            placeholder="Cari Nama Kepala Keluarga, Nama Anak Lahir atau NIK"
+                            class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
+                        @if (Auth::user()->role->id === 1)
+                            <!-- Tampilkan filter RW hanya untuk admin -->
                             <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
                                 <option value="">Semua</option>
                                 @for ($i = 1; $i <= 7; $i++)
@@ -89,14 +92,48 @@
                                 @endfor
                             </select>
                         @endif
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Cari</button>
-                        <a href="{{ route('resident-born') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Reset</a>
+                        <button type="submit"
+                            class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <a href="{{ route('resident-born') }}"
+                            class="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
                     </div>
                 </form>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white divide-y divide-gray-200 w-full">
                         <thead class="bg-gray-100">
                             <tr>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    No</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Nama Kepala Keluarga</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    NIK</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Alamat</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    RW</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    RT</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Nama Ayah Kandung</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Nama Ibu Kandung</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Nama Anak Lahir</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Tempat Lahir</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Tanggal Lahir</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Jenis Kelamin</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Status Kependudukan</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Aksi</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">No</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">NIK</th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Kepala Keluarga</th>
@@ -156,7 +193,8 @@
                                                 class="inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" onclick="deleteConfirm(event, this)" title="Hapus data"
+                                                <button type="submit" onclick="deleteConfirm(event, this)"
+                                                    title="Hapus data"
                                                     class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -185,7 +223,7 @@
                 <form id="dataForm">
                     <input type="number" id="dataAmount" min="1"
                         class="border border-gray-300 rounded-md p-2 w-full mb-4" placeholder="Masukkan jumlah data">
-                    <button id="createFormButton" type="button"
+                    <button id="createFormButton" type="button" onclick="formValidate(event, this)"
                         class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                         Buat Form
                     </button>
@@ -202,7 +240,8 @@
                 <button id="cancelButton" type="button"
                     class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Batal</button>
                 <button id="saveAllButton" type="submit" onclick="addConfirm(event)"
-                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Simpan Semua</button>
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Simpan
+                    Semua</button>
             </div>
         </form>
         @include('sweetalert')
@@ -255,14 +294,11 @@
                     modal.classList.add('hidden');
                 }, 200);
             });
+
             // Event Listener untuk tombol "Buat Form"
             document.getElementById('createFormButton').addEventListener('click', (event) => {
                 event.preventDefault();
                 const dataAmount = parseInt(document.getElementById('dataAmount').value, 10);
-                if (isNaN(dataAmount) || dataAmount < 1) {
-                    alert('Masukkan jumlah data yang valid.');
-                    return;
-                }
                 const formArea = document.getElementById('formContainer');
                 formArea.innerHTML = '';
                 for (let i = 0; i < dataAmount; i++) {
@@ -278,7 +314,7 @@
                 }, 200);
                 document.getElementById('formActions').classList.remove('hidden');
             });
-            // Fungsi untuk membuat form
+            // Fungsi buat form
             function createForm(index) {
                 return `
                 <div class="card shadow-lg rounded-lg overflow-hidden mb-4">
@@ -323,6 +359,7 @@
                 </div>
                 `;
             }
+
             // SweetAlert addConfirm
             function addConfirm(event) {
                 event.preventDefault();
@@ -357,7 +394,7 @@
                     });
                 } else {
                     Swal.fire({
-                        title: "Sip!",
+                        title: "Berhasil!",
                         text: "Data berhasil ditambahkan!",
                         icon: "success",
                         confirmButtonText: "OK",
@@ -369,6 +406,7 @@
                     });
                 }
             }
+
             // SweetAlert deleteConfirm
             function deleteConfirm(event, button) {
                 event.preventDefault();
@@ -397,6 +435,36 @@
                     }
                 });
             }
+            // SweetAlert formValidate()
+            function formValidate(event) {
+                event.preventDefault(); // Cegah default form submission
+                let dataAmount = document.getElementById('dataAmount').value;
+                let formContainer = document.getElementById('formContainer');
+                let formActions = document.getElementById('formActions');
+                // Cek jika input jumlah data kosong atau kurang dari 1
+                if (dataAmount === "" || dataAmount <= 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Input kosong!',
+                        text: 'Masukkan jumlah input yang valid!',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: "#3085d6",
+                    });
+                    // Sembunyikan tombol jika input kosong
+                    formActions.classList.add('hidden');
+                    return; // Hentikan proses di sini, jangan buat form
+                }
+                // Jika input valid, lanjutkan membuat form
+                formContainer.innerHTML = ''; // Kosongkan form yang sudah ada sebelumnya
+                for (let i = 0; i < dataAmount; i++) {
+                    const form = createForm(i);
+                    formContainer.insertAdjacentHTML('beforeend', form);
+                }
+                // Tampilkan tombol "Simpan Semua" dan "Batal"
+                formActions.classList.remove('hidden');
+            }
+            // Pasang event listener pada tombol buat form
+            document.getElementById('createFormButton').addEventListener('click', formValidate);
         </script>
     </div>
     <!-- Modal Show -->
@@ -417,5 +485,4 @@
             </div>
         </div>
     </div>
-
 @endsection

@@ -3,12 +3,11 @@
     Sista Bijak - Tabel Penduduk
 @endsection
 @section('body')
-
 <div class="container mx-auto px-4 py-6">
     <div class="card shadow-lg rounded-lg overflow-hidden">
         <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
             <h3 class="text-lg font-bold">Tabel Penduduk</h3>
-            <a href="{{ route('penduduk.create') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+            <a href="{{ route('penduduk.create') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition ease-in-out duration-150">
                 <i class="fas fa-plus"></i> <!-- Ikon tambah -->
             </a>
         </div>
@@ -24,8 +23,12 @@
                             @endfor
                         </select>
                     @endif
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Cari</button>
-                    <a href="{{ route('resident.table') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">Reset</a>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <a href="{{ route('resident.table') }}" class="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition ease-in-out duration-150">
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
                 </div>
             </form>
             <div class="overflow-x-auto">
@@ -54,7 +57,7 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @if ($penduduks->isEmpty())
                             <tr>
-                                <td colspan="16" class="text-center px-4 py-2">Tidak ada data penduduk.</td>
+                                <td colspan="16" class="text-center px-4 py-2 uppercase font-bold">Tidak ada data</td>
                             </tr>
                         @else
                             @foreach ($penduduks as $index => $penduduk)
@@ -75,14 +78,14 @@
                                     <td class="px-4 py-2 whitespace-nowrap text-center">{{ $penduduk->rt }}</td>
                                     <td class="px-4 py-2 whitespace-nowrap text-center">{{ $penduduk->kelurahan }}</td>
                                     <td class="px-4 py-2 whitespace-nowrap text-center">{{ $penduduk->status_kependudukan }}</td>
-                                    <td class="px-4 py-2 whitespace-nowrap text-center">
-                                        <a href="{{ route('penduduk.edit', $penduduk->id) }}" title="Edit data" class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded">
+                                    <td class="px-4 py-2 whitespace-nowrap text-center space-x-2">
+                                        <a href="{{ route('penduduk.edit', $penduduk->id) }}" title="Edit data" class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <form action="{{ route('penduduk.destroy', $penduduk->id) }}" method="POST" class="inline" id="deleteForm">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" onclick="deleteConfirm(event, this)" title="Hapus data" class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded">
+                                            <button type="submit" onclick="deleteConfirm(event, this)" title="Hapus data" class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>

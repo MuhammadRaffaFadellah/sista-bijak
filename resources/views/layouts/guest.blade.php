@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ asset('img/Logo Si-PBJ.png') }}">
+    <link rel="icon" href="{{ asset('img/.png') }}">
 
     <title>{{ config('APP.NAME', 'Sista Bijak - Login') }}</title>
 
@@ -21,14 +21,14 @@
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
         <!-- <div>
                 <a href="/">
-                    <img class="w-20 h-20" src="{{ asset('img/Logo Si-PBJ.png') }}"/>
+                    <img class="w-20 h-20" src="{{ asset('img/image (1).png') }}"/>
                 </a>
             </div> -->
 
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <div class="flex items-center justify-center">
                 <a href="/">
-                    <img class="w-20 h-20 justify-center" src="{{ asset('img/Logo Si-PBJ.png') }}" />
+                    <img class="w-32 h-32 justify-center" src="{{ asset('/img/image (1).png') }}" />
                 </a>
 
                 

@@ -2,10 +2,10 @@
     class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
 <div x-cloak :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
     class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
-    <div class="flex items-center justify-center mt-8">
-        <div class="flex items-center">
-            <img src="{{ asset('img/.png') }}" alt="sista-bijak" class="img img-fluid">
-            <span class="mx-2 text-21 font-semibold text-white">SISTA BIJAK</span>
+    <div class="flex items-center justify-center">
+        <div class="flex items-center max-w-full mt-7">
+            <img src="{{ asset('/img/image (3).png') }}" alt="sista-bijak" class="w-auto h-20 ml-2">
+            <span class="mr-10 ml-3 text-21 font-semibold text-white">SISTA BIJAK</span>
         </div>
     </div>
     <style>
@@ -21,8 +21,7 @@
             color: #fff;
         }
     </style>
-    <nav class="mt-10 pt-5" id="sidebar">
-
+    <nav id="sidebar" class="mt-8">
         <div class="nav__link">
             <a class="active flex items-center text-decoration-none style-none px-6 py-2 mt-4 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 w-full transition duration-75 group"
                 href="/dashboard">
@@ -176,17 +175,21 @@
 
         // Memuat status aktif dari localStorage saat halaman dimuat
         window.addEventListener('DOMContentLoaded', () => {
+            const navLinkEls = document.querySelectorAll('.nav__link a');
             // Hapus kelas 'active' dari semua link
             navLinkEls.forEach(navLinkEl => {
                 navLinkEl.classList.remove('active');
             });
+            let activePage = localStorage.getItem('activePage');
 
-            const activePage = localStorage.getItem('activePage');
-            if (activePage) {
-                const activeLink = document.querySelector(`a[href="${activePage}"]`);
-                if (activeLink) {
-                    activeLink.classList.add('active'); // Tambahkan kelas 'active' ke elemen yang sesuai
-                }
+            // Jika tidak ada activePage di localStorage, set ke '/dashboard'
+            if (!activePage) {
+                activePage = '/dashboard';
+                localStorage.setItem('activePage', activePage); // Simpan di localStorage
+            }
+            const activeLink = document.querySelector(`a[href="${activePage}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
             }
         });
 
@@ -199,6 +202,16 @@
                 // Menyimpan status aktif ke localStorage
                 localStorage.setItem('activePage', navLinkEl.getAttribute('href'));
             });
+        });
+
+        // Hapus status aktif dari localStorage saat logout
+        window.addEventListener('DOMContentLoaded', () => {
+            const logoutButton = document.getElementById('logoutButton'); // Sesuaikan dengan ID tombol logout Anda
+            if (logoutButton) {
+                logoutButton.addEventListener('click', () => {
+                    localStorage.removeItem('activePage');
+                });
+            }
         });
     </script>
 </div>

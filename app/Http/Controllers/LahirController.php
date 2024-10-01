@@ -63,7 +63,6 @@ class LahirController extends Controller
             'jenis_kelamin.*' => 'required',
             'status_kependudukan.*' => 'required',
         ]);
-
         $data = $request->all();
         foreach ($data['nik'] as $index => $nik) {
             Lahir::create([
@@ -90,7 +89,7 @@ class LahirController extends Controller
     {
         $lahir = Lahir::findOrFail($id);
         $statusKependudukanOptions = ['LAHIR'];
-        return view('create_born', compact('lahir', 'statusKependudukanOptions'));
+        return view('create.create_born', compact('lahir', 'statusKependudukanOptions'));
     }
 
     // Update the specified Lahir entry in storage

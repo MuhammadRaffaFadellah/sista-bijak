@@ -52,7 +52,7 @@
                 </div>
                 <!-- Tombol Kembali dan Tambah -->
                 <div class="flex justify-between pt-4 mb-4">
-                    <a href="/user-management" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                    <a href="/user-management" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                         Kembali
                     </a>
                     <button type="submit"
@@ -80,7 +80,7 @@
                     text: "Semua data harus diisi!",
                     icon: "error",
                     confirmButtonText: "OK",
-                    confirmButtonColor: "##3085d6",
+                    confirmButtonColor: "#3085d6",
                 });
             } else {
                 // Jika semua data terisi
@@ -89,7 +89,7 @@
                     text: "User berhasil ditambahkan!",
                     icon: "success",
                     confirmButtonText: "OK",
-                    confirmButtonColor: "##3085d6",
+                    confirmButtonColor: "#3085d6",
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Submit form setelah konfirmasi

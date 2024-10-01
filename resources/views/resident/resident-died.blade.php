@@ -9,24 +9,29 @@
                 opacity: 0;
                 transform: scale(0.9);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
             }
         }
+
         @keyframes fadeOutModal {
             from {
                 opacity: 1;
                 transform: scale(1);
             }
+
             to {
                 opacity: 0;
                 transform: scale(0.9);
             }
         }
+
         .fadeIn {
             animation: fadeInModal 0.3s ease-out forwards;
         }
+
         .fadeOut {
             animation: fadeOutModal 0.2s ease-in forwards;
         }
@@ -37,24 +42,29 @@
                 opacity: 0;
                 transform: scale(0.9);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
             }
         }
+
         @keyframes modalOut {
             from {
                 opacity: 1;
                 transform: scale(1);
             }
+
             to {
                 opacity: 0;
                 transform: scale(0.9);
             }
         }
+
         .modal-enter {
             animation: modalIn 0.3s ease-out forwards;
         }
+
         .modal-leave {
             animation: modalOut 0.2s ease-in forwards;
         }
@@ -71,9 +81,12 @@
             <div class="p-4">
                 <!-- Form Filter -->
                 <form method="GET" action="{{ route('resident-died') }}" class="mb-4">
-                <div class="flex items-center">
-                        <input type="text" name="search" placeholder="Cari Nama Kepala Keluarga, Nama Almarhum/Almarhumah atau NIK" class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
-                        @if (Auth::user()->role->id === 1) <!-- Tampilkan filter RW hanya untuk admin -->
+                    <div class="flex items-center">
+                        <input type="text" name="search"
+                            placeholder="Cari Nama Kepala Keluarga, Nama Almarhum/Almarhumah atau NIK"
+                            class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
+                        @if (Auth::user()->role->id === 1)
+                            <!-- Tampilkan filter RW hanya untuk admin -->
                             <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
                                 <option value="">Semua</option>
                                 @for ($i = 1; $i <= 7; $i++)
@@ -81,8 +94,14 @@
                                 @endfor
                             </select>
                         @endif
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Cari</button>
-                        <a href="{{ route('resident-died') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">Reset</a>
+                        <button type="submit"
+                            class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <a href="{{ route('resident-died') }}"
+                            class="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
                     </div>
                 </form>
                 <!-- End Form Filter -->
@@ -133,7 +152,8 @@
                                             {{ $meninggal->tanggal_meninggal }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $meninggal->jenis_kelamin }}
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $meninggal->status_kependudukan }}
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">
+                                            {{ $meninggal->status_kependudukan }}
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap flex space-x-2">
                                             <a href="{{ route('meninggal.edit', $meninggal->id) }}" title="Edit data"
@@ -144,8 +164,9 @@
                                                 class="inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" onclick="deleteConfirm(event, this)" title="Hapus data"
-                                                    class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded">
+                                                <button type="submit" onclick="deleteConfirm(event, this)"
+                                                    title="Hapus data"
+                                                    class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
@@ -170,14 +191,13 @@
                 <h2 class="text-lg font-bold mb-4">Berapa banyak data yang ingin ditambah?</h2>
                 <input type="number" id="dataAmount" min="1"
                     class="border border-gray-300 rounded-md p-2 w-full mb-4" placeholder="Masukkan jumlah data">
-                <button id="createFormButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Buat
+                <button id="createFormButton" onclick="formValidate(event, this)"
+                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Buat
                     Form</button>
             </div>
         </div>
-
         <!-- Tempat untuk Form -->
         <div id="formArea" class="mt-4"></div>
-
         <form id="multiForm" action="{{ route('meninggal.store') }}" method="POST">
             @csrf
             <div id="formContainer" class="mt-6"></div>
@@ -185,7 +205,8 @@
                 <button id="cancelButton" type="button"
                     class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Batal</button>
                 <button id="saveAllButton" type="submit" onclick="addConfirm(event)"
-                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Simpan Semua</button>
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Simpan
+                    Semua</button>
             </div>
         </form>
         @include('sweetalert')
@@ -201,6 +222,7 @@
                 modalContent.classList.remove('opacity-0', 'modal-leave');
                 modalContent.classList.add('modal-enter');
             }
+
             function closeAddressModal() {
                 const modal = document.getElementById('addressModal');
                 const modalContent = document.getElementById('modalContent');
@@ -275,8 +297,8 @@
                                 ` : `
                                 <input type="${field === 'tanggal_lahir' || field === 'tanggal_meninggal' ? 'date' : 'text'}" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                                 `}
-                            </div>
-                        `).join('')}
+                                    </div>
+                                `).join('')}
                         <div>
                             <label for="jenis_kelamin_${index}" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
                             <select name="jenis_kelamin[]" id="jenis_kelamin_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
@@ -294,7 +316,7 @@
                 </div>
             </div>
             `;
-        }
+            }
             // Event Listener untuk tombol "Batal"
             document.getElementById('cancelButton').addEventListener('click', () => {
                 // Bersihkan isi dari formContainer
@@ -384,6 +406,37 @@
                     }
                 });
             }
+
+            // SweetAlert formValidate()
+            function formValidate(event) {
+                event.preventDefault(); // Cegah default form submission
+                let dataAmount = document.getElementById('dataAmount').value;
+                let formContainer = document.getElementById('formContainer');
+                let formActions = document.getElementById('formActions');
+                // Cek jika input jumlah data kosong atau kurang dari 1
+                if (dataAmount === "" || dataAmount <= 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Input kosong!',
+                        text: 'Masukkan jumlah input yang valid!',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: "#3085d6",
+                    });
+                    // Sembunyikan tombol jika input kosong
+                    formActions.classList.add('hidden');
+                    return; // Hentikan proses di sini, jangan buat form
+                }
+                // Jika input valid, lanjutkan membuat form
+                formContainer.innerHTML = ''; // Kosongkan form yang sudah ada sebelumnya
+                for (let i = 0; i < dataAmount; i++) {
+                    const form = createForm(i);
+                    formContainer.insertAdjacentHTML('beforeend', form);
+                }
+                // Tampilkan tombol "Simpan Semua" dan "Batal"
+                formActions.classList.remove('hidden');
+            }
+            // Pasang event listener pada tombol buat form
+            document.getElementById('createFormButton').addEventListener('click', formValidate);
         </script>
     </div>
     <!-- Modal (hidden by default) -->

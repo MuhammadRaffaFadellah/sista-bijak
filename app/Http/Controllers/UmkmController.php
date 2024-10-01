@@ -49,7 +49,7 @@ class UmkmController extends Controller
 public function edit($id)
 {
     $umkm = Umkm::findOrFail($id);
-    return view('create_umkm', compact('umkm'));
+    return view('create.create_umkm', compact('umkm'));
 }
 
 public function store(Request $request)

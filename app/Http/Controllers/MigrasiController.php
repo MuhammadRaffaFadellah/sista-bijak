@@ -130,6 +130,7 @@ class MigrasiController extends Controller
 
         return redirect()->route('resident-migration')->with('success', 'Data migrasi berhasil diupdate.');
     }
+    
     private function updateAnggotaMigrasi(Migrasi $migrasi, array $anggotaData, $id)
     {
         foreach ($anggotaData as $anggota) {
