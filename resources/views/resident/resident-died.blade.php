@@ -197,10 +197,8 @@
                     Form</button>
             </div>
         </div>
-
         <!-- Tempat untuk Form -->
         <div id="formArea" class="mt-4"></div>
-
         <form id="multiForm" action="{{ route('meninggal.store') }}" method="POST">
             @csrf
             <div id="formContainer" class="mt-6"></div>
