@@ -67,23 +67,23 @@
                 </button>
             </div>
             <div class="p-4">
-                <!-- Form Filter -->
-                <form method="GET" action="{{ route('resident-migration') }}" class="mb-4">
-                <div class="flex items-center">
-                        <input type="text" name="search" placeholder="Cari Jenis Migrasi, Nama Kepala Keluarga atau NIK" class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
-                        @if (Auth::user()->role->id === 1) <!-- Tampilkan filter RW hanya untuk admin -->
-                            <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
-                                <option value="">Semua</option>
-                                @for ($i = 1; $i <= 7; $i++)
-                                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>RW {{ $i }}</option>
-                                @endfor
-                            </select>
-                        @endif
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Cari</button>
-                        <a href="{{ route('resident-died') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">Reset</a>
-                    </div>
-                </form>
-                <!-- End Form Filter -->
+<!-- Form Filter -->
+<form method="GET" action="{{ route('resident-migration') }}" class="mb-4">
+    <div class="flex items-center">
+        <input type="text" name="search" placeholder="Cari Jenis Migrasi, Nama Kepala Keluarga atau NIK" class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
+        @if (Auth::user()->role->id === 1) <!-- Tampilkan filter RW hanya untuk admin -->
+            <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
+                <option value="">Semua</option>
+                @for ($i = 1; $i <= 7; $i++)
+                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>RW {{ $i }}</option>
+                @endfor
+            </select>
+        @endif
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Cari</button>
+        <a href="{{ route('resident-migration') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">Reset</a>
+    </div>
+</form>
+<!-- End Form Filter -->
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white divide-y divide-gray-200 w-full">
                         <thead class="bg-gray-100">

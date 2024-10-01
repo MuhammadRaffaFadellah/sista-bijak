@@ -102,7 +102,6 @@ class MigrasiController extends Controller
             'nik' => 'required|numeric',
             'rw' => 'required|numeric',
             'rt' => 'required|numeric',
-            'jumlah_anggota_keluarga' => 'required|numeric',
             'anggota.*.nama' => 'required|string',
             'anggota.*.tempat_lahir' => 'required|string',
             'anggota.*.tanggal_lahir' => 'required|date',
@@ -120,7 +119,7 @@ class MigrasiController extends Controller
             'nik',
             'rw',
             'rt',
-            'jumlah_anggota_keluarga'
+            'jumlah_anggota_keluarga',
         ]));
 
         // Update anggota migrasi

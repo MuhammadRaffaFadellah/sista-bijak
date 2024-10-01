@@ -17,6 +17,7 @@ class Migrasi extends Model
         'nik',
         'rw',
         'rt',
+        'status',
     ];
 
     public function anggotaMigrasi()
