@@ -176,17 +176,21 @@
 
         // Memuat status aktif dari localStorage saat halaman dimuat
         window.addEventListener('DOMContentLoaded', () => {
+            const navLinkEls = document.querySelectorAll('.nav__link a');
             // Hapus kelas 'active' dari semua link
             navLinkEls.forEach(navLinkEl => {
                 navLinkEl.classList.remove('active');
             });
+            let activePage = localStorage.getItem('activePage');
 
-            const activePage = localStorage.getItem('activePage');
-            if (activePage) {
-                const activeLink = document.querySelector(`a[href="${activePage}"]`);
-                if (activeLink) {
-                    activeLink.classList.add('active'); // Tambahkan kelas 'active' ke elemen yang sesuai
-                }
+            // Jika tidak ada activePage di localStorage, set ke '/dashboard'
+            if (!activePage) {
+                activePage = '/dashboard';
+                localStorage.setItem('activePage', activePage); // Simpan di localStorage
+            }
+            const activeLink = document.querySelector(`a[href="${activePage}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
             }
         });
 
@@ -199,6 +203,16 @@
                 // Menyimpan status aktif ke localStorage
                 localStorage.setItem('activePage', navLinkEl.getAttribute('href'));
             });
+        });
+
+        // Hapus status aktif dari localStorage saat logout
+        window.addEventListener('DOMContentLoaded', () => {
+            const logoutButton = document.getElementById('logoutButton'); // Sesuaikan dengan ID tombol logout Anda
+            if (logoutButton) {
+                logoutButton.addEventListener('click', () => {
+                    localStorage.removeItem('activePage');
+                });
+            }
         });
     </script>
 </div>

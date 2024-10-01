@@ -48,7 +48,7 @@ class MigrasiController extends Controller
             'jumlah_anggota_keluarga.*' => 'required|integer|min:1',
             // Tambahkan validasi untuk anggota jika diperlukan
         ]);
-        
+
         // Simpan data ke database
         foreach ($request->input('jenis_migrasi') as $index => $jenis_migrasi) {
             // Simpan setiap record migrasi
@@ -103,7 +103,6 @@ class MigrasiController extends Controller
             'anggota.*.pendidikan' => 'required|string',
             'anggota.*.pekerjaan' => 'required|string',
         ]);
-
 
         // Temukan dan update data migrasi
         $migrasi = Migrasi::findOrFail($id);

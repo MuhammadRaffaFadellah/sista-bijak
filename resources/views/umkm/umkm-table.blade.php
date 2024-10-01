@@ -20,13 +20,13 @@
                         @if (Auth::user()->role->id === 1) <!-- Tampilkan filter RW hanya untuk admin -->
                             <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
                                 <option value="">Semua</option>
-                                @for ($i = 1; $i <= 10; $i++)
+                                @for ($i = 1; $i <= 7; $i++)
                                     <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>RW {{ $i }}</option>
                                 @endfor
                             </select>
                         @endif
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Cari</button>
-                        <a href="{{ route('umkm') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">Reset</a>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150">Cari</button>
+                        <a href="{{ route('umkm') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2 hover:bg-gray-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition ease-in-out duration-150">Reset</a>
                     </div>
                 </form>
                 <!-- End Form Filter -->
@@ -124,7 +124,7 @@
                 <h2 class="text-lg font-bold mb-4">Berapa banyak data yang ingin ditambah?</h2>
                 <input type="number" id="dataAmount" min="1"
                     class="border border-gray-300 rounded-md p-2 w-full mb-4" placeholder="Masukkan jumlah data">
-                <button id="createFormButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Buat
+                <button id="createFormButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition ease-in-out duration-150">Buat
                     Form</button>
             </div>
         </div>
@@ -137,9 +137,9 @@
             <div id="formContainer" class="mt-6"></div>
             <div id="formActions" class="mt-6 justify-between flex hidden">
                 <button id="cancelButton" type="button"
-                    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Batal</button>
+                    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition ease-in-out duration-150">Batal</button>
                 <button id="saveAllButton" type="submit" onclick="addConfirm(event)"
-                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Simpan Semua</button>
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150">Simpan Semua</button>
             </div>
         </form>
         @include('sweetalert')
