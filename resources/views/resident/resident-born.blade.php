@@ -80,37 +80,61 @@
             <div class="p-4">
                 <form method="GET" action="{{ route('resident-born') }}" class="mb-4">
                     <div class="flex items-center">
-                        <input type="text" name="search" placeholder="Cari Nama Kepala Keluarga, Nama Anak Lahir atau NIK" class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
-                        @if (Auth::user()->role->id === 1) <!-- Tampilkan filter RW hanya untuk admin -->
+                        <input type="text" name="search"
+                            placeholder="Cari Nama Kepala Keluarga, Nama Anak Lahir atau NIK"
+                            class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
+                        @if (Auth::user()->role->id === 1)
+                            <!-- Tampilkan filter RW hanya untuk admin -->
                             <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
                                 <option value="">Semua</option>
                                 @for ($i = 1; $i <= 10; $i++)
-                                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>RW {{ $i }}</option>
+                                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>
+                                        RW {{ $i }}</option>
                                 @endfor
                             </select>
                         @endif
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Cari</button>
-                        <a href="{{ route('resident-born') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Reset</a>
+                        <button type="submit"
+                            class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <a href="{{ route('resident-born') }}"
+                            class="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
                     </div>
                 </form>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white divide-y divide-gray-200 w-full">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">No</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Kepala Keluarga</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">NIK</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Alamat</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">RW</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">RT</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Ayah Kandung</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Ibu Kandung</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Anak Lahir</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Tempat Lahir</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Tanggal Lahir</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Jenis Kelamin</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Status Kependudukan</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Aksi</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    No</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Nama Kepala Keluarga</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    NIK</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Alamat</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    RW</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    RT</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Nama Ayah Kandung</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Nama Ibu Kandung</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Nama Anak Lahir</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Tempat Lahir</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Tanggal Lahir</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Jenis Kelamin</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Status Kependudukan</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -156,7 +180,8 @@
                                                 class="inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" onclick="deleteConfirm(event, this)" title="Hapus data"
+                                                <button type="submit" onclick="deleteConfirm(event, this)"
+                                                    title="Hapus data"
                                                     class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -185,7 +210,7 @@
                 <form id="dataForm">
                     <input type="number" id="dataAmount" min="1"
                         class="border border-gray-300 rounded-md p-2 w-full mb-4" placeholder="Masukkan jumlah data">
-                    <button id="createFormButton" type="button"
+                    <button id="createFormButton" type="button" onclick="formValidate(event, this)"
                         class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                         Buat Form
                     </button>
@@ -202,7 +227,8 @@
                 <button id="cancelButton" type="button"
                     class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Batal</button>
                 <button id="saveAllButton" type="submit" onclick="addConfirm(event)"
-                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Simpan Semua</button>
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Simpan
+                    Semua</button>
             </div>
         </form>
         @include('sweetalert')
@@ -255,14 +281,11 @@
                     modal.classList.add('hidden');
                 }, 200);
             });
+
             // Event Listener untuk tombol "Buat Form"
             document.getElementById('createFormButton').addEventListener('click', (event) => {
                 event.preventDefault();
                 const dataAmount = parseInt(document.getElementById('dataAmount').value, 10);
-                if (isNaN(dataAmount) || dataAmount < 1) {
-                    alert('Masukkan jumlah data yang valid.');
-                    return;
-                }
                 const formArea = document.getElementById('formContainer');
                 formArea.innerHTML = '';
                 for (let i = 0; i < dataAmount; i++) {
@@ -278,51 +301,46 @@
                 }, 200);
                 document.getElementById('formActions').classList.remove('hidden');
             });
-            // Fungsi untuk membuat form
+            // Fungsi buat form
             function createForm(index) {
                 return `
-                <div class="card shadow-lg rounded-lg overflow-hidden mb-4">
-                    <div class="bg-gray-800 text-white p-4">
-                        <h3 class="text-lg font-bold">Data Lahir ${index + 1}</h3>
-                    </div>
-                    <div class="p-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            ${['nik', 'nama_kepala_keluarga', 'alamat', 'rw', 'rt', 'nama_ayah_kandung', 'nama_ibu_kandung', 'nama_anak_lahir', 'tempat_lahir', 'tanggal_lahir'].map(field => `
-                                                <div>
-                                                    <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
-                                                    ${field === 'rw' ? `
-                                    <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                    </select>
-                                    ` : `
-                                    <input type="${field === 'tanggal_lahir' ? 'date' : 'text'}" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                                                    `}
-                                </div>
-                                            `).join('')}
-                            <div>
-                                <label for="jenis_kelamin_${index}" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
-                                <select name="jenis_kelamin[]" id="jenis_kelamin_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                    <option value="LAKI-LAKI">LAKI-LAKI</option>
-                                    <option value="PEREMPUAN">PEREMPUAN</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="status_kependudukan_${index}" class="block text-sm font-medium text-gray-700">Status Kependudukan</label>
-                                <select name="status_kependudukan[]" id="status_kependudukan_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                    <option value="lahir">LAHIR</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+    <div class="card shadow-lg rounded-lg overflow-hidden mb-4">
+        <div class="bg-gray-800 text-white p-4">
+            <h3 class="text-lg font-bold">Data Lahir ${index + 1}</h3>
+        </div>
+        <div class="p-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                ${['nik', 'nama_kepala_keluarga', 'alamat', 'rw', 'rt', 'nama_ayah_kandung', 'nama_ibu_kandung', 'nama_anak_lahir', 'tempat_lahir', 'tanggal_lahir'].map(field => `
+                                                                            <div>
+                                                                                <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
+                                                                                ${field === 'nik' ? `
+                        <input type="number" name="${field}[]" id="${field}_${index}" placeholder="Masukkan NIK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
+                        ` : field === 'rw' || field === 'rt' ? `
+                        <input type="number" name="${field}[]" id="${field}_${index}" placeholder="Masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                        ` : `
+                        <input type="${field === 'tanggal_lahir' ? 'date' : 'text'}" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                        `}
+                                                                            </div>
+                                                                        `).join('')}
+                <div>
+                    <label for="jenis_kelamin_${index}" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
+                    <select name="jenis_kelamin[]" id="jenis_kelamin_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="LAKI-LAKI">LAKI-LAKI</option>
+                        <option value="PEREMPUAN">PEREMPUAN</option>
+                    </select>
                 </div>
-                `;
+                <div>
+                    <label for="status_kependudukan_${index}" class="block text-sm font-medium text-gray-700">Status Kependudukan</label>
+                    <select name="status_kependudukan[]" id="status_kependudukan_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="lahir">LAHIR</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
             }
+
             // SweetAlert addConfirm
             function addConfirm(event) {
                 event.preventDefault();
@@ -357,7 +375,7 @@
                     });
                 } else {
                     Swal.fire({
-                        title: "Sip!",
+                        title: "Berhasil!",
                         text: "Data berhasil ditambahkan!",
                         icon: "success",
                         confirmButtonText: "OK",
@@ -369,6 +387,7 @@
                     });
                 }
             }
+
             // SweetAlert deleteConfirm
             function deleteConfirm(event, button) {
                 event.preventDefault();
@@ -397,6 +416,36 @@
                     }
                 });
             }
+            // SweetAlert formValidate()
+            function formValidate(event) {
+                event.preventDefault(); // Cegah default form submission
+                let dataAmount = document.getElementById('dataAmount').value;
+                let formContainer = document.getElementById('formContainer');
+                let formActions = document.getElementById('formActions');
+                // Cek jika input jumlah data kosong atau kurang dari 1
+                if (dataAmount === "" || dataAmount <= 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Input kosong!',
+                        text: 'Masukkan jumlah input yang valid!',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: "#3085d6",
+                    });
+                    // Sembunyikan tombol jika input kosong
+                    formActions.classList.add('hidden');
+                    return; // Hentikan proses di sini, jangan buat form
+                }
+                // Jika input valid, lanjutkan membuat form
+                formContainer.innerHTML = ''; // Kosongkan form yang sudah ada sebelumnya
+                for (let i = 0; i < dataAmount; i++) {
+                    const form = createForm(i);
+                    formContainer.insertAdjacentHTML('beforeend', form);
+                }
+                // Tampilkan tombol "Simpan Semua" dan "Batal"
+                formActions.classList.remove('hidden');
+            }
+            // Pasang event listener pada tombol buat form
+            document.getElementById('createFormButton').addEventListener('click', formValidate);
         </script>
     </div>
     <!-- Modal Show -->

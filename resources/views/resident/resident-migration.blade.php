@@ -156,13 +156,13 @@
                                             {{ $migrasi->anggotaMigrasi->count() }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap flex space-x-2">
                                             <button title="View Anggota Keluarga"
-                                                class="showModalButton text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded"
+                                                class="showModalButton text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                                 data-id="{{ $migrasi->id }}"
                                                 data-anggota="{{ json_encode($migrasi->anggotaMigrasi) }}">
                                                 <i class="fas fa-eye"></i>
                                             </button>
                                             <a href="{{ route('migrasi.edit', $migrasi->id) }}" title="Edit"
-                                                class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded">
+                                                class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <form action="{{ route('migrasi.destroy', $migrasi->id) }}" method="POST"
@@ -170,7 +170,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" onclick="deleteConfirm(event, this)" title="Hapus"
-                                                    class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded">
+                                                    class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
@@ -239,7 +239,6 @@
             function closeModal() {
                 const modal = document.getElementById('AddDataModal');
                 const overlay = document.getElementById('modalOverlay');
-
                 // Tambahkan animasi fade out
                 modal.classList.remove('addFadeIn');
                 modal.classList.add('addFadeOut');
@@ -294,7 +293,7 @@
                             </div>
                             <div>
                                 <label for="nik_${i}" class="block text-sm font-medium text-gray-700">NIK</label>
-                                <input type="number" maxlength="16" name="nik[]" id="nik_${i}" placeholder="Silakan masukkan NIK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)"  />
+                                <input type="number" name="nik[]" id="nik_${i}" placeholder="Silakan masukkan NIK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)"  />
                             </div>
                             <div>
                                 <label for="rw_${i}" class="block text-sm font-medium text-gray-700">RW</label>
@@ -520,6 +519,7 @@
                 }
             });
         }
+
         // SweetAlert formValidate()
         function formValidate(event, button) {
             event.preventDefault();
@@ -532,8 +532,8 @@
                 // Jika input kosong atau tidak valid, tampilkan SweetAlert
                 Swal.fire({
                     icon: 'error',
-                    title: 'Input tidak valid!',
-                    text: 'Silakan masukkan jumlah data yang valid.',
+                    title: 'Input Kosong!',
+                    text: 'Silakan masukkan jumlah input yang valid.',
                     confirmButtonColor: "#3085d6"
                 });
                 return; // Hentikan eksekusi lebih lanjut

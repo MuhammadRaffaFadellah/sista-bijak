@@ -23,10 +23,12 @@
                             @endfor
                         </select>
                     @endif
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2  hover:bg-blue-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
-                    <a href="{{ route('resident.table') }}" class="bg-gray-500 text-white px-4 py-2 rounded ml-2  hover:bg-gray-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition ease-in-out duration-150">Reset</a>
+                    <a href="{{ route('resident.table') }}" class="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition ease-in-out duration-150">
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
                 </div>
             </form>
             <div class="overflow-x-auto">
@@ -76,14 +78,14 @@
                                     <td class="px-4 py-2 whitespace-nowrap text-center">{{ $penduduk->rt }}</td>
                                     <td class="px-4 py-2 whitespace-nowrap text-center">{{ $penduduk->kelurahan }}</td>
                                     <td class="px-4 py-2 whitespace-nowrap text-center">{{ $penduduk->status_kependudukan }}</td>
-                                    <td class="px-4 py-2 whitespace-nowrap text-center">
-                                        <a href="{{ route('penduduk.edit', $penduduk->id) }}" title="Edit data" class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded">
+                                    <td class="px-4 py-2 whitespace-nowrap text-center space-x-2">
+                                        <a href="{{ route('penduduk.edit', $penduduk->id) }}" title="Edit data" class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <form action="{{ route('penduduk.destroy', $penduduk->id) }}" method="POST" class="inline" id="deleteForm">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" onclick="deleteConfirm(event, this)" title="Hapus data" class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded">
+                                            <button type="submit" onclick="deleteConfirm(event, this)" title="Hapus data" class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
