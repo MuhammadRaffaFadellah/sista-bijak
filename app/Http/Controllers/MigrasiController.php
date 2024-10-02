@@ -122,16 +122,13 @@ class MigrasiController extends Controller
             'jumlah_anggota_keluarga',
         ]));
 
-        // Update anggota migrasi
-        foreach ($request->anggota as $anggota) {
-            $anggotaMigrasi = AnggotaMigrasi::findOrFail($anggota['id']);
-            $anggotaMigrasi->update($anggota);
-        }
+        // Panggil fungsi untuk update dan menambah anggota
+        $this->updateAnggotaMigrasi($migrasi, $request->anggota);
 
         return redirect()->route('resident-migration')->with('success', 'Data migrasi berhasil diupdate.');
     }
-    
-    private function updateAnggotaMigrasi(Migrasi $migrasi, array $anggotaData, $id)
+
+    private function updateAnggotaMigrasi(Migrasi $migrasi, array $anggotaData)
     {
         foreach ($anggotaData as $anggota) {
             if (isset($anggota['id'])) {
@@ -153,26 +150,5 @@ class MigrasiController extends Controller
         $migrasi = Migrasi::findOrFail($id);
         $migrasi->delete();
         return redirect()->route('resident-migration')->with('success', 'Data berhasil dihapus');
-    }
-
-    // Validasi data input migrasi
-    protected function validateMigration(Request $request, $id = null)
-    {
-        $uniqueNikRule = $id ? 'unique:migrasi,nik,' . $id : 'unique:migrasi,nik';
-        return $request->validate([
-            'jenis_migrasi.*' => 'required|in:MASUK,KELUAR',
-            'nama_kepala_keluarga.*' => 'required|string',
-            'nik.*' => ['required', 'numeric', $uniqueNikRule],
-            'rw.*' => 'required|numeric',
-            'rt.*' => 'required|numeric',
-            'anggota.*.*.id' => 'required|exists:anggota_migrasi,id',
-            'anggota.*.*.nama' => 'required|string',
-            'anggota.*.*.tempat_lahir' => 'required|string',
-            'anggota.*.*.tanggal_lahir' => 'required|date',
-            'anggota.*.*.jenis_kelamin' => 'required|in:LAKI-LAKI,PEREMPUAN',
-            'anggota.*.*.hubungan_dengan_kk' => 'required|string',
-            'anggota.*.*.pendidikan' => 'required|string',
-            'anggota.*.*.pekerjaan' => 'required|string',
-        ]);
     }
 }

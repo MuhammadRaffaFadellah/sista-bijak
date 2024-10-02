@@ -78,11 +78,17 @@
                                         class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                    @if ($user->role_id == 1)
+                                        
+                                    @elseif ($user->role_id == 2)
                                     <a href="{{ url('user-management/' . $user->id . '/deleteUser') }}" title="Hapus User"
                                         onclick="deleteConfirm(event, this.href)"
                                         class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded">
                                         <i class="fas fa-trash"></i>
                                     </a>
+                                    @else
+                                    Tidak Diketahui
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

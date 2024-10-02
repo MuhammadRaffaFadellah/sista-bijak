@@ -18,7 +18,7 @@
                 </div>
                 <div class="mx-5">
                     <h4 class="text-2xl font-semibold text-gray-700">{{ $totalPenduduk }}</h4>
-                    <div class="text-gray-500">Total Penduduk</div>
+                    <div class="text-gray-500">Total Keseluruhan Penduduk</div>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
             </div>
             <div class="mx-5">
                 <h4 class="text-2xl font-semibold text-gray-700">{{ $totalLakiLaki }}</h4>
-                <div class="text-gray-500">Jumlah Laki-Laki</div>
+                <div class="text-gray-500">Jumlah Keseluruhan Laki-Laki</div>
             </div>
         </div>
     </div>
@@ -42,7 +42,7 @@
             </div>
             <div class="mx-5">
                 <h4 class="text-2xl font-semibold text-gray-700">{{ $totalPerempuan }}</h4>
-                <div class="text-gray-500">Jumlah Perempuan</div>
+                <div class="text-gray-500">Jumlah Keseluruhan Perempuan</div>
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="mx-5">
                     <h4 class="text-2xl font-semibold text-gray-700">{{ $totalLahir }}</h4>
-                    <div class="text-gray-500">Total Lahir</div>
+                    <div class="text-gray-500">Total Keseluruhan Lahir</div>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
                 </div>
                 <div class="mx-5">
                     <h4 class="text-2xl font-semibold text-gray-700">{{ $totalMeninggal }}</h4>
-                    <div class="text-gray-500">Total Meninggal</div>
+                    <div class="text-gray-500">Total Keseluruhan Meninggal</div>
                 </div>
             </div>
         </div>
@@ -82,7 +82,7 @@
                 </div>
                 <div class="mx-5">
                     <h4 class="text-2xl font-semibold text-gray-700">{{ $totalMigrasiMasuk }}</h4>
-                    <div class="text-gray-500">Total Migrasi Masuk</div>
+                    <div class="text-gray-500">Total Keseluruhan Migrasi Masuk</div>
                 </div>
             </div>
         </div>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="mx-5">
                     <h4 class="text-2xl font-semibold text-gray-700">{{ $totalMigrasiKeluar }}</h4>
-                    <div class="text-gray-500">Total Migrasi Keluar</div>
+                    <div class="text-gray-500">Total Keseluruhan Migrasi Keluar</div>
                 </div>
             </div>
         </div>
@@ -111,7 +111,7 @@
                     </div>
                     <div class="mx-5">
                         <h4 class="text-2xl font-semibold text-gray-700">{{ $totalUmkm }}</h4>
-                        <div class="text-gray-500">Jumlah UMKM</div>
+                        <div class="text-gray-500">Jumlah Keseluruhan UMKM</div>
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                     </div>
                     <div class="mx-5">
                         <h4 class="text-2xl font-semibold text-gray-700">{{ $totalUmkmIndustri }}</h4>
-                        <div class="text-gray-500">Total UMKM Industri</div>
+                        <div class="text-gray-500">Total Keseluruhan UMKM Industri</div>
                     </div>
             </div>
     </div>
@@ -150,7 +150,7 @@
                     </div>
                     <div class="mx-5">
                         <h4 class="text-2xl font-semibold text-gray-700">{{ $totalUmkmPerdagangan }}</h4>
-                        <div class="text-gray-500">Total UMKM Perdagangan</div>
+                        <div class="text-gray-500">Total Keseluruhan UMKM Perdagangan</div>
                     </div>
                 </div>
             </div>
@@ -162,7 +162,7 @@
                     </div>
                     <div class="mx-5">
                         <h4 class="text-2xl font-semibold text-gray-700">{{ $totalUmkmKonstruksi }}</h4>
-                        <div class="text-gray-500">Total UMKM Konstruksi</div>
+                        <div class="text-gray-500">Total Keseluruhan UMKM Konstruksi</div>
                     </div>
                 </div>
             </div>
@@ -178,7 +178,7 @@
                 </div>
                 <div class="mx-5">
                     <h4 class="text-2xl font-semibold text-gray-700">{{ $totalUmkmJasaLainnya }}</h4>
-                    <div class="text-gray-500">Total UMKM Jasa Lainnya</div>
+                    <div class="text-gray-500">Total Keseluruhan UMKM Jasa Lainnya</div>
                 </div>
             </div>
         </div>

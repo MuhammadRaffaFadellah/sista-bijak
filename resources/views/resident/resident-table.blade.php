@@ -7,8 +7,9 @@
     <div class="card shadow-lg rounded-lg overflow-hidden">
         <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
             <h3 class="text-lg font-bold">Tabel Penduduk</h3>
+            
             <a href="{{ route('penduduk.create') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition ease-in-out duration-150">
-                <i class="fas fa-plus"></i> <!-- Ikon tambah -->
+                <i class="fas fa-plus"></i>
             </a>
         </div>
         <div class="p-4">
