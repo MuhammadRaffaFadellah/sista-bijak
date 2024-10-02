@@ -216,7 +216,7 @@
             Swal.fire({
                 title: 'Yakin ingin menyimpan perubahan?',
                 text: "Pastikan semua data sudah benar sebelum menyimpan.",
-                icon: 'warning',
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, simpan!',
                 confirmButtonColor: "#3085d6",

@@ -296,7 +296,7 @@ Sista Bijak - Tabel Migrasi
                             </div>
                             <div>
                                 <label for="nik_${i}" class="block text-sm font-medium text-gray-700">NIK</label>
-                                <input type="number" name="nik[]" id="nik_${i}" placeholder="Silakan masukkan NIK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)"  />
+                                <input type="text" name="nik[]" id="nik_${i}" placeholder="Silakan masukkan NIK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)"  />
                             </div>
                             <div>
                                 <label for="rw_${i}" class="block text-sm font-medium text-gray-700">RW</label>
@@ -480,7 +480,7 @@ Sista Bijak - Tabel Migrasi
             Swal.fire({
                 title: 'Konfirmasi',
                 text: 'Apakah Anda yakin semua data sudah benar?',
-                icon: 'warning',
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, simpan!',
                 confirmButtonColor: "#3085d6",
