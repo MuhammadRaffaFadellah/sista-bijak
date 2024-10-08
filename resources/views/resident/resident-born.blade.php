@@ -160,7 +160,7 @@
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
                                             {{ $lahir->nik }}
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
+                                        <td class="px-4 py-2 whitespace-nowrap uppercase">
                                             {{ $lahir->nama_anak_lahir }}
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center uppercase">

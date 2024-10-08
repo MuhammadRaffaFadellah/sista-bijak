@@ -440,6 +440,6 @@ class PendudukController extends Controller
         if (!$penduduk) {
             return redirect()->route('resident-table')->with('error', 'Data penduduk tidak ditemukan.');
         }
-        return view('penduduk.show', compact('penduduk')); // Ganti dengan view yang sesuai
+        return view('resident.resident-table', compact('penduduk')); // Ganti dengan view yang sesuai
     }
 }
