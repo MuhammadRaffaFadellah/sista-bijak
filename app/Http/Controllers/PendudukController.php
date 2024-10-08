@@ -397,7 +397,7 @@ class PendudukController extends Controller
         // Mencari data penduduk berdasarkan ID (tanpa menghapusnya)
         $penduduk = Penduduk::find($id);
         // Tambahkan ini untuk debug
-        $rws = Rw::all(); // Ambil semua data RW
+        $rws = rw::all(); // Ambil semua data RW
         // Validasi apakah penduduk ditemukan
         if (!$penduduk) {
             return redirect()->route('resident-table')->with('error', 'Penduduk tidak ditemukan.');

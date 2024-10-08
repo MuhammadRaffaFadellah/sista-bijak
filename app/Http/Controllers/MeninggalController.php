@@ -8,14 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use App\Models\Rw;
+use App\Models\rw;
 
 class MeninggalController extends Controller
 {
     public function resident_died(Request $request)
     {
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
-        $rws = Rw::all();
+        $rws = rw::all();
         // Cek apakah user adalah admin berdasarkan ID role
         if ($user->role->id === 1) { // pastikan membandingkan dengan id, bukan role_id
             // Jika admin, ambil semua data meninggal
@@ -89,7 +89,7 @@ class MeninggalController extends Controller
     public function edit($id)
     {
         try {
-            $rws = Rw::all();
+            $rws = rw::all();
             Log::info('Edit method called with ID: ' . $id);
             $meninggal = Meninggals::findOrFail($id);
             Log::info('Meninggal data found', ['data' => $meninggal->toArray()]);
