@@ -39,8 +39,8 @@ Route::post("/process-edit-users", [ManagementController::class, 'process_edit_u
 Route::get("/user-management/{id}/deleteUser", [ManagementController::class, "process_delete_users"])->middleware('auth', 'verified')->name("delete-users");
 
 // UMKM CRUD Route
-Route::get("/umkm-table",[UmkmController::class, "umkm_table"])->middleware("auth", "verified")->name("umkm");
-Route::get("/umkm-table",[UmkmController::class, "umkm_table"])->middleware("auth", "verified")->name("umkm");
+Route::get("/umkm-table", [UmkmController::class, "umkm_table"])->middleware("auth", "verified")->name("umkm");
+Route::get("/umkm-table", [UmkmController::class, "umkm_table"])->middleware("auth", "verified")->name("umkm");
 Route::post('/umkm-store', [UmkmController::class, 'store'])->name('umkm.store');
 Route::get('/umkm/{id}/edit', [UmkmController::class, 'edit'])->name('umkm.edit');
 Route::put('/umkm/{id}', [UmkmController::class, 'update'])->name('umkm.update');
@@ -50,24 +50,36 @@ Route::delete('/umkm/{id}', [UmkmController::class, 'destroy'])->name('umkm.dest
 // Resident Route
 Route::middleware('auth')->group(function () {
     Route::resource('penduduk', PendudukController::class);
-    
     // Route untuk profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::delete('/penduduk/{id}', [PendudukController::class, 'destroy'])->name('penduduk.destroy');
-
 // Route untuk resident table
-Route::get('/resident-table', [PendudukController::class, 'resident_table'])->middleware(['auth', 'verified'])->name('resident.table');
-// Route untuk resident born table
-Route::get('/resident-born', [LahirController::class, 'resident_born'])->middleware(['auth', 'verified'])->name('resident-born');
-// Route for creating Lahir
+Route::get('/resident-table', [PendudukController::class, 'resident_table'])->middleware(['auth', 'verified'])->name('resident-table');
+
+
+// Route untuk tabel lahir (resident born table)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/resident-born', [LahirController::class, 'resident_born'])->name('resident-born');
+    // Route untuk membuat dan menyimpan data penduduk
+    Route::get('lahir/create/{id}', [LahirController::class, 'create_resident'])->name('create_resident');
+    Route::post('lahir/store', [LahirController::class, 'store_resident'])->name('store_resident');
+    // Route untuk halaman create_chair
+    Route::get('create_chair/create/{id}', [LahirController::class, 'create_resident'])->name('create_chair');
+    Route::post('/penduduk/store', [LahirController::class, 'store_resident'])->name('penduduk.store');
+});
+
+// Route resource untuk Lahir
 Route::resource('lahir', LahirController::class);
 
-// Route untuk resident died table
+
+// Route Resident-died
 Route::get('/resident-died', [MeninggalController::class, 'resident_died'])->middleware(['auth', 'verified'])->name('resident-died');
 Route::resource('meninggal', MeninggalController::class)->middleware(['auth', 'verified']);
+Route::get('/penduduk/{id}/create_died', [PendudukController::class, 'createDied'])->name('create_died');
+
 
 Route::resource('migrasi', MigrasiController::class)->middleware(['auth', 'verified']);
 Route::get('/resident-migration', [MigrasiController::class, 'resident_migration'])->middleware(['auth', 'verified'])->name('resident-migration');
@@ -76,4 +88,8 @@ Route::get('/resident-migration/{id}/edit', [MigrasiController::class, 'edit'])-
 Route::get('/dashboard', [PendudukController::class, 'dashboard'])->name('dashboard');
 Route::get('/', [PendudukController::class, 'index'])->name('index');
 
-require __DIR__.'/auth.php';
+Route::get('/penduduk/{id}/delete', [PendudukController::class, 'deletePendudukAndRedirectToDiedForm'])->name('deletePenduduk');
+Route::get('/meninggal/create/{id}', [PendudukController::class, 'createDied'])->name('createDied');
+Route::post('/meninggal/store', [MeninggalController::class, 'store'])->name('meninggal.store');
+
+require __DIR__ . '/auth.php';

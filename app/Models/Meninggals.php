@@ -11,7 +11,6 @@ class Meninggals extends Model
 
     protected $table = 'meninggals';
     protected $fillable = [
-        'nama_kepala_keluarga',
         'nik',
         'alamat',
         'rw',
@@ -32,7 +31,7 @@ class Meninggals extends Model
     }
 
     public function user()
-{
-    return $this->belongsTo(User::class, 'rw', 'rw_id'); // Pastikan kunci asing benar
-}
+    {
+        return $this->belongsTo(User::class, 'rw', 'rw_id'); // Pastikan kunci asing benar
+    }
 }

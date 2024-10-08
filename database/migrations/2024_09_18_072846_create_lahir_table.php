@@ -13,20 +13,18 @@ return new class extends Migration
     {
         Schema::create('lahir', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_kepala_keluarga');
             $table->unsignedBigInteger('nik');
+            $table->string('nama_anak_lahir');
+            $table->string('jenis_kelamin');
+            $table->string('nama_ayah_kandung');
+            $table->string('nama_ibu_kandung');
             $table->string('alamat');
             $table->unsignedBigInteger('rw');
             $table->unsignedBigInteger('rt');
-            $table->string('nama_ayah_kandung');
-            $table->string('nama_ibu_kandung');
-            $table->string('nama_anak_lahir');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
-            $table->string('jenis_kelamin');
             $table->string('status_kependudukan');
             $table->timestamps();
-
             $table->foreign('rw')->references('id')->on('rw')->onDelete('cascade');
         });
     }

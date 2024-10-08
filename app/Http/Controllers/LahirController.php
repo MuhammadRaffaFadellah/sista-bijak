@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lahir;
+use App\Models\Penduduk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Rw;
+
 class LahirController extends Controller
 {
     // Display the list of Lahir entries
@@ -13,7 +15,6 @@ class LahirController extends Controller
     {
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
         $rws = Rw::all();
-
         // Cek apakah user adalah admin berdasarkan ID role
         if ($user->role->id === 1) { // pastikan membandingkan dengan id, bukan role_id
             // Jika admin, ambil semua data lahir
@@ -22,20 +23,16 @@ class LahirController extends Controller
             // Jika bukan admin, ambil data lahir sesuai RW pengguna
             $query = Lahir::where('rw', $user->rw_id);
         }
-
         // Pencarian berdasarkan nama kepala keluarga atau NIK
         if ($request->has('search')) {
             $search = $request->input('search');
-            $query->where(function($q) use ($search) {
-                $q->where('nama_kepala_keluarga', 'like', "%{$search}%")
-                ->orWhere('nama_anak_lahir', 'like', "%{$search}%")
-                ->orWhere('nik', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_anak_lahir', 'like', "%{$search}%")
+                    ->orWhere('nik', 'like', "%{$search}%");
             });
         }
-
         $dataLahir = $query->paginate(10); // 10 entri per halaman
         $statusKependudukanOptions = ['LAHIR'];
-
         return view('resident.resident-born', compact('dataLahir', 'statusKependudukanOptions', 'rws'));
     }
 
@@ -51,7 +48,6 @@ class LahirController extends Controller
     {
         $request->validate([
             'nik.*' => 'required|unique:lahir,nik',
-            'nama_kepala_keluarga.*' => 'required',
             'alamat.*' => 'required',
             'rw.*' => 'required',
             'rt.*' => 'required',
@@ -67,7 +63,6 @@ class LahirController extends Controller
         foreach ($data['nik'] as $index => $nik) {
             Lahir::create([
                 'nik' => $nik,
-                'nama_kepala_keluarga' => $data['nama_kepala_keluarga'][$index],
                 'alamat' => $data['alamat'][$index],
                 'rw' => $data['rw'][$index],
                 'rt' => $data['rt'][$index],
@@ -80,7 +75,6 @@ class LahirController extends Controller
                 'status_kependudukan' => $data['status_kependudukan'][$index],
             ]);
         }
-
         return redirect()->route('resident-born')->with('success', 'Data berhasil ditambahkan.');
     }
 
@@ -97,7 +91,6 @@ class LahirController extends Controller
     {
         $request->validate([
             'nik' => 'required|unique:lahir,nik,' . $id,
-            'nama_kepala_keluarga' => 'required',
             'alamat' => 'required',
             'rw' => 'required',
             'rt' => 'required',
@@ -109,7 +102,6 @@ class LahirController extends Controller
             'jenis_kelamin' => 'required',
             'status_kependudukan' => 'required',
         ]);
-
         $lahir = Lahir::findOrFail($id);
         $lahir->update($request->all()); // Update the lahir data
         return redirect()->route('resident-born')->with('success', 'Data berhasil diperbarui.');
@@ -121,5 +113,63 @@ class LahirController extends Controller
         $lahir = Lahir::findOrFail($id);
         $lahir->delete(); // Delete the lahir data
         return redirect()->route('resident-born')->with('success', 'Data berhasil dihapus.');
+    }
+
+    public function create_resident($id)
+    {
+        // Ambil data dari tabel lahir berdasarkan ID
+        $lahir = Lahir::find($id);
+        $rws = Rw::all();
+
+        // Periksa apakah data ditemukan
+        if (!$lahir) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+        // Kirim data dari tabel lahir ke view untuk pre-fill input form
+        return view('create.create_chair', compact('lahir', 'rws'));
+    }
+
+    public function store_resident(Request $request)
+    {
+        // Validasi input data
+        $request->validate([
+            'nik' => 'required|string|max:16|unique:penduduk,nik',
+            'nama_lengkap' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|string',
+            'tempat_lahir' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',
+            'status_hubkel' => 'required|string',
+            'pendidikan_terakhir' => 'required|string|in:TAMAT SD/SEDERAJAT,BELUM TAMAT SD/SEDERAJAT,TIDAK TAMAT SD/SEDERAJAT,TIDAK/BELUM SEKOLAH,DIPLOMA I/II,AKADEMI/DIPLOMA III/S. MUDA,DIPLOMA IV/STRATA I,STRATA II,STRATA III,SLTA/SEDERAJAT,SLTP/SEDERAJAT',
+            'jenis_pekerjaan' => 'required|string',
+            'agama' => 'required|string',
+            'status_perkawinan' => 'required|string',
+            'alamat' => 'required|string|max:255',
+            'rw' => 'required|integer',
+            'rt' => 'required|integer',
+            'kelurahan' => 'required|string|max:255',
+            'status_kependudukan' => 'required|string',
+        ]);
+        // Simpan data ke database (misalnya ke tabel penduduk)
+        Penduduk::create([
+            'nik' => $request->nik,
+            'nama_lengkap' => $request->nama_lengkap,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'status_hubkel' => $request->status_hubkel,
+            'pendidikan_terakhir' => $request->pendidikan_terakhir,
+            'jenis_pekerjaan' => $request->jenis_pekerjaan,
+            'agama' => $request->agama,
+            'status_perkawinan' => $request->status_perkawinan,
+            'alamat' => $request->alamat,
+            'rw' => $request->rw,
+            'rt' => $request->rt,
+            'kelurahan' => $request->kelurahan,
+            'status_kependudukan' => $request->status_kependudukan,
+        ]);
+        // Set session untuk menandakan bahwa data telah disimpan
+        session(['data_saved' => true]);
+        // Redirect ke halaman resident tabel dengan pesan sukses
+        return redirect()->route('resident-table')->with('success', 'Data berhasil disimpan.');
     }
 }

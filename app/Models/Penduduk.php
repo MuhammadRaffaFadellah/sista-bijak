@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class Penduduk extends Model
@@ -25,7 +26,7 @@ class Penduduk extends Model
         'rt',
         'kelurahan',
         'status_kependudukan',
-    ]; 
+    ];
 
     // Define the relationship with Rw
     public function rw()
@@ -34,10 +35,9 @@ class Penduduk extends Model
     }
 
     public function user()
-{
-    return $this->belongsTo(User::class, 'rw', 'rw_id'); // Pastikan kunci asing benar
-}
-
+    {
+        return $this->belongsTo(User::class, 'rw', 'rw_id'); // Pastikan kunci asing benar
+    }
     // Define the relationship with Jk
     // public function rt()
     // {

@@ -28,10 +28,9 @@
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <div class="flex items-center justify-center">
                 <a href="javascript::void(0)">
-                    <img class="w-32 h-32 justify-center" src="{{ asset('/img/image (1).png') }}" />
+                    <img class="w-32 h-32 justify-center" src="{{ asset('/img/logo-kel-kesambi.png') }}" />
                 </a>
 
-                
             </div>
             <div><h1 class="text-2xl font-bold text-center text-cyan-800">LOGIN</h1></div>
             {{ $slot }}

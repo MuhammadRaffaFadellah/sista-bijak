@@ -80,15 +80,15 @@
             <div class="p-4">
                 <form method="GET" action="{{ route('resident-born') }}" class="mb-4">
                     <div class="flex items-center">
-                        <input type="text" name="search"
-                            placeholder="Cari Nama Kepala Keluarga, Nama Anak Lahir atau NIK"
+                        <input type="text" name="search" placeholder="Cari Nama Anak Lahir atau NIK"
                             class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
                         @if (Auth::user()->role->id === 1)
                             <!-- Tampilkan filter RW hanya untuk admin -->
                             <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
                                 <option value="">Semua</option>
                                 @for ($i = 1; $i <= 7; $i++)
-                                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>RW {{ $i }}</option>
+                                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>
+                                        RW {{ $i }}</option>
                                 @endfor
                             </select>
                         @endif
@@ -107,33 +107,44 @@
                         <thead class="bg-gray-100">
                             <tr>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    No</th>
+                                    No
+                                </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Nama Kepala Keluarga</th>
+                                    NIK
+                                </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    NIK</th>
+                                    Nama Anak Lahir
+                                </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Alamat</th>
+                                    Jenis Kelamin
+                                </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    RW</th>
+                                    Nama Ayah Kandung
+                                </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    RT</th>
+                                    Nama Ibu Kandung
+                                </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Nama Ayah Kandung</th>
+                                    Alamat
+                                </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Nama Ibu Kandung</th>
+                                    RW
+                                </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Nama Anak Lahir</th>
+                                    RT
+                                </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Tempat Lahir</th>
+                                    Tempat Lahir
+                                </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Tanggal Lahir</th>
+                                    Tanggal Lahir
+                                </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Jenis Kelamin</th>
+                                    Status Kependudukan
+                                </th>
                                 <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Status Kependudukan</th>
-                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Aksi</th>
+                                    Aksi
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -146,29 +157,33 @@
                                     <tr class="hover:bg-gray-100 transition duration-200">
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
                                             {{ $dataLahir->firstItem() + $index }}.</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $lahir->nik }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
-                                            {{ $lahir->nama_kepala_keluarga }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap">
+                                            {{ $lahir->nik }}
+                                        </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
+                                            {{ $lahir->nama_anak_lahir }}
+                                        </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
+                                            {{ $lahir->jenis_kelamin }}
+                                        </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
+                                            {{ $lahir->nama_ayah_kandung }}
+                                        </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
+                                            {{ $lahir->nama_ibu_kandung }}
+                                        </td>
+                                        <td class="px-4 py-2 whitespace-nowrap uppercase">
                                             <button class="bg-blue-500 text-white px-4 py-2 rounded"
                                                 onclick="showAddressModal('{{ $lahir->alamat }}')">
-                                                Lihat Alamat
+                                                Lihat
                                             </button>
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $lahir->rw }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $lahir->rt }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $lahir->nama_ayah_kandung }}
-                                        </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $lahir->nama_ibu_kandung }}
-                                        </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $lahir->nama_anak_lahir }}
-                                        </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $lahir->tempat_lahir }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $lahir->tempat_lahir }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $lahir->tanggal_lahir }}
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $lahir->jenis_kelamin }}
-                                        </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
                                             {{ $lahir->status_kependudukan }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap flex space-x-2">
                                             <a href="{{ route('lahir.edit', $lahir->id) }}" title="Edit data"
@@ -185,6 +200,20 @@
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
+                                            @php
+                                                // Memeriksa apakah data dengan ID lahir sudah ada di tabel penduduk
+                                                $dataSudahAda = \App\Models\Penduduk::where(
+                                                    'nik',
+                                                    $lahir->nik,
+                                                )->exists();
+                                            @endphp
+                                            @if (!$dataSudahAda)
+                                                <a href="{{ route('create_chair', $lahir->id) }}"
+                                                    title="MAsukkan ke tabel penduduk"
+                                                    class="text-green-500 hover:text-green-600 px-2 py-1 border border-green-500 rounded">
+                                                    <i class="fas fa-chair"></i>
+                                                </a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -300,52 +329,77 @@
                 }, 200);
                 document.getElementById('formActions').classList.remove('hidden');
             });
-            // Fungsi buat form
+
             function createForm(index) {
                 return `
-                <div class="card shadow-lg rounded-lg overflow-hidden mb-4">
-                    <div class="bg-gray-800 text-white p-4">
-                        <h3 class="text-lg font-bold">Data Lahir ${index + 1}</h3>
-                    </div>
-                    <div class="p-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            ${['nik', 'nama_kepala_keluarga', 'alamat', 'rw', 'rt', 'nama_ayah_kandung', 'nama_ibu_kandung', 'nama_anak_lahir', 'tempat_lahir', 'tanggal_lahir'].map(field => `
-                            <div>
-                                <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
-                                ${field === 'rw' ? `
-                                <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                    @if (Auth::user()->role->id === 1) <!-- Admin -->
-                                        @foreach ($rws as $rw)
-                                            <option value="{{ $rw->id }}">{{ $rw->rukun_warga }}</option>
-                                        @endforeach
-                                    @else <!-- RW -->
-                                        <option value="{{ Auth::user()->rw->id }}">{{ Auth::user()->rw->rukun_warga }}</option>
-                                    @endif
-                                </select>
-                                    ` : `
-                                    <input type="${field === 'tanggal_lahir' ? 'date' : 'text'}" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                                                    `}
-                                </div>
-                                            `).join('')}
-                            <div>
-                                <label for="jenis_kelamin_${index}" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
-                                <select name="jenis_kelamin[]" id="jenis_kelamin_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                    <option value="LAKI-LAKI">LAKI-LAKI</option>
-                                    <option value="PEREMPUAN">PEREMPUAN</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="status_kependudukan_${index}" class="block text-sm font-medium text-gray-700">Status Kependudukan</label>
-                                <select name="status_kependudukan[]" id="status_kependudukan_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                    <option value="lahir">LAHIR</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+    <div class="card shadow-lg rounded-lg overflow-hidden mb-4">
+        <div class="bg-gray-800 text-white p-4">
+            <h3 class="text-lg font-bold">Data Lahir ${index + 1}</h3>
+        </div>
+        <div class="p-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="nik_${index}" class="block text-sm font-medium text-gray-700">NIK</label>
+                    <input type="text" name="nik[]" id="nik_${index}" placeholder="Silakan masukkan NIK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
                 </div>
-                `;
+                <div>
+                    <label for="nama_anak_lahir_${index}" class="block text-sm font-medium text-gray-700">Nama Anak Lahir</label>
+                    <input type="text" name="nama_anak_lahir[]" id="nama_anak_lahir_${index}" placeholder="Silakan masukkan nama anak" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                </div>
+                <div>
+                    <label for="nama_ayah_kandung_${index}" class="block text-sm font-medium text-gray-700">Nama Ayah Kandung</label>
+                    <input type="text" name="nama_ayah_kandung[]" id="nama_ayah_kandung_${index}" placeholder="Silakan masukkan nama ayah kandung" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                </div>
+                <div>
+                    <label for="nama_ibu_kandung_${index}" class="block text-sm font-medium text-gray-700">Nama Ibu Kandung</label>
+                    <input type="text" name="nama_ibu_kandung[]" id="nama_ibu_kandung_${index}" placeholder="Silakan masukkan nama ibu kandung" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                </div>
+                <div>
+                    <label for="alamat_${index}" class="block text-sm font-medium text-gray-700">Alamat</label>
+                    <input type="text" name="alamat[]" id="alamat_${index}" placeholder="Silakan masukkan alamat" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                </div>
+                <div>
+                    <label for="rw_${index}" class="block text-sm font-medium text-gray-700">RW</label>
+                    <select name="rw[]" id="rw_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        @if (Auth::user()->role->id === 1) <!-- Admin -->
+                            @foreach ($rws as $rw)
+                                <option value="{{ $rw->id }}">{{ $rw->rukun_warga }}</option>
+                            @endforeach
+                        @else <!-- RW -->
+                            <option value="{{ Auth::user()->rw->id }}">{{ Auth::user()->rw->rukun_warga }}</option>
+                        @endif
+                    </select>
+                </div>
+                <div>
+                    <label for="rt_${index}" class="block text-sm font-medium text-gray-700">RT</label>
+                    <input type="text" name="rt[]" id="rt_${index}" placeholder="Silakan masukkan RT" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                </div>
+                <div>
+                    <label for="tempat_lahir_${index}" class="block text-sm font-medium text-gray-700">Tempat Lahir</label>
+                    <input type="text" name="tempat_lahir[]" id="tempat_lahir_${index}" placeholder="Silakan masukkan tempat lahir" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                </div>
+                <div>
+                    <label for="tanggal_lahir_${index}" class="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
+                    <input type="date" name="tanggal_lahir[]" id="tanggal_lahir_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                </div>
+                <div>
+                    <label for="jenis_kelamin_${index}" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
+                    <select name="jenis_kelamin[]" id="jenis_kelamin_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="LAKI-LAKI">LAKI-LAKI</option>
+                        <option value="PEREMPUAN">PEREMPUAN</option>
+                    </select>
+                </div>
+                <div class="hidden">
+                    <label for="status_kependudukan_${index}" class="block text-sm font-medium text-gray-700">Status Kependudukan</label>
+                    <select name="status_kependudukan[]" id="status_kependudukan_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="LAHIR">LAHIR</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
             }
-
             // SweetAlert addConfirm
             function addConfirm(event) {
                 event.preventDefault();
@@ -354,7 +408,7 @@
                 let allFilled = true;
                 forms.forEach((form, index) => {
                     const requiredFields = [
-                        `nik_${index}`, `nama_kepala_keluarga_${index}`, `alamat_${index}`,
+                        `nik_${index}`, `alamat_${index}`,
                         `rw_${index}`, `rt_${index}`, `nama_ayah_kandung_${index}`, `nama_ibu_kandung_${index}`,
                         `nama_anak_lahir_${index}`, `tempat_lahir_${index}`,
                         `tanggal_lahir_${index}`, `status_kependudukan_${index}`,
@@ -403,8 +457,8 @@
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, hapus",
-                    cancelButtonText: "Tidak"
+                    confirmButtonText: "Hapus",
+                    cancelButtonText: "Batal"
                 }).then((result) => {
                     if (result.isConfirmed) {
                         event.preventDefault();

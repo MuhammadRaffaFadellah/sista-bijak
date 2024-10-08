@@ -13,18 +13,17 @@ return new class extends Migration
     {
         Schema::create('meninggals', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_kepala_keluarga');
             $table->unsignedBigInteger('nik');
-            $table->string('alamat');
-            $table->unsignedBigInteger('rw');
-            $table->unsignedBigInteger('rt');
             $table->string('nama_almarhum');
             $table->string('hubungan_dengan_kk');
+            $table->string('jenis_kelamin');
+            $table->unsignedBigInteger('rw');
+            $table->unsignedBigInteger('rt');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->string('tempat_meninggal');
             $table->date('tanggal_meninggal');
-            $table->string('jenis_kelamin');
+            $table->string('alamat');
             $table->string('status_kependudukan'); 
             $table->timestamps();
 

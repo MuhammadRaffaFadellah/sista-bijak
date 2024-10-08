@@ -134,8 +134,7 @@ Sista Bijak - Tabel Migrasi
                                 {{ $dataMigrasi->firstItem() + $index }}.
                             </td>
                             <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
-                                <span
-                                    class="
+                                <span class="
                                                     @if ($migrasi->jenis_migrasi == 'masuk') 
                                                         bg-green-500 
                                                     @elseif($migrasi->jenis_migrasi == 'keluar') 

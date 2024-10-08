@@ -29,10 +29,10 @@
                         <div>
                             <label for="nik" class="block text-sm font-medium text-gray-700">NIK</label>
                             @if(isset($lahir))
-                                <input type="text" name="nik" id="nik" value="{{ $lahir->nik }}" readonly class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                                <input type="text" name="nik" id="nik" value="{{ $lahir->nik }}" readonly class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"/>
                                 <span class="text-red-500 text-sm" id="nik-warning" style="display: none;">Tidak dapat merubah NIK</span>
                             @else
-                                <input type="text" name="nik" id="nik" placeholder="Silakan masukkan NIK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                                <input type="text" name="nik" id="nik" placeholder="Silakan masukkan NIK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
                             @endif
                         </div>
                         <div>
@@ -121,8 +121,8 @@
         function editConfirm(event) {
             event.preventDefault(); // Mencegah submit form secara default
             Swal.fire({
-                title: "Apakah kamu yakin?",
-                text: "Apakah kamu ingin menyimpan perubahan?",
+                title: "Simpan?",
+                text: "Periksa ulang perubahan jika ragu!",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -132,8 +132,8 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire({
-                        title: "Berhasil!",
-                        text: "Perubahan berhasil disimpan",
+                        title: "Berhasil",
+                        text: "Perubahan berhasil disimpan!",
                         icon: "success",
                         confirmButtonText: "OK",
                         confirmButtonColor: "#3085d6"

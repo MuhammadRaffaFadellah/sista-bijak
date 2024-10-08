@@ -214,8 +214,8 @@
             event.preventDefault(); // Mencegah form dikirim langsung
             // Tampilkan SweetAlert untuk konfirmasi
             Swal.fire({
-                title: 'Yakin ingin menyimpan perubahan?',
-                text: "Pastikan semua data sudah benar sebelum menyimpan.",
+                title: 'Simpan?',
+                text: "Periksa ulang perubahan jika ragu!",
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, simpan!',
@@ -228,7 +228,7 @@
                     if (isFormComplete()) {
                         // Jika semua data sudah lengkap, simpan form dan tampilkan notifikasi berhasil
                         Swal.fire({
-                            title: 'Berhasil!',
+                            title: 'Berhasil',
                             text: 'Perubahan berhasil disimpan.',
                             icon: 'success',
                             confirmButtonColor: "#3085d6"

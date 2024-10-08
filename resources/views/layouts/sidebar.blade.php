@@ -157,7 +157,7 @@
 
         @if (auth()->check() && Auth::user()->role_id === 1)
             <div class="nav__link">
-                <a class="{{ request()->is('users') ? 'bg-gray-700 bg-opacity-25' : '' }} mt-4 flex items-center px-6 py-2 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+                <a class="{{ request()->is('user-management') ? 'bg-gray-700 bg-opacity-25' : '' }} mt-4 flex items-center px-6 py-2 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                     href="/user-management">
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" height="20" width="17.5"
                         fill="currentColor"
