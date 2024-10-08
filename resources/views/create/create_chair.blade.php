@@ -1,225 +1,155 @@
 @extends('layouts.master')
 
 @section('dashboard-title')
-    @if (isset($penduduk))
-        Sista Bijak - Edit Data Penduduk
-    @else
-        Sista Bijak - Tambah Data Penduduk
-    @endif
+    Sista Bijak - Edit Data Penduduk
 @endsection
 
 @section('body')
-    <div class="container mx-auto px-4 py-6">
-        <div class="card shadow-lg rounded-lg overflow-hidden">
-            <div class="bg-gray-800 text-white p-4">
-                <h3 class="text-lg font-bold">
-                    @if (isset($penduduk))
-                        Edit Data Penduduk
-                    @else
-                        Tambah Data Penduduk
-                    @endif
-                </h3>
+<div class="container mx-auto px-4 py-6">
+    <div class="card shadow-lg rounded-lg overflow-hidden">
+        <div class="bg-gray-800 text-white p-4">
+            <h3 class="text-lg font-bold">Edit Data Penduduk</h3>
+        </div>
+        <div class="p-4">
+        <form action="{{ isset($penduduk) ? route('penduduk.update', $penduduk->id) : route('penduduk.store') }}" method="POST">
+    @csrf
+    @if(isset($penduduk))
+        @method('PUT')
+    @endif
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @foreach(['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'status_hubkel', 'pendidikan_terakhir', 'jenis_pekerjaan', 'agama', 'status_perkawinan', 'alamat', 'rw', 'rt', 'kelurahan', 'status_kependudukan'] as $field)
+            <div>
+                <label for="{{ $field }}" class="block text-sm font-medium text-gray-700">{{ ucwords(str_replace('_', ' ', $field)) }}</label>
+                @if($field === 'nik')
+                    <input type="text" name="{{ $field }}" id="{{ $field }}" value="{{ old($field, $penduduk->$field) }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" readonly />
+                    <span class="text-red-500 text-sm" id="nik-warning" style="display: none;">Tidak dapat merubah NIK</span>
+                @elseif($field === 'jenis_kelamin')
+                    <select name="{{ $field }}" id="{{ $field }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="Laki-laki" {{ old($field, $penduduk->$field) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                        <option value="Perempuan" {{ old($field, $penduduk->$field) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
+                @elseif($field === 'agama')
+                    <select name="{{ $field }}" id="{{ $field }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="Islam" {{ old($field, $penduduk->$field) == 'Islam' ? 'selected' : '' }}>Islam</option>
+                        <option value="Kristen" {{ old($field, $penduduk->$field) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                        <option value="Hindu" {{ old($field, $penduduk->$field) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                        <option value="Buddha" {{ old($field, $penduduk->$field) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                        <option value="Konghucu" {{ old($field, $penduduk->$field) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                    </select>
+                @elseif($field === 'status_hubkel')
+                    <select name="{{ $field }}" id="{{ $field }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="Kepala Keluarga" {{ old($field, $penduduk->$field) == 'Kepala Keluarga' ? 'selected' : '' }}>Kepala Keluarga</option>
+                        <option value="Istri" {{ old($field, $penduduk->$field) == 'Istri' ? 'selected' : '' }}>Istri</option>
+                        <option value="Anak" {{ old($field, $penduduk->$field) == 'Anak' ? 'selected' : '' }}>Anak</option>
+                        <option value="Famili Lain" {{ old($field, $penduduk->$field) == 'Famili Lain' ? 'selected' : '' }}>Famili Lain</option>
+                        <option value="Sepupu" {{ old($field, $penduduk->$field) == 'Sepupu' ? 'selected' : '' }}>Sepupu</option>
+                        <option value="Mertua" {{ old($field, $penduduk->$field) == 'Mertua' ? 'selected' : '' }}>Mertua</option>
+                        <option value="Orang Tua" {{ old($field, $penduduk->$field) == 'Orang Tua' ? 'selected' : '' }}>Orang Tua</option>
+                        <option value="Cucu" {{ old($field, $penduduk->$field) == 'Cucu' ? 'selected' : '' }}>Cucu</option>
+                        <option value="Pembantu" {{ old($field, $penduduk->$field) == 'Pembantu' ? 'selected' : '' }}>Pembantu</option>
+                        <option value="Lainnya" {{ old($field, $penduduk->$field) == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                    </select>
+                @elseif($field === 'status_perkawinan')
+                    <select name="{{ $field }}" id="{{ $field }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="Belum Menikah" {{ old($field, $penduduk->$field) == 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
+                        <option value="Menikah" {{ old($field, $penduduk->$field) == 'Menikah' ? 'selected' : '' }}>Menikah</option>
+                        <option value="Cerai Hidup" {{ old($field, $penduduk->$field) == 'Cerai Hidup' ? 'selected' : '' }}>Cerai Hidup</option>
+                        <option value="Cerai Mati" {{ old($field, $penduduk->$field) == 'Cerai Mati' ? 'selected' : '' }}>Cerai Mati</option>
+                    </select>
+                @elseif($field === 'jenis_pekerjaan')
+                    <select name="{{ $field }}" id="{{ $field }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="Tidak Bekerja" {{ old($field, $penduduk->$field) == 'Tidak Bekerja' ? 'selected' : '' }}>Tidak Bekerja</option>
+                        <option value="PNS" {{ old($field, $penduduk->$field) == 'PNS' ? 'selected' : '' }}>PNS</option>
+                        <option value="Swasta" {{ old($field, $penduduk->$field) == 'Swasta' ? 'selected' : '' }}>Swasta</option>
+                        <option value="Wirausaha" {{ old($field, $penduduk->$field) == 'Wirausaha' ? 'selected' : '' }}>Wirausaha</option>
+                        <option value="Lainnya" {{ old($field, $penduduk->$field) == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                    </select>
+                @elseif($field === 'pendidikan_terakhir')
+                    <select name="{{ $field }}" id="{{ $field }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="AKADEMI/DIPLOMA III/S.MUDA" {{ old($field, $penduduk->$field) == 'AKADEMI/DIPLOMA III/S.MUDA' ? 'selected' : '' }}>AKADEMI/DIPLOMA III/S.MUDA</option>
+                        <option value="BELUM TAMAT SD/SEDERAJAT" {{ old($field, $penduduk->$field) == 'BELUM TAMAT SD/SEDERAJAT' ? 'selected' : '' }}>BELUM TAMAT SD/SEDERAJAT</option>
+                        <option value="DIPLOMA I/II" {{ old($field, $penduduk->$field) == 'DIPLOMA I/II' ? 'selected' : '' }}>DIPLOMA I/II</option>
+                        <option value="DIPLOMA IV/STRATA I" {{ old($field, $penduduk->$field) == 'DIPLOMA IV/STRATA I' ? 'selected' : '' }}>DIPLOMA IV/STRATA I</option>
+                        <option value="SLTA/SEDERAJAT" {{ old($field, $penduduk->$field) == 'SLTA/SEDERAJAT' ? 'selected' : '' }}>SLTA/SEDERAJAT</option>
+                        <option value="STRATA II" {{ old($field, $penduduk->$field) == 'STRATA II' ? 'selected' : '' }}>STRATA II</option>
+                        <option value="STRATA III" {{ old($field, $penduduk->$field) == 'STRATA III' ? 'selected' : '' }}>STRATA III</option>
+                        <option value="TAMAT SD/SEDERAJAT" {{ old($field, $penduduk->$field) == 'TAMAT SD/SEDERAJAT' ? 'selected' : '' }}>TAMAT SD/SEDERAJAT</option>
+                        <option value="TIDAK TAMAT SD/SEDERAJAT" {{ old($field, $penduduk->$field) == 'TIDAK TAMAT SD/SEDERAJAT' ? 'selected' : '' }}>TIDAK TAMAT SD/SEDERAJAT</option>
+                        <option value="TIDAK/BELUM SEKOLAH" {{ old($field, $penduduk->$field) == 'TIDAK/BELUM SEKOLAH' ? 'selected' : '' }}>TIDAK/BELUM SEKOLAH</option>
+                    </select>
+                @elseif($field === 'rw')
+                    <select name="{{ $field }}" id="{{ $field }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        @if (Auth::user()->role->id === 1) <!-- Admin -->
+                            @foreach ($rws as $rw)
+                                <option value="{{ $rw->id }}" {{ old($field, $penduduk->$field) == $rw->id ? 'selected' : '' }}>{{ $rw->rukun_warga }}</option>
+                            @endforeach
+                        @else <!-- RW -->
+                            <option value="{{ Auth::user()->rw->id }}" {{ old($field, $penduduk->$field) == Auth::user()->rw->id ? 'selected' : '' }}>{{ Auth::user()->rw->rukun_warga }}</option>
+                        @endif
+                    </select>
+                @elseif($field === 'kelurahan')
+                    <input type="text" name="{{ $field }}" id="{{ $field }}" value="Kesambi" readonly class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                @elseif($field === 'status_kependudukan')
+                    <select name="{{ $field }}" id="{{ $field }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                        <option value="Menetap" {{ old($field, $penduduk->$field) == 'Menetap' ? 'selected' : '' }}>Menetap</option>
+                        <option value="Keluar" {{ old($field, $penduduk->$field) == 'Keluar' ? 'selected' : '' }}>Keluar</option>
+                        <option value="Masuk" {{ old($field, $penduduk->$field) == 'Masuk' ? 'selected' : '' }}>Masuk</option>
+                    </select>
+                @else
+                    <input type="{{ $field === 'tanggal_lahir' ? 'date' : 'text' }}" name="{{ $field }}" id="{{ $field }}" value="{{ old($field, $penduduk->$field) }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" required>
+                @endif
             </div>
-            <div class="p-4">
-                <form action="{{ isset($penduduk) ? route('penduduk.update', $penduduk->id) : route('penduduk.store') }}"
-                    method="POST">
-                    @csrf
-                    @if (isset($penduduk))
-                        @method('PUT')
-                    @endif
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="nik" class="block text-sm font-medium text-gray-700">NIK</label>
-                            @if (isset($penduduk))
-                                <input type="text" name="nik" id="nik" value="{{ $penduduk->nik }}" readonly
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                                <span class="text-red-500 text-sm" id="nik-warning" style="display: none;">Tidak dapat
-                                    merubah NIK</span>
-                            @else
-                                <input type="text" name="nik" id="nik" placeholder="Silakan masukkan NIK"
-                                    required
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                            @endif
-                        </div>
-                        <div>
-                            <label for="nama_lengkap" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                            <input type="text" name="nama_lengkap" id="nama_lengkap"
-                                placeholder="Silakan masukkan nama lengkap" value="{{ $penduduk->nama_lengkap ?? '' }}"
-                                required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                        </div>
-                        <div>
-                            <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
-                            <select name="jenis_kelamin" id="jenis_kelamin" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                <option value="LAKI-LAKI"
-                                    {{ isset($penduduk) && $penduduk->jenis_kelamin == 'LAKI-LAKI' ? 'selected' : '' }}>
-                                    LAKI-LAKI</option>
-                                <option value="PEREMPUAN"
-                                    {{ isset($penduduk) && $penduduk->jenis_kelamin == 'PEREMPUAN' ? 'selected' : '' }}>
-                                    PEREMPUAN</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="tempat_lahir" class="block text-sm font-medium text-gray-700">Tempat Lahir</label>
-                            <input type="text" name="tempat_lahir" id="tempat_lahir"
-                                placeholder="Silakan masukkan tempat lahir" value="{{ $penduduk->tempat_lahir ?? '' }}"
-                                required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                        </div>
-                        <div>
-                            <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
-                            <input type="date" name="tanggal_lahir" id="tanggal_lahir"
-                                value="{{ $penduduk->tanggal_lahir ?? '' }}" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                        </div>
-                        <div>
-                            <label for="status_hubkel" class="block text-sm font-medium text-gray-700">Status Hubungan
-                                Keluarga</label>
-                            <select name="status_hubkel" id="status_hubkel" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                @foreach ($hubkelOptions as $option)
-                                    <option value="{{ $option }}"
-                                        {{ isset($penduduk) && $penduduk->status_hubkel == $option ? 'selected' : '' }}>
-                                        {{ $option }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <label for="pendidikan_terakhir" class="block text-sm font-medium text-gray-700">Pendidikan
-                                Terakhir</label>
-                            <select name="pendidikan_terakhir" id="pendidikan_terakhir" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                @foreach ($pendidikanOptions as $option)
-                                    <option value="{{ $option }}"
-                                        {{ isset($penduduk) && $penduduk->pendidikan_terakhir == $option ? 'selected' : '' }}>
-                                        {{ $option }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <label for="jenis_pekerjaan" class="block text-sm font-medium text-gray-700">Jenis
-                                Pekerjaan</label>
-                            <input type="text" name="jenis_pekerjaan" id="jenis_pekerjaan"
-                                placeholder="Silakan masukkan jenis pekerjaan"
-                                value="{{ $penduduk->jenis_pekerjaan ?? '' }}"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                        </div>
-                        <div>
-                            <label for="agama" class="block text-sm font-medium text-gray-700">Agama</label>
-                            <select name="agama" id="agama" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                @foreach ($agamaOptions as $option)
-                                    <option value="{{ $option }}"
-                                        {{ isset($penduduk) && $penduduk->agama == $option ? 'selected' : '' }}>
-                                        {{ $option }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <label for="status_perkawinan" class="block text-sm font-medium text-gray-700">Status
-                                Perkawinan</label>
-                            <select name="status_perkawinan" id="status_perkawinan" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                @foreach ($statusOptions as $option)
-                                    <option value="{{ $option }}"
-                                        {{ isset($penduduk) && $penduduk->status_perkawinan == $option ? 'selected' : '' }}>
-                                        {{ $option }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
-                            <input type="text" name="alamat" id="alamat" placeholder="Silakan masukkan alamat"
-                                value="{{ $penduduk->alamat ?? '' }}" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                        </div>
-                        <div>
-                            <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
-                            <input type="text" name="rw" id="rw" placeholder="Silakan masukkan RW"
-                                value="{{ $penduduk->rw ?? '' }}" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                        </div>
-                        <div>
-                            <label for="rt" class="block text-sm font-medium text-gray-700">RT</label>
-                            <input type="text" name="rt" id="rt" placeholder="Silakan masukkan RT"
-                                value="{{ $penduduk->rt ?? '' }}" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                        </div>
-                        <div>
-                            <label for="kelurahan" class="block text-sm font-medium text-gray-700">Kelurahan</label>
-                            <select name="kelurahan" id="kelurahan" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                <option value="Kesambi"
-                                    {{ isset($penduduk) && $penduduk->kelurahan == 'Kesambi' ? 'selected' : '' }}>KESAMBI
-                                </option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="status_kependudukan" class="block text-sm font-medium text-gray-700">Status
-                                Kependudukan</label>
-                            <select name="status_kependudukan" id="status_kependudukan" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                @foreach ($statusKependudukanOptions as $option)
-                                    <option value="{{ $option }}"
-                                        {{ isset($penduduk) && $penduduk->status_kependudukan == $option ? 'selected' : '' }}>
-                                        {{ $option }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mt-4 flex justify-between">
-                        <a href="{{ route('resident.table') }}"
-                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition ease-in-out duration-150">Kembali</a>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150"
-                            onclick="editConfirm(event)">
-                            @if (isset($penduduk))
-                                Update Data
-                            @else
-                                Simpan Data
-                            @endif
-                        </button>
-                    </div>
-                </form>
-            </div>
+        @endforeach
+    </div>
+    <div class="mt-4 flex justify-between">
+        <a href="{{ route('resident-migration-in') }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Kembali</a>
+        <button type="submit" onclick="editConfirm(event)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            @if(isset($penduduk))
+                Update Data
+            @else
+                Simpan Data
+            @endif
+        </button>
+    </div>
+</form>
         </div>
     </div>
-    @include("sweetalert")
-    <script>
-        function editConfirm(event) {
-            event.preventDefault(); // Mencegah submit form secara default
-            Swal.fire({
-                title: "Apakah kamu yakin?",
-                text: "Apakah kamu ingin menyimpan perubahan?",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Ya, simpan perubahan",
-                cancelButtonText: "Tidak, batalkan"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: "Berhasil!",
-                        text: "User berhasil diubah.",
-                        icon: "success",
-                        confirmButtonText: "OK",
-                        confirmButtonColor: "#3085d6"
-                    }).then(() => {
-                        // Submit the form setelah pesan sukses muncul
-                        event.target.closest('form').submit();
-                    });
-                }
-            });
-        }
-
-        document.getElementById('nik').addEventListener('click', function() {
-            if (this.readOnly) {
-                document.getElementById('nik-warning').style.display = 'block';
-                setTimeout(function() {
-                    document.getElementById('nik-warning').style.display = 'none';
-                }, 3000);
+</div>
+@include('sweetalert')
+<script>
+    function editConfirm(event) {
+        event.preventDefault(); // Mencegah submit form secara default
+        Swal.fire({
+            title: "Apakah kamu yakin?",
+            text: "Apakah kamu ingin menyimpan perubahan?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, Simpan",
+            cancelButtonText: "Tidak"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Berhasil!",
+                    text: "Perubahan berhasil disimpan",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#3085d6"
+                }).then(() => {
+                    // Submit the form setelah pesan sukses muncul
+                    event.target.closest('form').submit();
+                });
             }
         });
-    </script>
+    }
+    document.getElementById('nik').addEventListener('click', function() {
+        if (this.readOnly) {
+            document.getElementById('nik-warning').style.display = 'block';
+            setTimeout(function() {
+                document.getElementById('nik-warning').style.display = 'none';
+            }, 3000);
+        }
+    });
+</script>
 @endsection

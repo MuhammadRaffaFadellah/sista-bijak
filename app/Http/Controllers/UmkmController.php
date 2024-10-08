@@ -6,11 +6,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Umkm;
 use App\Models\Rw;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UmkmExport;
 
 
 
 class UmkmController extends Controller
 {
+
+    public function download()
+    {
+        $umkms = Umkm::all();
+        
+        return Excel::download(new UmkmExport, 'umkm_data.xlsx');
+    }
+
     public function umkm_table(Request $request)
     {
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login

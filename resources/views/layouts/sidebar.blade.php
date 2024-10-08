@@ -49,7 +49,7 @@
         </div>
 
         {{-- Side Migrasi --}}
-        <div class="nav__link">
+        <!-- <div class="nav__link">
             <a class="flex items-center text-decoration-none style-none px-6 py-2 mt-4 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 w-full transition duration-75 group"
                 href="/resident-migration">
                 <svg class="w-6 h-6 flex-shrink-0 text-gray-600 transition duration-100 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
@@ -59,88 +59,146 @@
                 </svg>
                 <span class="mx-3">Migrasi Penduduk</span>
             </a>
-        </div>
+        </div> -->
 
         <script src="https://unpkg.com/flowbite@1.3.4/dist/flowbite.js"></script>
-        <style>
-            /* Animasi untuk dropdown */
-            .dropdown-enter {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
+<style>
+    /* Animasi untuk dropdown */
+    .dropdown-enter {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
 
-            .dropdown-enter-active {
-                opacity: 1;
-                transform: translateY(0);
-                transition: opacity 0.3s ease, transform 0.3s ease;
-            }
+    .dropdown-enter-active {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
 
-            .dropdown-exit {
-                opacity: 1;
-                transform: translateY(0);
-            }
+    .dropdown-exit {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-            .dropdown-exit-active {
-                opacity: 0;
-                transform: translateY(-10px);
-                transition: opacity 0.3s ease, transform 0.3s ease;
-            }
+    .dropdown-exit-active {
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
 
-            /* Ikon bergerak ke atas saat dropdown terbuka */
-            .icon-rotate {
-                transform: rotate(180deg);
-                transition: transform 0.3s ease;
-            }
-        </style>
-        <a href="javascript:void(0)"
-            class="flex items-center text-decoration-none style-none px-6 py-2 mt-4 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 w-full transition duration-75 group"
-            aria-controls="dropdown-example" id="dropdownToggle">
-            <svg class="w-6 h-6 flex-shrink-0 text-gray-500 transition duration-100 group-hover:text-gray-100 dark:text-gray-400 dark:group-hover:text-white"
-                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-            </svg>
-            <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Tabel</span>
-            <svg id="iconArrow" class="w-6 h-6 transition-transform duration-300" fill="currentColor"
-                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clip-rule="evenodd"></path>
-            </svg>
-        </a>
-        <ul id="dropdown-example" class="hidden space-y-2 transition-all duration-300 pt-2">
-            <li>
-                <div class="nav__link">
-                    <a href="/resident-born"
-                        class="flex items-center w-full py-2 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 transition duration-75 group pl-11">
-                        <span>Penduduk Lahir</span>
-                    </a>
-                </div>
-            </li>
-            <li>
-                <div class="nav__link">
-                    <a href="/resident-died"
-                        class="flex items-center w-full py-2 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 transition duration-75 group pl-11">
-                        <span>Penduduk Meninggal</span>
-                    </a>
-                </div>
-            </li>
-        </ul>
-        <script>
-            const dropdownToggle = document.getElementById('dropdownToggle');
-            const dropdownMenu = document.getElementById('dropdown-example');
-            const iconArrow = document.getElementById('iconArrow');
-            dropdownToggle.addEventListener('click', () => {
-                // Toggle hidden class for dropdown
-                dropdownMenu.classList.toggle('hidden');
-                // Rotate icon based on dropdown state
-                if (dropdownMenu.classList.contains('hidden')) {
-                    iconArrow.classList.remove('icon-rotate');
-                } else {
-                    iconArrow.classList.add('icon-rotate');
-                }
-            });
-        </script>
+    /* Ikon bergerak ke atas saat dropdown terbuka */
+    .icon-rotate {
+        transform: rotate(180deg);
+        transition: transform 0.3s ease;
+    }
+</style>
+
+<!-- Dropdown Migrasi -->
+<a href="javascript:void(0)"
+    class="flex items-center text-decoration-none style-none px-6 py-2 mt-4 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 w-full transition duration-75 group"
+    aria-controls="dropdown-migrasi" id="dropdownToggleMigrasi">
+    <svg class="w-6 h-6 flex-shrink-0 text-gray-600 transition duration-100 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
+        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C11.4477 2 11 2.44772 11 3V5C11 5.55228 11.4477 6 12 6H15C16.1046 6 17 6.89543 17 8V9.58579L19.2929 7.29289C19.6834 6.90237 20.3166 6.90237 20.7071 7.29289C21.0976 7.68342 21.0976 8.31658 20.7071 8.70711L17 12.4142L13.2929 8.70711C12.9024 8.31658 12.9024 7.68342 13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289L17 9.58579V8C17 7.44772 16.5523 7 16 7H13V3C13 2.44772 12.5523 2 12 2ZM7 7C8.10457 7 9 7.89543 9 9V11H7C5.89543 11 5 11.8954 5 13V16C5 17.1046 5.89543 18 7 18H9V19C9 20.1046 8.10457 21 7 21C5.89543 21 5 20.1046 5 19V17C3.89543 17 3 16.1046 3 15V13C3 11.8954 3.89543 11 5 11V9C5 7.89543 5.89543 7 7 7Z" />
+    </svg>
+    <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Migrasi</span>
+    <svg id="iconArrowMigrasi" class="w-6 h-6 transition-transform duration-300" fill="currentColor"
+        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"></path>
+    </svg>
+</a>
+<ul id="dropdown-migrasi" class="hidden space-y-2 transition-all duration-300 pt-2">
+    <li>
+        <div class="nav__link">
+            <a href="/resident-migration-in"
+                class="flex items-center w-full py-2 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 transition duration-75 group pl-11">
+                <span>Migrasi Masuk</span>
+            </a>
+        </div>
+    </li>
+    <li>
+        <div class="nav__link">
+            <a href="/resident-migration-out"
+                class="flex items-center w-full py-2 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 transition duration-75 group pl-11">
+                <span>Migrasi Keluar</span>
+            </a>
+        </div>
+    </li>
+</ul>
+
+<!-- Dropdown Tabel -->
+<a href="javascript:void(0)"
+    class="flex items-center text-decoration-none style-none px-6 py-2 mt-4 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 w-full transition duration-75 group"
+    aria-controls="dropdown-tabel" id="dropdownToggleTabel">
+    <svg class="w-6 h-6 flex-shrink-0 text-gray-500 transition duration-100 group-hover:text-gray-100 dark:text-gray-400 dark:group-hover:text-white"
+        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+    </svg>
+    <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Tabel</span>
+    <svg id="iconArrowTabel" class="w-6 h-6 transition-transform duration-300" fill="currentColor"
+        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"></path>
+    </svg>
+</a>
+<ul id="dropdown-tabel" class="hidden space-y-2 transition-all duration-300 pt-2">
+    <li>
+        <div class="nav__link">
+            <a href="/resident-born"
+                class="flex items-center w-full py-2 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 transition duration-75 group pl-11">
+                <span>Penduduk Lahir</span>
+            </a>
+        </div>
+    </li>
+    <li>
+        <div class="nav__link">
+            <a href="/resident-died"
+                class="flex items-center w-full py-2 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 transition duration-75 group pl-11">
+                <span>Penduduk Meninggal</span>
+            </a>
+        </div>
+    </li>
+</ul>
+
+<!-- JavaScript -->
+<script>
+    // Dropdown Migrasi
+    const dropdownToggleMigrasi = document.getElementById('dropdownToggleMigrasi');
+    const dropdownMenuMigrasi = document.getElementById('dropdown-migrasi');
+    const iconArrowMigrasi = document.getElementById('iconArrowMigrasi');
+
+    dropdownToggleMigrasi.addEventListener('click', () => {
+        // Toggle hidden class for dropdown
+        dropdownMenuMigrasi.classList.toggle('hidden');
+        // Rotate icon based on dropdown state
+        if (dropdownMenuMigrasi.classList.contains('hidden')) {
+            iconArrowMigrasi.classList.remove('icon-rotate');
+        } else {
+            iconArrowMigrasi.classList.add('icon-rotate');
+        }
+    });
+
+    // Dropdown Tabel
+    const dropdownToggleTabel = document.getElementById('dropdownToggleTabel');
+    const dropdownMenuTabel = document.getElementById('dropdown-tabel');
+    const iconArrowTabel = document.getElementById('iconArrowTabel');
+
+    dropdownToggleTabel.addEventListener('click', () => {
+        // Toggle hidden class for dropdown
+        dropdownMenuTabel.classList.toggle('hidden');
+        // Rotate icon based on dropdown state
+        if (dropdownMenuTabel.classList.contains('hidden')) {
+            iconArrowTabel.classList.remove('icon-rotate');
+        } else {
+            iconArrowTabel.classList.add('icon-rotate');
+        }
+    });
+</script>
+
 
         {{-- Side UMKM --}}
         <div class="nav__link">

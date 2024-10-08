@@ -369,15 +369,43 @@ Sista Bijak - Tabel Migrasi
                                 </div>
                                 <div>
                                     <label for="anggota_${i}_${j}_hubungan_dengan_kk" class="block text-sm font-medium text-gray-700">Hubungan dengan KK</label>
-                                    <input type="text" name="anggota[${i}][${j}][hubungan_dengan_kk]" id="anggota_${i}_${j}_hubungan_dengan_kk" placeholder="Silakan masukkan hubungan dengan KK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                                    <select name="anggota[${i}][${j}][hubungan_dengan_kk]" id="anggota_${i}_${j}_hubungan_dengan_kk" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                        <option value="Kepala Keluarga">Kepala Keluarga</option>
+                                        <option value="Isri">Isri</option>
+                                        <option value="Anak">Anak</option>
+                                        <option value="Famili Lain">Famili Lain</option>
+                                        <option value="Sepupu">Sepupu</option>
+                                        <option value="Mertua">Mertua</option>
+                                        <option value="Orang Tua">Orang Tua</option>
+                                        <option value="Cucu">Cucu</option>
+                                        <option value="Pembantu">Pembantu</option>
+                                        <option value="Lainnya">Lainnya</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="anggota_${i}_${j}_pendidikan" class="block text-sm font-medium text-gray-700">Pendidikan</label>
-                                    <input type="text" name="anggota[${i}][${j}][pendidikan]" id="anggota_${i}_${j}_pendidikan" placeholder="Silakan masukkan pendidikan" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                                    <select name="anggota[${i}][${j}][pendidikan]" id="anggota_${i}_${j}_pendidikan" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                        <option value="AKADEMI/DIPLOMA III/S.MUDA">AKADEMI/DIPLOMA III/S.MUDA</option>
+                                        <option value="BELUM TAMAT SD/SEDERAJAT">BELUM TAMAT SD/SEDERAJAT</option>
+                                        <option value="DIPLOMA I/II">DIPLOMA I/II</option>
+                                        <option value="DIPLOMA IV/STRATA I">DIPLOMA IV/STRATA I</option>
+                                        <option value="SLTA/SEDERAJAT">SLTA/SEDERAJAT</option>
+                                        <option value="STRATA II">STRATA II</option>
+                                        <option value="STRATA III">STRATA III</option>
+                                        <option value="TAMAT SD/SEDERAJAT">TAMAT SD/SEDERAJAT</option>
+                                        <option value="TIDAK TAMAT SD/SEDERAJAT">TIDAK TAMAT SD/SEDERAJAT</option>
+                                        <option value="TIDAK/BELUM SEKOLAH">TIDAK/BELUM SEKOLAH</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="anggota_${i}_${j}_pekerjaan" class="block text-sm font-medium text-gray-700">Pekerjaan</label>
-                                    <input type="text" name="anggota[${i}][${j}][pekerjaan]" id="anggota_${i}_${j}_pekerjaan" placeholder="Silakan masukkan pekerjaan" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                                    <select name="anggota[${i}][${j}][pekerjaan]" id="anggota_${i}_${j}_pekerjaan" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                        <option value="Swasta">Swasta</option>
+                                        <option value="Pemerintah">Pemerintah</option>
+                                        <option value="BUMN">BUMN</option>
+                                        <option value="BUMD">BUMD</option>
+                                        <option value="Lainnya">Lainnya</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
