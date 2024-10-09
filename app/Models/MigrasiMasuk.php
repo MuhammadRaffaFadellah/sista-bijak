@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class Penduduk extends Model
+class MigrasiMasuk extends Model
 {
     use HasFactory;
-    protected $table = 'penduduk';
+    protected $table = 'migrasi_masuk';
     protected $fillable = [
         'nik',
         'nama_lengkap',
@@ -26,7 +25,7 @@ class Penduduk extends Model
         'rt',
         'kelurahan',
         'status_kependudukan',
-    ];
+    ]; 
 
     // Define the relationship with Rw
     public function rw()
@@ -38,21 +37,26 @@ class Penduduk extends Model
 {
     return $this->belongsTo(User::class, 'rw', 'rw_id'); // Pastikan kunci asing benar
 }
-public function migrasiMasuk()
-{
-    return $this->belongsTo(MigrasiMasuk::class, 'nik', 'nik');
+
+public function penduduk()
+{   
+    return $this->hasOne(Penduduk::class, 'nik', 'nik');
 }
+
 protected static function boot()
     {
         parent::boot();
-        static::updating(function ($penduduk) {
-            $migrasi = MigrasiMasuk::where('nik', $penduduk->nik)->first();
-            if ($migrasi) {
-                $migrasi->update($penduduk->getAttributes());
+
+        static::updating(function ($migrasi) {
+            $penduduk = Penduduk::where('nik', $migrasi->nik)->first();
+            if ($penduduk) {
+                $penduduk->update($migrasi->getAttributes());
             }
         });
-        static::deleting(function ($penduduk) {
-            MigrasiMasuk::where('nik', $penduduk->nik)->delete();
+
+        static::deleting(function ($migrasi) {
+            Penduduk::where('nik', $migrasi->nik)->delete();
         });
     }
+
 }

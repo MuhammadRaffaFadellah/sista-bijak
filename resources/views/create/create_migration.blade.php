@@ -87,7 +87,13 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
                                     <input type="hidden" name="anggota[{{ $index }}][id]"
                                         value="{{ $anggota['id'] ?? '' }}" />
-                                    @foreach ([['nama', 'Nama', 'text', $anggota['nama'] ?? ''], ['tempat_lahir', 'Tempat Lahir', 'text', $anggota['tempat_lahir'] ?? ''], ['tanggal_lahir', 'Tanggal Lahir', 'date', $anggota['tanggal_lahir'] ?? ''], ['jenis_kelamin', 'Jenis Kelamin', 'select', ['LAKI-LAKI', 'PEREMPUAN'], $anggota['jenis_kelamin'] ?? 'LAKI-LAKI'], ['hubungan_dengan_kk', 'Hubungan dengan KK', 'text', $anggota['hubungan_dengan_kk'] ?? ''], ['pendidikan', 'Pendidikan', 'text', $anggota['pendidikan'] ?? ''], ['pekerjaan', 'Pekerjaan', 'text', $anggota['pekerjaan'] ?? '']] as $input)
+                                        @foreach ([['nama', 'Nama', 'text', $anggota['nama'] ?? ''], 
+                                                ['tempat_lahir', 'Tempat Lahir', 'text', $anggota['tempat_lahir'] ?? ''], 
+                                                ['tanggal_lahir', 'Tanggal Lahir', 'date', $anggota['tanggal_lahir'] ?? ''], 
+                                                ['jenis_kelamin', 'Jenis Kelamin', 'select', ['LAKI-LAKI', 'PEREMPUAN'], $anggota['jenis_kelamin'] ?? 'LAKI-LAKI'], 
+                                                ['hubungan_dengan_kk', 'Hubungan dengan KK', 'select', ['Kepala Keluarga', 'Isri', 'Anak', 'Famili Lain', 'Sepupu', 'Mertua', 'Orang Tua', 'Cucu', 'Pembantu', 'Lainnya'], $anggota['hubungan_dengan_kk'] ?? ''], 
+                                                ['pendidikan', 'Pendidikan', 'select', ['AKADEMI/DIPLOMA III/S.MUDA', 'BELUM TAMAT SD/SEDERAJAT', 'DIPLOMA I/II', 'DIPLOMA IV/STRATA I', 'SLTA/SEDERAJAT', 'STRATA II', 'STRATA III', 'TAMAT SD/SEDERAJAT', 'TIDAK TAMAT SD/SEDERAJAT', 'TIDAK/BELUM SEKOLAH'], $anggota['pendidikan'] ?? ''], 
+                                                ['pekerjaan', 'Pekerjaan', 'select',['Swasta', 'Pemerintah', 'BUMN', 'BUMD', 'Lainnya'], $anggota['pekerjaan'] ?? '']] as $input)
                                         <div>
                                             <label for="anggota[{{ $index }}][{{ $input[0] }}]"
                                                 class="block text-sm font-medium text-gray-700">{{ $input[1] }}</label>

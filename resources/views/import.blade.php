@@ -14,7 +14,8 @@
     @csrf
     <div class="mb-3">
         <label for="your_file" class="form-label" style="font-weight:700;">Pilih File Excel</label>
-        <input type="file" class="form-control" id="your_file" name="your_file" accept=".xlsx, .xls">
+        <input type="file" class="form-control" id="your_file" name="your_file" accept=".v
+        xlsx, .xls">
     </div>
     <button type="submit" class="btn btn-edit">Impor Data</button>
 </form>

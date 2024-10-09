@@ -119,7 +119,7 @@ class LahirController extends Controller
     {
         // Ambil data dari tabel lahir berdasarkan ID
         $lahir = Lahir::find($id);
-        $rws = Rw::all();
+        $rws = rw::all();
 
         // Periksa apakah data ditemukan
         if (!$lahir) {

@@ -5,13 +5,20 @@ Sista Bijak - Tabel UMKM
 @section('body')
 <div class="container mx-auto px-4 py-6">
     <div class="card shadow-lg rounded-lg overflow-hidden">
-        <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
-            <h3 class="text-lg font-bold">Tabel UMKM</h3>
-            <button id="addDataButton"
-                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
-                <i class="fas fa-plus"></i>
-            </button>
-        </div>
+    <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
+    <h3 class="text-lg font-bold">Tabel UMKM</h3>
+    <div class="flex items-center space-x-2">
+        <button id="addDataButton"
+            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
+            <i class="fas fa-plus"></i>
+        </button>
+        @if (Auth::user()->role->id === 1) <!-- Tampilkan tombol download hanya untuk admin -->
+                <button onclick="window.location='{{ route('umkm.download') }}'" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                    <i class="fas fa-download"></i>
+                </button>
+            @endif
+    </div>
+</div>
         <div class="p-4">
             <!-- Form Filter -->
             <form method="GET" action="{{ route('umkm') }}" class="mb-4">
@@ -222,7 +229,11 @@ Sista Bijak - Tabel UMKM
                     ${[ 'nik', 'nama_rw', 'rw', 'jumlah_umkm', 'jenis_umkm', 'kategori_umkm', 'nama_pemilik', 'alamat'].map(field => `
                     <div>
                     <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
-                    ${field === 'jenis_umkm' ? `
+                    ${field === 'nik' ? `
+                    <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan NIK" required maxlength="16" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
+                    ` : field === 'nama_pemilik' ? `
+                    <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan Nama Pemilik" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                    ` : field === 'jenis_umkm' ? `
                     <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
                         <option value="Industri Pengolahan">Industri Pengolahan</option>
                         <option value="Perdagangan besar/eceran">Perdagangan besar/eceran</option>
