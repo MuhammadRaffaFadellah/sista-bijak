@@ -8,6 +8,8 @@ use App\Models\Rw;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Exports\MigrasiMasukExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MigrasiMasukController extends Controller
 {
@@ -194,5 +196,10 @@ public function update(Request $request, $id)
         $migrasiMasuk->delete();
 
         return redirect()->route('resident-migration-in')->with('success', 'Data migrasi masuk berhasil dihapus.');
+    }
+
+    public function download()
+    {
+        return Excel::download(new MigrasiMasukExport, 'migrasi_masuk_data.xlsx');
     }
 }

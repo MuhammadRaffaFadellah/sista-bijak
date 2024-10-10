@@ -129,8 +129,16 @@ Route::delete('/migrasikeluar/{id}', [MigrasiKeluarController::class, 'destroy']
 
 //excel
 Route::get('umkm/download', [UmkmController::class, 'download'])->name('umkm.download');
-
+Route::get('/migrasi-masuk/download', [MigrasiMasukController::class, 'download'])->name('migrasi-masuk.download');
+Route::get('/migrasi-keluar/download', [MigrasiKeluarController::class, 'download'])->name('migrasi-keluar.download');
+Route::get('/table-penduduk/download', [PendudukController::class, 'download'])->name('table-penduduk.download');
+Route::get('/resident-table/download', [PendudukController::class, 'download'])->name('resident-table.download');
 Route::get('/resident-migration/{id}/edit', [MigrasiController::class, 'edit'])->middleware(['auth', 'verified'])->name('migrasi.edit');
+Route::get('/table-lahir/download', [LahirController::class, 'download'])->name('table-lahir.download');
+Route::get('/table-meninggal/download', [MeninggalController::class, 'download'])->name('table-meninggal.download');
+
+
+//Tampilan halaman awal
 Route::get('/dashboard', [PendudukController::class, 'dashboard'])->name('dashboard');
 Route::get('/', [PendudukController::class, 'index'])->name('index');
 

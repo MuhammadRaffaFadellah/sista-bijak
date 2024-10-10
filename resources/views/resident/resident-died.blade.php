@@ -63,10 +63,17 @@
         <div class="card shadow-lg rounded-lg overflow-hidden">
             <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
                 <h3 class="text-lg font-bold">Tabel Meninggal</h3>
-                <button id="addDataButton"
-                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
-                    <i class="fas fa-plus"></i>
-                </button>
+                <div class="flex items-center space-x-2">
+                    <button id="addDataButton"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    @if (Auth::user()->role->id === 1) <!-- Tampilkan tombol download hanya untuk admin -->
+                            <button onclick="window.location='{{ route('table-meninggal.download') }}'" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                                <i class="fas fa-download"></i>
+                            </button>
+                    @endif
+                </div>
             </div>
             <div class="p-4">
                 <!-- Form Filter -->

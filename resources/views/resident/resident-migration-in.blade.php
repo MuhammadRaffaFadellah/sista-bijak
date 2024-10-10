@@ -72,10 +72,17 @@
         <div class="card shadow-lg rounded-lg overflow-hidden">
             <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
                 <h3 class="text-lg font-bold">Tabel Migrasi Masuk</h3>
-                <button id="addDataButton"
-                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
-                    <i class="fas fa-plus"></i>
-                </button>
+                <div class="flex items-center space-x-2">
+                    <button id="addDataButton"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    @if (Auth::user()->role->id === 1) <!-- Tampilkan tombol download hanya untuk admin -->
+                            <button onclick="window.location='{{ route('migrasi-masuk.download') }}'" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                                <i class="fas fa-download"></i>
+                            </button>
+                    @endif
+                </div>
             </div>
             <div class="p-4">
                 <form method="GET" action="{{ route('resident-migration-in') }}" class="mb-4">
@@ -288,7 +295,7 @@
                 <div>
                     <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
                     ${field === 'nik' ? `
-                    <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan NIK" required maxlength="16" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
+                    <input type="number" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan NIK" required maxlength="16" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
                     ` : field === 'nama_lengkap' ? `
                     <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan Nama Lengkap" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                     ` : field === 'jenis_kelamin' ? `
@@ -359,6 +366,8 @@
                     <input type="text" name="${field}[]" id="${field}_${index}" value="Kesambi" readonly class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                     ` : field === 'status_kependudukan' ? `
                     <input type="text" name="${field}[]" id="${field}_${index}" value="Masuk" readonly class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                    ` : field === 'rt' ? `
+                    <input type="number" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan RT" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                     ` : `
                     <input type="${field === 'tanggal_lahir' ? 'date' : 'text'}" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                     `}

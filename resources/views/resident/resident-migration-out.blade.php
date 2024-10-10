@@ -73,10 +73,17 @@ Sista Bijak - Tabel Migrasi Keluar
     <div class="card shadow-lg rounded-lg overflow-hidden">
         <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
             <h3 class="text-lg font-bold">Tabel Migrasi Keluar</h3>
-            <!-- Tombol Tambah Data -->
-            <button id="addDataButton" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
-                <i class="fas fa-plus"></i>
-            </button>
+            <div class="flex items-center space-x-2">
+                    <button id="addDataButton"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    @if (Auth::user()->role->id === 1) <!-- Tampilkan tombol download hanya untuk admin -->
+                            <button onclick="window.location='{{ route('migrasi-keluar.download') }}'" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                                <i class="fas fa-download"></i>
+                            </button>
+                    @endif
+                </div>
         </div>
         <div class="p-4">
             @if(session('error'))
@@ -210,7 +217,7 @@ Sista Bijak - Tabel Migrasi Keluar
             <form id="dataForm" action="{{ route('migrasi-keluar.store') }}" method="POST">
                 @csrf
                 <input type="hidden" id="penduduk_id" name="penduduk_id" value="{{ old('penduduk_id') }}">
-                <input type="text" id="nik" name="nik" placeholder="NIK" class="block w-full border border-gray-300 rounded-md p-2 mb-4">
+                <input type="number" id="nik" name="nik" placeholder="NIK" class="block w-full border border-gray-300 rounded-md p-2 mb-4" maxlength="16" oninput="this.value = this.value.slice(0, 16)">
                 <input type="text" id="nama_lengkap" name="nama_lengkap" placeholder="Nama Lengkap" class="block w-full border border-gray-300 rounded-md p-2 mb-4">
                 <button type="button" onclick="validateFormFields()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Konfirmasi</button>
             </form>
@@ -336,7 +343,34 @@ Sista Bijak - Tabel Migrasi Keluar
             }
         }
 
-
+                // SweetAlert deleteConfirm
+                function deleteConfirm(event, button) {
+                        event.preventDefault();
+                        Swal.fire({
+                            title: "Kamu yakin hapus ini?",
+                            text: "Kamu tidak akan bisa mengulang ini!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Ya, hapus",
+                            cancelButtonText: "Tidak"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                event.preventDefault();
+                                // Setelah penghapusan berhasil, tampilkan pesan
+                                Swal.fire({
+                                    title: "Berhasil!",
+                                    text: "Data telah berhasil dihapus.",
+                                    icon: "success",
+                                    confirmButtonText: "OK",
+                                    confirmButtonColor: "#3085d6"
+                                });
+                                // Simulasi penghapusan data
+                                button.closest('form').submit();
+                            }
+                        });
+                    }
 
         // Event listener untuk menutup modal konfirmasi
         document.getElementById('closeConfirmationModalButton').addEventListener('click', () => {

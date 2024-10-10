@@ -7,10 +7,17 @@
         <div class="card shadow-lg rounded-lg overflow-hidden">
             <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
                 <h3 class="text-lg font-bold">Tabel Penduduk</h3>
-                {{-- <a href="{{ route('penduduk.create') }}"
-                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition ease-in-out duration-150">
-                    <i class="fas fa-plus"></i>
-                </a> --}}
+                <div class="flex items-center space-x-2">
+                    <!-- <button id="addDataButton"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
+                        <i class="fas fa-plus"></i>
+                    </button> -->
+                    @if (Auth::user()->role->id === 1) <!-- Tampilkan tombol download hanya untuk admin -->
+                            <button onclick="window.location='{{ route('table-penduduk.download') }}'" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                                <i class="fas fa-download"></i>
+                            </button>
+                    @endif
+                </div>
             </div>
             <div class="p-4">
                 <form method="GET" action="{{ route('resident-table') }}" class="mb-4" id="filterForm">

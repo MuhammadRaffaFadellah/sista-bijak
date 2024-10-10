@@ -23,34 +23,34 @@
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
 
 <nav id="header" class="bg-white fixed w-full z-10 top-0 shadow">
-    <div class="w-full container mx-auto flex flex-wrap items-center mt-0 pt-3 pb-3 md:pb-0">
-        <div class="w-1/2 pl-2 md:pl-0"></div>
-        <div class="w-1/2 pr-0">
-            <div class="flex relative inline-block float-right">
-                <div class="relative text-sm">
-                    <div id="userMenu" class="bg-white rounded shadow-md mt-2 absolute mt-12 top-0 right-0 min-w-full overflow-auto z-30 invisible">
-                        <ul class="list-reset">
-                            <li><a href="#" class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">My account</a></li>
-                            <li><a href="#" class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Notifications</a></li>
-                            <li>
-                                <hr class="border-t mx-2 border-gray-400">
-                            </li>
-                            <li><a href="#" class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="block lg:hidden pr-4">
-                    <button id="nav-toggle" class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-900 hover:border-teal-500 appearance-none focus:outline-none">
-                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <title>Menu</title>
-                            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-                        </svg>
-                    </button>
+    <div class="w-full container mx-auto flex items-center justify-between mt-0 pt-3 pb-3 md:pb-0">
+        <!-- Tombol Menu di Sebelah Kanan (untuk Mobile) -->
+        <div class="block lg:hidden pr-4 order-2">
+            <button id="nav-toggle" class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-900 hover:border-teal-500 appearance-none focus:outline-none">
+                <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <title>Menu</title>
+                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Logo dan Pencarian -->
+        <div class="flex-grow flex justify-between items-center order-1 lg:order-none">
+            <a href="{{route('login')}}" id="loginButton" class="flex items-center">
+                <img src="{{ asset('/img/logo-kel-kesambi.png') }}" alt="sista-bijak" class="w-auto h-16 ml-2">
+            </a>
+            <div class="relative w-full max-w-md hidden lg:block">
+                <input type="search" placeholder="Search" class="w-full bg-gray-100 text-sm text-gray-800 transition border focus:outline-none focus:border-gray-700 rounded py-1 px-2 pl-10 appearance-none leading-normal">
+                <div class="absolute search-icon" style="top: 0.375rem; left: 0.75rem;">
+                    <svg class="fill-current pointer-events-none text-gray-800 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
+                    </svg>
                 </div>
             </div>
         </div>
-        
-        <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-white z-20" id="nav-content">
+
+        <!-- Navigasi Menu (Dropdown untuk Mobile) -->
+        <div class="hidden lg:flex lg:items-center lg:w-auto" id="nav-content">
             <ul class="list-reset lg:flex flex-1 items-center px-4 md:px-0">
                 <li class="mr-6 my-2 md:my-0">
                     <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-pink-600 no-underline hover:text-gray-900 border-b-2 border-orange-600 hover:border-orange-600">
@@ -78,26 +78,53 @@
                     </a>
                 </li>
             </ul>
-
-            <div class="relative pull-right pl-4 pr-4 md:pr-0">
-                <input type="search" placeholder="Search" class="w-full bg-gray-100 text-sm text-gray-800 transition border focus:outline-none focus:border-gray-700 rounded py-1 px-2 pl-10 appearance-none leading-normal">
-                <div class="absolute search-icon" style="top: 0.375rem;left: 1.75rem;">
-                    <svg class="fill-current pointer-events-none text-gray-800 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                        <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
-                    </svg>
-                </div>
-            </div>
-
-                <!-- Ikon pengguna menggunakan Font Awesome -->
-                <div class="relative pr-4 ml-4"> <!-- Menambahkan margin-left untuk jarak -->
-                <a href="{{route('login')}}" id="loginButton" class="flex items-center">
-                    <i class="fas fa-user-circle text-gray-800 text-3xl cursor-pointer hover:opacity-75"></i> <!-- Ukuran ikon diperbesar -->
-                </a>
-            </div>
         </div>
     </div>
 </nav>
 
+<!-- CSS untuk Dropdown di Mobile -->
+<style>
+    @media (max-width: 1024px) {
+        /* Tampilan untuk mobile */
+        #nav-content {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            left: 0;
+            background-color: white;
+            border-top: 1px solid #e2e8f0;
+            z-index: 10;
+            display: none; /* Sembunyikan menu awalnya */
+        }
+
+        /* Atur posisi tombol menu di sebelah kanan */
+        .block.lg\\:hidden.pr-4 {
+            order: 2;
+        }
+
+        /* Atur posisi logo di sebelah kiri */
+        #loginButton {
+            order: 1;
+        }
+    }
+</style>
+
+<!-- JavaScript untuk Toggle Dropdown -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var navToggle = document.getElementById('nav-toggle');
+        var navContent = document.getElementById('nav-content');
+        
+        navToggle.addEventListener('click', function() {
+            // Toggle dropdown menu
+            if (navContent.style.display === "none" || navContent.style.display === "") {
+                navContent.style.display = "block";
+            } else {
+                navContent.style.display = "none";
+            }
+        });
+    });
+</script>
 
 
     <!--Container-->
@@ -107,7 +134,7 @@
 
             <!--Console Content-->
 
-<div class="flex flex-wrap">
+<div class="flex flex-wrap mt-10">
     <div class="w-full md:w-1/4 xl:w-1/4 p-3">
         <!--Metric Card-->
         <div class="bg-white border rounded shadow p-2">
@@ -310,45 +337,23 @@
             <!--Divider-->
             <hr class="border-b-2 border-gray-400 my-8 mx-4">
 
+            <!-- grafik -->
+            <div class="flex flex-col mt-8">
+                <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+            <hr class="border-b-2 border-gray-400 my-8 mx-4">
+
             <div class="flex flex-row flex-wrap flex-grow mt-2">
-
                 <div class="w-full md:w-1/2 p-3">
                     <!--Graph Card-->
-                    <div class="bg-white border rounded shadow">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"
+                        integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
+                    <div class="bg-white border rounded shadow h-full">
                         <div class="border-b p-3">
-                            <h5 class="font-bold uppercase text-gray-600">Graph</h5>
+                            <h5 class="font-bold uppercase text-gray-600">Total Penduduk</h5>
                         </div>
                         <div class="p-5">
-                            <canvas id="chartjs-7" class="chartjs" width="undefined" height="undefined"></canvas>
-                            <script>
-                            new Chart(document.getElementById("chartjs-7"), {
-                                "type": "bar",
-                                "data": {
-                                    "labels": ["January", "February", "March", "April"],
-                                    "datasets": [{
-                                        "label": "Page Impressions",
-                                        "data": [10, 20, 30, 40],
-                                        "borderColor": "rgb(255, 99, 132)",
-                                        "backgroundColor": "rgba(255, 99, 132, 0.2)"
-                                    }, {
-                                        "label": "Adsense Clicks",
-                                        "data": [5, 15, 10, 30],
-                                        "type": "line",
-                                        "fill": false,
-                                        "borderColor": "rgb(54, 162, 235)"
-                                    }]
-                                },
-                                "options": {
-                                    "scales": {
-                                        "yAxes": [{
-                                            "ticks": {
-                                                "beginAtZero": true
-                                            }
-                                        }]
-                                    }
-                                }
-                            });
-                            </script>
+                            <canvas id="donutChart" class="chart-canvas" width="300" height="300"></canvas>
                         </div>
                     </div>
                     <!--/Graph Card-->
@@ -356,108 +361,185 @@
 
                 <div class="w-full md:w-1/2 p-3">
                     <!--Graph Card-->
-                    <div class="bg-white border rounded shadow">
+                    <div class="bg-white border rounded shadow h-full">
                         <div class="border-b p-3">
-                            <h5 class="font-bold uppercase text-gray-600">Graph</h5>
+                            <h5 class="font-bold uppercase text-gray-600">Jumlah Penduduk per RW</h5>
                         </div>
                         <div class="p-5">
-                            <canvas id="chartjs-0" class="chartjs" width="undefined" height="undefined"></canvas>
-                            <script>
-                            new Chart(document.getElementById("chartjs-0"), {
-                                "type": "line",
-                                "data": {
-                                    "labels": ["January", "February", "March", "April", "May", "June", "July"],
-                                    "datasets": [{
-                                        "label": "Views",
-                                        "data": [65, 59, 80, 81, 56, 55, 40],
-                                        "fill": false,
-                                        "borderColor": "rgb(75, 192, 192)",
-                                        "lineTension": 0.1
-                                    }]
-                                },
-                                "options": {}
-                            });
-                            </script>
+                            <canvas id="barChart" class="chart-canvas" width="500" height="300"></canvas>
                         </div>
                     </div>
                     <!--/Graph Card-->
                 </div>
 
-                <div class="w-full md:w-1/2 xl:w-1/3 p-3">
+                <div class="w-full md:w-1/2 p-3">
                     <!--Graph Card-->
-                    <div class="bg-white border rounded shadow">
+                    <div class="bg-white border rounded shadow h-full">
                         <div class="border-b p-3">
-                            <h5 class="font-bold uppercase text-gray-600">Graph</h5>
+                            <h5 class="font-bold uppercase text-gray-600">Jumlah Lahir, Meninggal dan Migrasi</h5>
                         </div>
                         <div class="p-5">
-                            <canvas id="chartjs-1" class="chartjs" width="undefined" height="undefined"></canvas>
-                            <script>
-                            new Chart(document.getElementById("chartjs-1"), {
-                                "type": "bar",
-                                "data": {
-                                    "labels": ["January", "February", "March", "April", "May", "June", "July"],
-                                    "datasets": [{
-                                        "label": "Likes",
-                                        "data": [65, 59, 80, 81, 56, 55, 40],
-                                        "fill": false,
-                                        "backgroundColor": ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"],
-                                        "borderColor": ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"],
-                                        "borderWidth": 1
-                                    }]
-                                },
-                                "options": {
-                                    "scales": {
-                                        "yAxes": [{
-                                            "ticks": {
-                                                "beginAtZero": true
-                                            }
-                                        }]
-                                    }
-                                }
-                            });
-                            </script>
+                            <canvas id="lineChart" class="chart-canvas" width="500" height="300"></canvas>
                         </div>
                     </div>
                     <!--/Graph Card-->
                 </div>
 
-                <div class="w-full md:w-1/2 xl:w-1/3 p-3">
+                <div class="w-full md:w-1/2 p-3">
                     <!--Graph Card-->
-                    <div class="bg-white border rounded shadow">
+                    <div class="bg-white border rounded shadow h-full">
                         <div class="border-b p-3">
-                            <h5 class="font-bold uppercase text-gray-600">Graph</h5>
+                            <h5 class="font-bold uppercase text-gray-600">Jumlah UMKM Menurut Jenis Usaha</h5>
                         </div>
-                        <div class="p-5"><canvas id="chartjs-4" class="chartjs" width="undefined" height="undefined"></canvas>
-                            <script>
-                            new Chart(document.getElementById("chartjs-4"), {
-                                "type": "doughnut",
-                                "data": {
-                                    "labels": ["P1", "P2", "P3"],
-                                    "datasets": [{
-                                        "label": "Issues",
-                                        "data": [300, 50, 100],
-                                        "backgroundColor": ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "rgb(255, 205, 86)"]
-                                    }]
-                                }
-                            });
-                            </script>
+                        <div class="p-5">
+                            <canvas id="horizontalBarChart" class="chart-canvas" width="500" height="300"></canvas>
                         </div>
                     </div>
                     <!--/Graph Card-->
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <div class="w-full md:w-1/2 xl:w-1/3 p-3">
-                    <!--Template Card-->
-                    <div class="bg-white border rounded shadow">
-                        <div class="border-b p-3">
-                            <h5 class="font-bold uppercase text-gray-600">Template</h5>
-                        </div>
-                        <div class="p-5">
+<style>
+    .chart-canvas {
+        width: 100% !important;
+        height: 220px !important;
+    }
+</style>
 
-                        </div>
-                    </div>
-                    <!--/Template Card-->
-                </div>
+<script>
+    // Inisialisasi grafik Donut
+    new Chart(document.getElementById("donutChart"), {
+        type: 'doughnut',
+        data: {
+            labels: ['Laki-Laki', 'Perempuan'],
+            datasets: [{
+                data: [{{ $totalLakiLaki }}, {{ $totalPerempuan }}],
+                backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    const rwData = @json($dataByRw);
+    const labels = Object.keys(rwData);
+    const dataLk = labels.map(rw => rwData[rw]['LAKI-LAKI'] || 0);
+    const dataPr = labels.map(rw => rwData[rw]['PEREMPUAN'] || 0);
+
+    // Inisialisasi grafik Bar
+    new Chart(document.getElementById("barChart"), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Laki-Laki',
+                    data: dataLk,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Perempuan',
+                    data: dataPr,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Inisialisasi grafik Line
+    new Chart(document.getElementById("lineChart"), {
+        type: 'line',
+        data: {
+            labels: ['TW I', 'TW II', 'TW III', 'TW IV'],
+            datasets: [
+                {
+                    label: 'Jumlah Lahir',
+                    data: [{{ $totalLahirLakiLaki }}, {{ $totalLahirPerempuan }}],
+                    borderColor: 'rgb(54, 162, 235)',
+                    fill: false
+                },
+                {
+                    label: 'Jumlah Meninggal',
+                    data: [{{ $totalMeninggalLakiLaki }}, {{ $totalMeninggalPerempuan }}],
+                    borderColor: 'rgb(255, 10, 32)',
+                    fill: false
+                },
+                {
+                    label: 'Jumlah Migrasi Masuk',
+                    data: [{{ $totalMigrasiMasukLakiLaki }}, {{ $totalMigrasiMasukPerempuan }}],
+                    borderColor: 'rgb(75, 200, 21)',
+                    fill: false
+                },
+                {
+                    label: 'Jumlah Migrasi Keluar',
+                    data: [{{ $totalMigrasiKeluarLakiLaki }}, {{ $totalMigrasiKeluarPerempuan }}],
+                    borderColor: 'rgb(255, 206, 30)',
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1, // Mengatur langkah ke 1 untuk menghindari desimal
+                        callback: function(value) {
+                            return Number(value).toFixed(0); // Menghilangkan desimal
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Inisialisasi grafik Horizontal Bar
+    new Chart(document.getElementById("horizontalBarChart"), {
+        type: 'horizontalBar',
+        data: {
+            labels: ['Industri', 'Perdagangan', 'Akomodasi', 'Konstruksi', 'Jasa Lainnya'],
+            datasets: [{
+                label: 'Jumlah UMKM',
+                data: [{{ $totalUmkmIndustri }}, {{ $totalUmkmPerdagangan }}, {{ $totalUmkmPenyediaAkomodasi }}, {{ $totalUmkmKonstruksi }}, {{ $totalUmkmJasaLainnya }}],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
 
                 <div class="w-full p-3">
                     <!--Table Card-->
@@ -515,12 +597,12 @@
 <footer class="bg-white dark:bg-gray-900">
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div class="md:flex md:justify-between">
-            <div class="mb-6 md:mb-0">
-                <a href="https://flowbite.com/" class="flex items-center">
-                    <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-                </a>
-            </div>
+        <div class="flex items-center justify-center">
+        <div class="flex items-center max-w-full mt-7">
+            <img src="{{ asset('/img/logo-kel-kesambi.png') }}" alt="sista-bijak" class="w-auto h-28 ml-2">
+            <span class="mr-10 ml-3 text-30 font-semibold text-black">SISTA BIJAK</span>
+        </div>
+        </div>
             <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                 <div>
                     <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
