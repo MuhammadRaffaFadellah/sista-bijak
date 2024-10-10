@@ -31,6 +31,10 @@ class LahirController extends Controller
                     ->orWhere('nik', 'like', "%{$search}%");
             });
         }
+        // Filter berdasarkan RW
+        if ($request->has('filter_rw') && $request->input('filter_rw') != '') {
+            $query->where('rw', $request->input('filter_rw'));
+        }
         $dataLahir = $query->paginate(10); // 10 entri per halaman
         $statusKependudukanOptions = ['LAHIR'];
         return view('resident.resident-born', compact('dataLahir', 'statusKependudukanOptions', 'rws'));
@@ -81,9 +85,10 @@ class LahirController extends Controller
     // Show the form for editing the specified Lahir entry
     public function edit($id)
     {
+        $rws = rw::all();
         $lahir = Lahir::findOrFail($id);
         $statusKependudukanOptions = ['LAHIR'];
-        return view('create.create_born', compact('lahir', 'statusKependudukanOptions'));
+        return view('create.create_born', compact('lahir', 'statusKependudukanOptions', 'rws'));
     }
 
     // Update the specified Lahir entry in storage
@@ -119,15 +124,18 @@ class LahirController extends Controller
     {
         // Ambil data dari tabel lahir berdasarkan ID
         $lahir = Lahir::find($id);
+        $penduduk = Penduduk::where('nik', $lahir->nik)->first(); // atau sesuai dengan kriteria yang benar
         $rws = rw::all();
 
         // Periksa apakah data ditemukan
-        if (!$lahir) {
-            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        if (is_null($lahir)) {
+            return redirect()->back()->with('error', 'Data lahir tidak ditemukan.');
         }
-        // Kirim data dari tabel lahir ke view untuk pre-fill input form
-        return view('create.create_chair', compact('lahir', 'rws'));
+
+        // Kirim data dari tabel lahir dan penduduk ke view
+        return view('create.create_chair', compact('lahir', 'penduduk', 'rws'));
     }
+
 
     public function store_resident(Request $request)
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Penduduk;
 use App\Models\Meninggals;
+use App\Models\Lahir;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -61,7 +62,6 @@ class MeninggalController extends Controller
             'tempat_meninggal' => 'required|string',
             'tanggal_meninggal' => 'required|date',
         ]);
-
         // Menyimpan data ke tabel meninggal
         Meninggals::create([
             'nik' => $request->nik,
@@ -77,14 +77,19 @@ class MeninggalController extends Controller
             'jenis_kelamin' => $request->jenis_kelamin, // Ambil dari form
             'status_kependudukan' => 'MENINGGAL',
         ]);
-        // Menghapus data penduduk secara permanen setelah form meninggal disubmit
-        $penduduk = Penduduk::find($request->penduduk_id);
+        // Menghapus data penduduk berdasarkan NIK
+        $penduduk = Penduduk::where('nik', $request->nik)->first(); // Mengambil data penduduk berdasarkan NIK
         if ($penduduk) {
             $penduduk->forceDelete(); // Hapus data secara permanen
         }
+        // Menghapus data dari tabel lahir berdasarkan NIK
+        $lahir = Lahir::where('nik', $request->nik)->first(); // Mengambil data lahir berdasarkan NIK
+        if ($lahir) {
+            $lahir->forceDelete(); // Hapus data secara permanen dari tabel lahir
+        }
         // Redirect ke halaman yang diinginkan
-        return redirect()->route('resident-died')->with('success', 'Data meninggal berhasil ditambahkan dan penduduk dihapus.');
-    }
+        return redirect()->route('resident-died')->with('success', 'Data meninggal berhasil ditambahkan, penduduk dan data lahir dihapus.');
+    }    
 
     public function edit($id)
     {

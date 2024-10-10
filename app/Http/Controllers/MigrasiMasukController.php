@@ -24,17 +24,17 @@ class MigrasiMasukController extends Controller
             $dataMigrasiMasuk = MigrasiMasuk::where('rw', $user->rw_id);
         }
 
+        // Search
         if ($request->has('search')) {
             $query->where('nama_lengkap', 'like', '%' . $request->search . '%')
                 ->orWhere('nik', 'like', '%' . $request->search . '%');
         }
 
+        // Filter RW
         if ($request->has('filter_rw')) {
             $query->where('rw', $request->filter_rw);
         }
-
         $migrasiMasuk = $query->paginate(10);
-
         return view('resident.resident-migration-in', compact('migrasiMasuk', 'rws'));
     }
 

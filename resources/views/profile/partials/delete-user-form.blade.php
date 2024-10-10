@@ -17,6 +17,6 @@
     <x-modal-delete 
         id="popup-modal"
         message="Apakah anda yakin menghapus akun?"
-        action="{{ route('user.destroy', $user->id) }}"
+        action="{{ route('profile.destroy', $user->id) }}"
     />
 </section>

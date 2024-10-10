@@ -9,24 +9,29 @@
                 opacity: 0;
                 transform: scale(0.9);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
             }
         }
+
         @keyframes fadeOutModal {
             from {
                 opacity: 1;
                 transform: scale(1);
             }
+
             to {
                 opacity: 0;
                 transform: scale(0.9);
             }
         }
+
         .fadeIn {
             animation: fadeInModal 0.3s ease-out forwards;
         }
+
         .fadeOut {
             animation: fadeOutModal 0.2s ease-in forwards;
         }
@@ -37,24 +42,29 @@
                 opacity: 0;
                 transform: scale(0.9);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
             }
         }
+
         @keyframes modalOut {
             from {
                 opacity: 1;
                 transform: scale(1);
             }
+
             to {
                 opacity: 0;
                 transform: scale(0.9);
             }
         }
+
         .modal-enter {
             animation: modalIn 0.3s ease-out forwards;
         }
+
         .modal-leave {
             animation: modalOut 0.2s ease-in forwards;
         }
@@ -63,10 +73,10 @@
         <div class="card shadow-lg rounded-lg overflow-hidden">
             <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
                 <h3 class="text-lg font-bold">Tabel Meninggal</h3>
-                <button id="addDataButton"
+                {{-- <button id="addDataButton"
                     class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
                     <i class="fas fa-plus"></i>
-                </button>
+                </button> --}}
             </div>
             <div class="p-4">
                 <!-- Form Filter -->
@@ -103,7 +113,7 @@
                     <table class="min-w-full bg-white divide-y divide-gray-200 w-full">
                         <thead class="bg-gray-100">
                             <tr>
-                                @foreach (['No', 'NIK', 'Nama Almarhum/Almarhumah', 'Jenis Kelamin', 'Alamat', 'RW', 'RT', 'Hubungan dengan KK', 'Tempat Lahir', 'Tanggal Lahir', 'Tempat Meninggal', 'Tanggal Meninggal', 'Status Kependudukan', 'Aksi'] as $header)
+                                @foreach (['No', 'NIK', 'Nama Almarhum/Almarhumah', 'Jenis Kelamin', 'Alamat', 'RW', 'RT', 'Hubungan dengan Kepala Keluarga', 'Tempat Lahir', 'Tanggal Lahir', 'Tempat Meninggal', 'Tanggal Meninggal', 'Status Kependudukan', 'Aksi'] as $header)
                                     <th
                                         class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
                                         {{ $header }}
@@ -123,11 +133,12 @@
                                             {{ $dataMeninggal->firstItem() + $index }}.
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $meninggal->nik }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap">{{ $meninggal->nama_almarhum }}
+                                        <td class="px-4 py-2 whitespace-nowrap uppercase">{{ $meninggal->nama_almarhum }}
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $meninggal->jenis_kelamin }}
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap">
-                                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                                            <button
+                                                class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150"
                                                 onclick="showAddressModal('{{ $meninggal->alamat }}')">
                                                 Lihat
                                             </button>
@@ -154,9 +165,9 @@
                                             </span>
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap flex space-x-2">
-                                            <a href="{{ route('meninggal.edit', $meninggal->id) }}" title="Edit data" 
-                                            class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded">
-                                                <i class="fas fa-edit"></i> (ID: {{ $meninggal->id }})
+                                            <a href="{{ route('meninggal.edit', $meninggal->id) }}" title="Edit data"
+                                                class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded ml-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150">
+                                                <i class="fas fa-edit"></i>
                                             </a>
                                             <form action="{{ route('meninggal.destroy', $meninggal->id) }}" method="POST"
                                                 class="inline">
@@ -164,7 +175,7 @@
                                                 @method('DELETE')
                                                 <button type="submit" onclick="deleteConfirm(event, this)"
                                                     title="Hapus data"
-                                                    class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                                    class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded ml-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition ease-in-out duration-150">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
@@ -306,9 +317,9 @@
             <div class="p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     ${['nik', 'nama_kepala_keluarga', 'alamat', 'rw', 'rt', 'nama_almarhum', 'hubungan_dengan_kk', 'tempat_lahir', 'tanggal_lahir', 'tempat_meninggal', 'tanggal_meninggal'].map(field => `
-                                                                                                                <div>
-                                                                                                                    <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
-                                                                                                                    ${field === 'rw' ? `
+                                                                                                                                        <div>
+                                                                                                                                            <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
+                                                                                                                                            ${field === 'rw' ? `
                             <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
                                 @if (Auth::user()->role->id === 1) <!-- Admin -->
                                     @foreach ($rws as $rw)
@@ -323,8 +334,8 @@
                             placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" 
                             ${field === 'nik' ? 'oninput="this.value = this.value.slice(0, 16)"' : ''} />
                             `}
-                                                                                                                </div>
-                                                                                                            `).join('')}
+                                                                                                                                        </div>
+                                                                                                                                    `).join('')}
                     <div>
                         <label for="jenis_kelamin_${index}" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
                         <select name="jenis_kelamin[]" id="jenis_kelamin_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">

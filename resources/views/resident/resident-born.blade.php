@@ -84,7 +84,7 @@
                             class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
                         @if (Auth::user()->role->id === 1)
                             <!-- Tampilkan filter RW hanya untuk admin -->
-                            <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
+                            <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2" id="filterRw">
                                 <option value="">Semua</option>
                                 @for ($i = 1; $i <= 7; $i++)
                                     <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>
@@ -173,45 +173,53 @@
                                             {{ $lahir->nama_ibu_kandung }}
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap uppercase">
-                                            <button class="bg-blue-500 text-white px-4 py-2 rounded"
+                                            <button
+                                                class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150"
                                                 onclick="showAddressModal('{{ $lahir->alamat }}')">
                                                 Lihat
                                             </button>
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $lahir->rw }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $lahir->rt }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $lahir->tempat_lahir }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
+                                            {{ $lahir->tempat_lahir }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center">{{ $lahir->tanggal_lahir }}
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
                                             {{ $lahir->status_kependudukan }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap flex space-x-2">
                                             <a href="{{ route('lahir.edit', $lahir->id) }}" title="Edit data"
-                                                class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded">
+                                                class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded ml-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150">
                                                 <i class="fas fa-edit"></i>
                                             </a>
+
                                             <form action="{{ route('lahir.destroy', $lahir->id) }}" method="POST"
                                                 class="inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" onclick="deleteConfirm(event, this)"
                                                     title="Hapus data"
-                                                    class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded">
+                                                    class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded ml-2  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition ease-in-out duration-150">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
+
                                             @php
-                                                // Memeriksa apakah data dengan ID lahir sudah ada di tabel penduduk
-                                                $dataSudahAda = \App\Models\Penduduk::where(
+                                                // Memeriksa apakah data dengan NIK sudah ada di tabel penduduk atau tabel meninggal
+                                                $dataSudahAdaDiPenduduk = \App\Models\Penduduk::where(
+                                                    'nik',
+                                                    $lahir->nik,
+                                                )->exists();
+                                                $dataSudahAdaDiMeninggal = \App\Models\Meninggals::where(
                                                     'nik',
                                                     $lahir->nik,
                                                 )->exists();
                                             @endphp
-                                            @if (!$dataSudahAda)
+                                            @if (!$dataSudahAdaDiPenduduk && !$dataSudahAdaDiMeninggal)
                                                 <a href="{{ route('create_chair', $lahir->id) }}"
-                                                    title="MAsukkan ke tabel penduduk"
-                                                    class="text-green-500 hover:text-green-600 px-2 py-1 border border-green-500 rounded">
-                                                    <i class="fas fa-chair"></i>
+                                                    title="Masukan ke tabel penduduk"
+                                                    class="text-green-500 hover:text-green-600 px-2 py-1 border border-green-500 rounded ml-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition ease-in-out duration-150">
+                                                    <i class="fas fa-users-cog"></i>
                                                 </a>
                                             @endif
                                         </td>
@@ -222,7 +230,7 @@
                     </table>
                 </div>
                 <div class="mt-4">
-                    {{ $dataLahir->links() }} <!-- Pagination links -->
+                    {{ $dataLahir->appends(request()->except('page'))->links() }} <!-- Pagination links -->
                 </div>
             </div>
         </div>
@@ -261,6 +269,15 @@
         </form>
         @include('sweetalert')
         <script>
+            // auto submit
+            document.getElementById('filterRw').addEventListener('change', function() {
+                document.getElementById('filterForm').submit(); // Otomatis submit form saat RW dipilih
+            });
+            // filter rw menjadi tetap walaupun di paginate
+            document.getElementById('filterRw').addEventListener('change', function() {
+                this.form.submit(); // Otomatis submit form saat RW dipilih
+            });
+
             function showAddressModal(address) {
                 const modal = document.getElementById('addressModal');
                 const modalContent = document.getElementById('modalContent');
@@ -340,7 +357,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label for="nik_${index}" class="block text-sm font-medium text-gray-700">NIK</label>
-                    <input type="text" name="nik[]" id="nik_${index}" placeholder="Silakan masukkan NIK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
+                    <input type="number" name="nik[]" id="nik_${index}" placeholder="Silakan masukkan NIK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
                 </div>
                 <div>
                     <label for="nama_anak_lahir_${index}" class="block text-sm font-medium text-gray-700">Nama Anak Lahir</label>
@@ -372,7 +389,7 @@
                 </div>
                 <div>
                     <label for="rt_${index}" class="block text-sm font-medium text-gray-700">RT</label>
-                    <input type="text" name="rt[]" id="rt_${index}" placeholder="Silakan masukkan RT" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                    <input type="number" name="rt[]" id="rt_${index}" placeholder="Silakan masukkan RT" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                 </div>
                 <div>
                     <label for="tempat_lahir_${index}" class="block text-sm font-medium text-gray-700">Tempat Lahir</label>

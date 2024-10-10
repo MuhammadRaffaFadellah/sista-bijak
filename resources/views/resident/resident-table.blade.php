@@ -158,6 +158,7 @@
             document.getElementById('filterRw').addEventListener('change', function() {
                 this.form.submit(); // Otomatis submit form saat RW dipilih
             });
+            
             // SweetAlert diedConfirm()
             function diedConfirm(event, element) {
                 event.preventDefault(); // Mencegah redirect langsung

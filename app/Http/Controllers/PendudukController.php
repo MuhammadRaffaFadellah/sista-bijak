@@ -262,28 +262,28 @@ class PendudukController extends Controller
         try {
             // Ambil data penduduk berdasarkan ID
             $penduduk = Penduduk::findOrFail($id);
-            
+
             // Cek apakah Anda perlu mengambil data lahir
             // Jika Anda tidak memerlukan data lahir, bisa dihapus
             // Jika diperlukan, ambil data lahir sesuai logika Anda
             $lahir = Lahir::all(); // Hanya jika Anda memerlukan data ini
-    
+
             // Ambil semua RW
             $rws = rw::all();
-            
+
             // Opsi lainnya tetap sama
             $hubkelOptions = ['Kepala Keluarga', 'Istri', 'Anak', 'Famili Lain', 'Sepupu', 'Mertua', 'Orang Tua', 'Cucu', 'Pembantu', 'Lainnya'];
             $pendidikanOptions = ['AKADEMI/DIPLOMA III/S.MUDA', 'BELUM TAMAT SD/SEDERAJAT', 'DIPLOMA I/II', 'DIPLOMA IV/STRATA I', 'SLTA/SEDERAJAT', 'STRATA II', 'STRATA III', 'TAMAT SD/SEDERAJAT', 'TIDAK TAMAT SD/SEDERAJAT', 'TIDAK/BELUM SEKOLAH'];
             $agamaOptions = ['Islam', 'Kristen', 'Hindu', 'Buddha', 'Konghucu'];
             $statusOptions = ['Belum Menikah', 'Menikah', 'Cerai Hidup', 'Cerai Mati'];
             $statusKependudukanOptions = ['Menetap', 'Keluar', 'Masuk'];
-    
+
             return view('create.create_chair', compact('penduduk', 'rws', 'hubkelOptions', 'pendidikanOptions', 'agamaOptions', 'statusOptions', 'statusKependudukanOptions'));
         } catch (\Exception $e) {
             return redirect()->route('resident-migration-in')->with('error', 'Data tidak ditemukan');
         }
     }
-    
+
 
     public function update(Request $request, $id)
     {
@@ -353,8 +353,7 @@ class PendudukController extends Controller
                 ]);
             }
         }
-
-        return redirect()->route('resident.table')->with('success', 'Data penduduk berhasil diperbarui.');
+        return redirect()->route('resident-table')->with('success', 'Data penduduk berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -365,10 +364,10 @@ class PendudukController extends Controller
             // Hapus data penduduk
             $penduduk->delete();
             // Redirect ke halaman tabel dengan pesan sukses
-            return redirect()->route('resident.table')->with('success', 'Data penduduk berhasil dihapus.');
+            return redirect()->route('resident-table')->with('success', 'Data penduduk berhasil dihapus.');
         } catch (\Exception $e) {
             // Tangani jika ada kesalahan
-            return redirect()->route('resident.resident.table')->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+            return redirect()->route('resident-table')->with('error', 'Gagal menghapus data: ' . $e->getMessage());
         }
     }
 
@@ -385,17 +384,25 @@ class PendudukController extends Controller
         }
     }
 
-    public function createDied($nik)
+    public function createDied($id)
     {
-        // Ambil data penduduk berdasarkan NIK
-        $penduduk = Penduduk::where('nik', $nik)->first();
-        // Jika penduduk tidak ditemukan, kembalikan error
-        if (!$penduduk) {
-            return redirect()->back()->with('error', 'Penduduk tidak ditemukan.');
-        }
-        // Kirim data penduduk ke view create_died untuk digunakan di form
+        // Ambil data status_hubkel dari tabel penduduk
+        $hubunganKeluarga = DB::table('penduduk')
+            ->select('status_hubkel')
+            ->distinct()
+            ->pluck('status_hubkel')
+            ->toArray();
+        // Ambil data penduduk berdasarkan ID
+        $penduduk = Penduduk::find($id);
+        // Ambil data meninggal jika diperlukan
+        $meninggal = Meninggals::where('id', $id)->first();
+        $rws = rw::all();
+        // Jika penduduk ditemukan, kirim data ke view
         return view('create.create_died', [
             'penduduk' => $penduduk,
+            'rws' => $rws,
+            'hubunganKeluarga' => $hubunganKeluarga,
+            'meninggal' => $meninggal, // Tambahkan ini
         ]);
     }
 }

@@ -31,6 +31,7 @@ class MigrasiKeluarController extends Controller
             $query->where('nama_lengkap', 'like', '%' . $request->search . '%')
                 ->orWhere('nik', 'like', '%' . $request->search . '%');
         }
+
         if ($request->has('filter_rw')) {
             $query->where('rw', $request->filter_rw);
         }
