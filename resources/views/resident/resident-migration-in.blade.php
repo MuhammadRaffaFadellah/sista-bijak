@@ -72,17 +72,26 @@
         <div class="card shadow-lg rounded-lg overflow-hidden">
             <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
                 <h3 class="text-lg font-bold">Tabel Migrasi Masuk</h3>
-                <button id="addDataButton"
-                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
-                    <i class="fas fa-plus"></i>
-                </button>
+                <div class="flex items-center space-x-2">
+                    @if (Auth::user()->role->id === 1)
+                        <!-- Tampilkan tombol download hanya untuk admin -->
+                        <button onclick="window.location='{{ route('migrasi-masuk.download') }}'" title="Download data"
+                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    @endif
+                    <button id="addDataButton"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
             </div>
             <div class="p-4">
                 <form method="GET" action="{{ route('resident-migration-in') }}" class="mb-4">
                     <div class="flex items-center">
-                        <input type="text" name="search" placeholder="Cari Nama Lengkap Atau NIK"
+                        <input type="text" name="search" placeholder="Cari Nama Lengkap atau NIK"
                             class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
-                            @if (Auth::user()->role->id === 1)
+                        @if (Auth::user()->role->id === 1)
                             <!-- Tampilkan filter RW hanya untuk admin -->
                             <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2" id="filterRw">
                                 <option value="">Semua</option>
@@ -243,8 +252,8 @@
         </form>
         @include('sweetalert')
         <script>
-// auto submit
-document.getElementById('filterRw').addEventListener('change', function() {
+            // auto submit
+            document.getElementById('filterRw').addEventListener('change', function() {
                 document.getElementById('filterForm').submit(); // Otomatis submit form saat RW dipilih
             });
             // filter rw menjadi tetap walaupun di paginate
@@ -333,7 +342,7 @@ document.getElementById('filterRw').addEventListener('change', function() {
                                 <div>
                                     <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
                                     ${field === 'nik' ? `
-                    <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan NIK" required maxlength="16" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
+                    <input type="number" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan NIK" required maxlength="16" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
                     ` : field === 'nama_lengkap' ? `
                     <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan Nama Lengkap" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                     ` : field === 'jenis_kelamin' ? `
@@ -404,11 +413,13 @@ document.getElementById('filterRw').addEventListener('change', function() {
                     <input type="text" name="${field}[]" id="${field}_${index}" value="Kesambi" readonly class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                     ` : field === 'status_kependudukan' ? `
                     <input type="text" name="${field}[]" id="${field}_${index}" value="Masuk" readonly class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                    ` : field === 'rt' ? `
+                    <input type="number" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan RT" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                     ` : `
                     <input type="${field === 'tanggal_lahir' ? 'date' : 'text'}" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                     `}
-                                </div>
-                                `).join('')}
+                                                </div>
+                                                `).join('')}
             </div>
         </div>
     </div>

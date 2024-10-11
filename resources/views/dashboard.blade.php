@@ -188,145 +188,207 @@
             </div>
         </div>
 
+        <!-- grafik -->
         <div class="flex flex-col mt-8">
-            <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-                <div
-                    class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
-                    <hr class="border-b-2 border-gray-400 my-8 mx-4">
+    <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+            <hr class="border-b-2 border-gray-400 my-8 mx-4">
 
-                    <div class="flex flex-row flex-wrap flex-grow mt-2">
-                        <div class="w-1/2 md:w-1/2 p-3">
-                            <!--Graph Card-->
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"
-                                integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
-                            <div class="bg-white border rounded shadow">
-                                <div class="border-b p-3">
-                                    <h5 class="font-bold uppercase text-gray-600">Graph</h5>
-                                </div>
-                                <div class="p-5">
-                                    <canvas id="chartjs-7" class="chartjs" width="undefined"
-                                        height="undefined"></canvas>
-                                    <script>
-                                        new Chart(document.getElementById("chartjs-7"), {
-                                            "type": "bar",
-                                            "data": {
-                                                "labels": ["January", "February", "March", "April", "Juni", "Juli", "Agustus"],
-                                                "datasets": [{
-                                                    "label": "Perempuan",
-                                                    "data": [10, 20, 30, 40],
-                                                    "borderColor": "rgb(255, 99, 132)",
-                                                    "backgroundColor": "rgba(255, 99, 132, 0.2)"
-                                                }, {
-                                                    "label": "Laki - laki",
-                                                    "data": [5, 15, 10, 30],
-                                                    "type": "line",
-                                                    "fill": false,
-                                                    "borderColor": "rgb(54, 162, 235)"
-                                                }]
-                                            },
-                                            "options": {
-                                                "scales": {
-                                                    "yAxes": [{
-                                                        "ticks": {
-                                                            "beginAtZero": true
-                                                        }
-                                                    }]
-                                                }
-                                            }
-                                        });
-                                    </script>
-                                </div>
-                            </div>
-                            <!--/Graph Card-->
+            <div class="flex flex-row flex-wrap flex-grow mt-2">
+                <div class="w-full md:w-1/2 p-3">
+                    <!--Graph Card-->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"
+                        integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
+                    <div class="bg-white border rounded shadow h-full">
+                        <div class="border-b p-3">
+                            <h5 class="font-bold uppercase text-gray-600">Jenis Kelamin</h5>
                         </div>
-                        <div class="w-1/2 md:w-1/2 p-3">
-                            <!--Graph Card-->
-                            <div class="bg-white border rounded shadow">
-                                <div class="border-b p-3">
-                                    <h5 class="font-bold uppercase text-gray-600">Graph</h5>
-                                </div>
-                                <div class="p-5"><canvas id="chartjs-4" class="chartjs" width="undefined"
-                                        height="undefined"></canvas>
-                                    <script>
-                                        new Chart(document.getElementById("chartjs-4"), {
-                                            "type": "doughnut",
-                                            "data": {
-                                                "labels": ["Laki-Laki", "Perempuan"],
-                                                "datasets": [{
-                                                    "label": "Issues",
-                                                    "data": [{{ $proporsiLK }}, {{ $proporsiPR }}],
-                                                    "backgroundColor": ["rgb(54, 162, 235)", "rgb(255, 99, 132)"]
-                                                }]
-                                            }
-                                        });
-                                        // Fungsi untuk mengambil data dari server
-                                        function fetchData() {
-                                            fetch('/get-gender-data')
-                                                .then(response => response.json())
-                                                .then(data => {
-                                                    // Mengelompokkan data berdasarkan jenis kelamin dan bulan
-                                                    const lakiLaki = new Array(12).fill(0);
-                                                    const perempuan = new Array(12).fill(0);
-                                                    data.forEach(item => {
-                                                        const date = new Date(item.created_at);
-                                                        const month = date.getMonth(); // Dapatkan bulan dari 0-11
-                                                        if (item.jenis_kelamin === 'LAKI-LAKI') {
-                                                            lakiLaki[month]++;
-                                                        } else if (item.jenis_kelamin === 'PEREMPUAN') {
-                                                            package[month]++;
-                                                        }
-                                                    });
-                                                    // Update chart dengan data baru
-                                                    updateChart(lakiLaki, perempuan);
-                                                });
-                                        }
-                                        // Fungsi untuk meng-update chart dengan data baru
-                                        function updateChart(lakiLakiData, perempuanData) {
-                                            const ctx = document.getElementById("chartjs-7").getContext("2d");
-                                            new Chart(ctx, {
-                                                type: 'bar',
-                                                data: {
-                                                    labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September",
-                                                        "October", "November", "December"
-                                                    ],
-                                                    datasets: [{
-                                                            label: 'Perempuan',
-                                                            data: perempuanData,
-                                                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                                            borderColor: 'rgba(255, 99, 132, 1)',
-                                                            borderWidth: 1
-                                                        },
-                                                        {
-                                                            label: 'Laki-Laki',
-                                                            data: lakiLakiData,
-                                                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                                            borderColor: 'rgba(54, 162, 235, 1)',
-                                                            borderWidth: 1
-                                                        }
-                                                    ]
-                                                },
-                                                options: {
-                                                    scales: {
-                                                        yAxes: [{
-                                                            ticks: {
-                                                                beginAtZero: true
-                                                            }
-                                                        }]
-                                                    }
-                                                }
-                                            });
-                                        }
-                                        // Panggil fetchData saat halaman dimuat
-                                        window.onload = function() {
-                                            fetchData();
-                                        }
-                                    </script>
-                                </div>
-                            </div>
-                            <!--/Graph Card-->
+                        <div class="p-5">
+                            <canvas id="donutChart" class="chart-canvas" width="300" height="300"></canvas>
                         </div>
                     </div>
+                    <!--/Graph Card-->
+                </div>
+
+                <div class="w-full md:w-1/2 p-3">
+                    <!--Graph Card-->
+                    <div class="bg-white border rounded shadow h-full">
+                        <div class="border-b p-3">
+                            <h5 class="font-bold uppercase text-gray-600">Jumlah Penduduk per RW</h5>
+                        </div>
+                        <div class="p-5">
+                            <canvas id="barChart" class="chart-canvas" width="500" height="300"></canvas>
+                        </div>
+                    </div>
+                    <!--/Graph Card-->
+                </div>
+
+                <div class="w-full md:w-1/2 p-3">
+                    <!--Graph Card-->
+                    <div class="bg-white border rounded shadow h-full">
+                        <div class="border-b p-3">
+                            <h5 class="font-bold uppercase text-gray-600">Lahir, Meninggal, Migrasi</h5>
+                        </div>
+                        <div class="p-5">
+                            <canvas id="lineChart" class="chart-canvas" width="500" height="300"></canvas>
+                        </div>
+                    </div>
+                    <!--/Graph Card-->
+                </div>
+
+                <div class="w-full md:w-1/2 p-3">
+                    <!--Graph Card-->
+                    <div class="bg-white border rounded shadow h-full">
+                        <div class="border-b p-3">
+                            <h5 class="font-bold uppercase text-gray-600">Jumlah UMKM Menurut Jenis Usaha</h5>
+                        </div>
+                        <div class="p-5">
+                            <canvas id="horizontalBarChart" class="chart-canvas" width="500" height="300"></canvas>
+                        </div>
+                    </div>
+                    <!--/Graph Card-->
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<style>
+    .chart-canvas {
+        width: 100% !important;
+        height: 220px !important;
+    }
+</style>
+
+<script>
+    // Inisialisasi grafik Donut
+    new Chart(document.getElementById("donutChart"), {
+        type: 'doughnut',
+        data: {
+            labels: ['Laki-Laki', 'Perempuan'],
+            datasets: [{
+                data: [{{ $totalLakiLaki }}, {{ $totalPerempuan }}],
+                backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    const rwData = @json($dataByRw);
+    const labels = Object.keys(rwData);
+    const dataLk = labels.map(rw => rwData[rw]['LAKI-LAKI'] || 0);
+    const dataPr = labels.map(rw => rwData[rw]['PEREMPUAN'] || 0);
+
+    // Inisialisasi grafik Bar
+    new Chart(document.getElementById("barChart"), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Laki-Laki',
+                    data: dataLk,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Perempuan',
+                    data: dataPr,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Inisialisasi grafik Line
+    new Chart(document.getElementById("lineChart"), {
+        type: 'line',
+        data: {
+            labels: ['TW I', 'TW II', 'TW III', 'TW IV'],
+            datasets: [
+                {
+                    label: 'Jumlah Lahir',
+                    data: [{{ $totalLahirLakiLaki }}, {{ $totalLahirPerempuan }}],
+                    borderColor: 'rgb(54, 162, 235)',
+                    fill: false
+                },
+                {
+                    label: 'Jumlah Meninggal',
+                    data: [{{ $totalMeninggalLakiLaki }}, {{ $totalMeninggalPerempuan }}],
+                    borderColor: 'rgb(255, 10, 32)',
+                    fill: false
+                },
+                {
+                    label: 'Jumlah Migrasi Masuk',
+                    data: [{{ $totalMigrasiMasukLakiLaki }}, {{ $totalMigrasiMasukPerempuan }}],
+                    borderColor: 'rgb(75, 200, 21)',
+                    fill: false
+                },
+                {
+                    label: 'Jumlah Migrasi Keluar',
+                    data: [{{ $totalMigrasiKeluarLakiLaki }}, {{ $totalMigrasiKeluarPerempuan }}],
+                    borderColor: 'rgb(255, 206, 30)',
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1, // Mengatur langkah ke 1 untuk menghindari desimal
+                        callback: function(value) {
+                            return Number(value).toFixed(0); // Menghilangkan desimal
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Inisialisasi grafik Horizontal Bar
+    new Chart(document.getElementById("horizontalBarChart"), {
+        type: 'horizontalBar',
+        data: {
+            labels: ['Industri', 'Perdagangan', 'Akomodasi', 'Konstruksi', 'Jasa Lainnya'],
+            datasets: [{
+                label: 'Jumlah UMKM',
+                data: [{{ $totalUmkmIndustri }}, {{ $totalUmkmPerdagangan }}, {{ $totalUmkmPenyediaAkomodasi }}, {{ $totalUmkmKonstruksi }}, {{ $totalUmkmJasaLainnya }}],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
     @endsection

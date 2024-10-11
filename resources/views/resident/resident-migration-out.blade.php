@@ -73,11 +73,19 @@
         <div class="card shadow-lg rounded-lg overflow-hidden">
             <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
                 <h3 class="text-lg font-bold">Tabel Migrasi Keluar</h3>
-                <!-- Tombol Tambah Data -->
-                <button id="addDataButton"
-                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
-                    <i class="fas fa-plus"></i>
-                </button>
+                <div class="flex items-center space-x-2">
+                    @if (Auth::user()->role->id === 1)
+                        <!-- Tampilkan tombol download hanya untuk admin -->
+                        <button onclick="window.location='{{ route('migrasi-masuk.download') }}'" title="Download data"
+                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    @endif
+                    <button id="addDataButton"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
             </div>
             <div class="p-4">
                 @if (session('error'))
@@ -93,7 +101,7 @@
                 @endif
                 <form method="GET" action="{{ route('resident-migration-out') }}" class="mb-4">
                     <div class="flex items-center">
-                        <input type="text" name="search" placeholder="Cari Nama Lengkap Atau NIK"
+                        <input type="text" name="search" placeholder="Cari Nama Lengkap atau NIK"
                             class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
                         @if (Auth::user()->role->id === 1)
                             <!-- Tampilkan filter RW hanya untuk admin -->
@@ -254,8 +262,9 @@
                     <input type="hidden" id="penduduk_id" name="penduduk_id" value="{{ old('penduduk_id') }}">
                     <input type="text" id="nik" name="nik" placeholder="NIK"
                         class="block w-full border border-gray-300 rounded-md p-2 mb-4">
-                    <input type="text" id="nama_lengkap" name="nama_lengkap" placeholder="Nama Lengkap"
-                        class="block w-full border border-gray-300 rounded-md p-2 mb-4">
+                    <input type="number" id="nama_lengkap" name="nama_lengkap" placeholder="Nama Lengkap"
+                        class="block w-full border border-gray-300 rounded-md p-2 mb-4"
+                        oninput="this.value = this.value.slice(0, 16)">
                     <button type="button" onclick="validateFormFields()"
                         class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Konfirmasi</button>
                 </form>
@@ -282,7 +291,6 @@
         @include('sweetalert')
         <!-- Script untuk membuka dan menutup modal pencarian dan tambah data -->
         <script>
-
             // auto submit
             document.getElementById('filterRw').addEventListener('change', function() {
                 document.getElementById('filterForm').submit(); // Otomatis submit form saat RW dipilih
@@ -292,7 +300,7 @@
                 this.form.submit(); // Otomatis submit form saat RW dipilih
             });
 
-            
+
             // Deklarasi variabel allFilled
             let allFilled = true;
             // Event listener untuk membuka modal tambah data
@@ -394,7 +402,34 @@
                 }
             }
 
-
+            // SweetAlert deleteConfirm
+            function deleteConfirm(event, button) {
+                event.preventDefault();
+                Swal.fire({
+                    title: "Kamu yakin hapus ini?",
+                    text: "Kamu tidak akan bisa mengulang ini!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, hapus",
+                    cancelButtonText: "Tidak"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        event.preventDefault();
+                        // Setelah penghapusan berhasil, tampilkan pesan
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: "Data telah berhasil dihapus.",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                            confirmButtonColor: "#3085d6"
+                        });
+                        // Simulasi penghapusan data
+                        button.closest('form').submit();
+                    }
+                });
+            }
 
             // Event listener untuk menutup modal konfirmasi
             document.getElementById('closeConfirmationModalButton').addEventListener('click', () => {

@@ -10,9 +10,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\rw;
+use App\Exports\MeninggalExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MeninggalController extends Controller
 {
+    public function download()
+{
+        return Excel::download(new MeninggalExport, 'table_meninggal_data.xlsx');
+    }
     public function resident_died(Request $request)
     {
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login

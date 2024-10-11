@@ -73,10 +73,19 @@
         <div class="card shadow-lg rounded-lg overflow-hidden">
             <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
                 <h3 class="text-lg font-bold">Tabel Meninggal</h3>
-                {{-- <button id="addDataButton"
-                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
-                    <i class="fas fa-plus"></i>
-                </button> --}}
+                <div class="flex items-center space-x-2">
+                    @if (Auth::user()->role->id === 1)
+                        <!-- Tampilkan tombol download hanya untuk admin -->
+                        <button onclick="window.location='{{ route('table-meninggal.download') }}'" title="Download data"
+                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    @endif
+                    <button id="addDataButton"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
             </div>
             <div class="p-4">
                 <!-- Form Filter -->
@@ -317,9 +326,9 @@
             <div class="p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     ${['nik', 'nama_kepala_keluarga', 'alamat', 'rw', 'rt', 'nama_almarhum', 'hubungan_dengan_kk', 'tempat_lahir', 'tanggal_lahir', 'tempat_meninggal', 'tanggal_meninggal'].map(field => `
-                                                                                                                                        <div>
-                                                                                                                                            <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
-                                                                                                                                            ${field === 'rw' ? `
+                                                                                                                                                        <div>
+                                                                                                                                                            <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
+                                                                                                                                                            ${field === 'rw' ? `
                             <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
                                 @if (Auth::user()->role->id === 1) <!-- Admin -->
                                     @foreach ($rws as $rw)
@@ -334,8 +343,8 @@
                             placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" 
                             ${field === 'nik' ? 'oninput="this.value = this.value.slice(0, 16)"' : ''} />
                             `}
-                                                                                                                                        </div>
-                                                                                                                                    `).join('')}
+                                                                                                                                                        </div>
+                                                                                                                                                    `).join('')}
                     <div>
                         <label for="jenis_kelamin_${index}" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
                         <select name="jenis_kelamin[]" id="jenis_kelamin_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">

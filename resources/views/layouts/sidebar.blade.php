@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 <div x-cloak :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false"
     class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
 <div x-cloak :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
@@ -170,16 +172,12 @@
 
         {{-- Side UMKM --}}
         <div class="nav__link">
-            <a class="flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                href="/umkm-table">
-                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                <span class="mx-3">Data UMKM</span>
-            </a>
-        </div>
+    <a class="flex items-center px-6 py-2 mt-4 {{ request()->is('umkm-table') ? 'bg-gray-700 bg-opacity-25 text-gray-100' : 'text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100' }} group"
+        href="/umkm-table">
+        <i class="fas fa-store fa-lg {{ request()->is('umkm-table') ? 'text-gray-100' : 'text-gray-500 group-hover:text-gray-100' }}"></i>
+        <span class="mx-3">Data UMKM</span>
+    </a>
+</div>
 
         @if (auth()->check() && Auth::user()->role_id === 1)
             <div class="nav__link">

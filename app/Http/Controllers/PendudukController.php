@@ -16,9 +16,14 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\MigrasiKeluar;
 use App\Models\MigrasiMasuk;
 use App\Models\Rw;
+use App\Exports\PendudukExport;
 
 class PendudukController extends Controller
 {
+    public function download()
+    {
+        return Excel::download(new PendudukExport, 'table_penduduk_data.xlsx');
+    }
     public function importData()
     {
         try {
@@ -36,8 +41,8 @@ class PendudukController extends Controller
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
         $rw_id = $user->rw_id;
 
+        // Logika untuk admin
         if ($user->role->id === 1) {
-            // Admin logic
             $penduduks = Penduduk::paginate(10);
             $totalPenduduk = Penduduk::whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
             $totalLakiLaki = Penduduk::where('jenis_kelamin', 'LAKI-LAKI')
@@ -45,7 +50,7 @@ class PendudukController extends Controller
             $totalPerempuan = Penduduk::where('jenis_kelamin', 'PEREMPUAN')
                 ->whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
         } else {
-            // Non-admin logic
+            // Logika untuk non-admin (RW)
             $penduduks = Penduduk::where('rw', $rw_id)->paginate(10);
             $totalPenduduk = Penduduk::where('rw', $rw_id)
                 ->whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
@@ -57,39 +62,118 @@ class PendudukController extends Controller
                 ->whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
         }
 
-        $totalLahir = Lahir::where('status_kependudukan', 'LAHIR')->count();
-        $totalLahirLakiLaki = Lahir::where('status_kependudukan', 'LAHIR')
-            ->where('jenis_kelamin', 'LAKI-LAKI')->count();
-        $totalLahirPerempuan = Lahir::where('status_kependudukan', 'LAHIR')
-            ->where('jenis_kelamin', 'PEREMPUAN')->count();
-        $totalMeninggal = Meninggals::where('status_kependudukan', 'MENINGGAL')->count();
-        $totalMeninggalLakiLaki = Meninggals::where('status_kependudukan', 'MENINGGAL')
-            ->where('jenis_kelamin', 'LAKI-LAKI')->count();
-        $totalMeninggalPerempuan = Meninggals::where('status_kependudukan', 'MENINGGAL')
-            ->where('jenis_kelamin', 'PEREMPUAN')->count();
+        // Ambil data untuk grafik, filter by RW jika bukan admin
+        $pendudukDataQuery = Penduduk::select('rw', 'jenis_kelamin', DB::raw('count(*) as total'))
+            ->whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR']);
 
-        $totalMigrasiMasuk = MigrasiMasuk::count();
-        $totalMigrasiKeluar = MigrasiKeluar::count();
+        if ($user->role->id !== 1) {
+            $pendudukDataQuery->where('rw', $rw_id);
+        }
 
-        $totalMigrasiMasukLakiLaki = MigrasiMasuk::where('jenis_kelamin', 'LAKI-LAKI')->count();
-        $totalMigrasiKeluarLakiLaki = MigrasiKeluar::where('jenis_kelamin', 'LAKI-LAKI')->count();
+        $pendudukData = $pendudukDataQuery->groupBy('rw', 'jenis_kelamin')->get();
 
-        $totalMigrasiMasukPerempuan = MigrasiMasuk::where('jenis_kelamin', 'PEREMPUAN')->count();
-        $totalMigrasiKeluarPerempuan = MigrasiKeluar::where('jenis_kelamin', 'PEREMPUAN')->count();
+        $dataByRw = [];
+        foreach ($pendudukData as $data) {
+            $dataByRw[$data->rw][$data->jenis_kelamin] = $data->total;
+        }
 
+        // Lahir, Meninggal, Migrasi: Sesuaikan data untuk RW
+        $totalLahirQuery = Lahir::where('status_kependudukan', 'LAHIR');
+        $totalMeninggalQuery = Meninggals::where('status_kependudukan', 'MENINGGAL');
+        $totalMigrasiMasukQuery = MigrasiMasuk::query();
+        $totalMigrasiKeluarQuery = MigrasiKeluar::query();
+
+        if ($user->role->id !== 1) {
+            $totalLahirQuery->where('rw', $rw_id);
+            $totalMeninggalQuery->where('rw', $rw_id);
+            $totalMigrasiMasukQuery->where('rw', $rw_id);
+            $totalMigrasiKeluarQuery->where('rw', $rw_id);
+        }
+
+        // Menghitung total data kelahiran, meninggal, dan migrasi
+        $totalLahir = $totalLahirQuery->count();
+        $totalLahirLakiLaki = Lahir::where('jenis_kelamin', 'LAKI-LAKI')
+            ->when($user->role->id !== 1, function ($query) use ($rw_id) {
+                return $query->where('rw', $rw_id);
+            })
+            ->count();
+        $totalLahirPerempuan = Lahir::where('jenis_kelamin', 'PEREMPUAN')
+            ->when($user->role->id !== 1, function ($query) use ($rw_id) {
+                return $query->where('rw', $rw_id);
+            })
+            ->count();
+
+        $totalMeninggal = $totalMeninggalQuery->count();
+        $totalMeninggalLakiLaki = Meninggals::where('jenis_kelamin', 'LAKI-LAKI')
+            ->when($user->role->id !== 1, function ($query) use ($rw_id) {
+                return $query->where('rw', $rw_id);
+            })
+            ->count();
+        $totalMeninggalPerempuan = Meninggals::where('jenis_kelamin', 'PEREMPUAN')
+            ->when($user->role->id !== 1, function ($query) use ($rw_id) {
+                return $query->where('rw', $rw_id);
+            })
+            ->count();
+
+        $totalMigrasiMasuk = $totalMigrasiMasukQuery->count();
+        $totalMigrasiKeluar = $totalMigrasiKeluarQuery->count();
+
+        $totalMigrasiMasukLakiLaki = MigrasiMasuk::where('jenis_kelamin', 'LAKI-LAKI')
+            ->when($user->role->id !== 1, function ($query) use ($rw_id) {
+                return $query->where('rw', $rw_id);
+            })
+            ->count();
+        $totalMigrasiMasukPerempuan = MigrasiMasuk::where('jenis_kelamin', 'PEREMPUAN')
+            ->when($user->role->id !== 1, function ($query) use ($rw_id) {
+                return $query->where('rw', $rw_id);
+            })
+            ->count();
+        $totalMigrasiKeluarLakiLaki = MigrasiKeluar::where('jenis_kelamin', 'LAKI-LAKI')
+            ->when($user->role->id !== 1, function ($query) use ($rw_id) {
+                return $query->where('rw', $rw_id);
+            })
+            ->count();
+        $totalMigrasiKeluarPerempuan = MigrasiKeluar::where('jenis_kelamin', 'PEREMPUAN')
+            ->when($user->role->id !== 1, function ($query) use ($rw_id) {
+                return $query->where('rw', $rw_id);
+            })
+            ->count();
+
+        // Proporsi
         $proporsiLK = $totalPenduduk > 0 ? number_format(($totalLakiLaki / $totalPenduduk) * 100, 2) : 0;
         $proporsiPR = $totalPenduduk > 0 ? number_format(($totalPerempuan / $totalPenduduk) * 100, 2) : 0;
 
-        $totalPenduduk += $totalLahir;
-        $totalLakiLaki += $totalLahirLakiLaki;
-        $totalPerempuan += $totalLahirPerempuan;
+        // Data UMKM
+        $umkmQuery = Umkm::query();
 
-        $totalUmkm = Umkm::sum('jumlah_umkm');
-        $totalUmkmIndustri = Umkm::where('jenis_umkm', 'industri pengolahan')->sum('jumlah_umkm');
-        $totalUmkmPerdagangan = Umkm::where('jenis_umkm', 'perdagangan besar/eceran')->sum('jumlah_umkm');
-        $totalUmkmPenyediaAkomodasi = Umkm::where('jenis_umkm', 'penyedia akomodasi & makan minum')->sum('jumlah_umkm');
-        $totalUmkmKonstruksi = Umkm::where('jenis_umkm', 'konstruksi')->sum('jumlah_umkm');
-        $totalUmkmJasaLainnya = Umkm::where('jenis_umkm', 'jasa lainnya')->sum('jumlah_umkm');
+        if ($user->role->id !== 1) {
+            $umkmQuery->where('rw', $rw_id);
+        }
+
+        $totalUmkm = $umkmQuery->sum('jumlah_umkm');
+
+        // Pisahkan query untuk setiap jenis UMKM
+        $totalUmkmIndustri = Umkm::where('jenis_umkm', 'industri pengolahan');
+        $totalUmkmPerdagangan = Umkm::where('jenis_umkm', 'perdagangan besar/eceran');
+        $totalUmkmPenyediaAkomodasi = Umkm::where('jenis_umkm', 'penyedia akomodasi & makan minum');
+        $totalUmkmKonstruksi = Umkm::where('jenis_umkm', 'konstruksi');
+        $totalUmkmJasaLainnya = Umkm::where('jenis_umkm', 'jasa lainnya');
+
+        // Tambahkan filter RW untuk non-admin
+        if ($user->role->id !== 1) {
+            $totalUmkmIndustri->where('rw', $rw_id);
+            $totalUmkmPerdagangan->where('rw', $rw_id);
+            $totalUmkmPenyediaAkomodasi->where('rw', $rw_id);
+            $totalUmkmKonstruksi->where('rw', $rw_id);
+            $totalUmkmJasaLainnya->where('rw', $rw_id);
+        }
+
+        // Hitung total untuk setiap jenis UMKM
+        $totalUmkmIndustri = $totalUmkmIndustri->sum('jumlah_umkm');
+        $totalUmkmPerdagangan = $totalUmkmPerdagangan->sum('jumlah_umkm');
+        $totalUmkmPenyediaAkomodasi = $totalUmkmPenyediaAkomodasi->sum('jumlah_umkm');
+        $totalUmkmKonstruksi = $totalUmkmKonstruksi->sum('jumlah_umkm');
+        $totalUmkmJasaLainnya = $totalUmkmJasaLainnya->sum('jumlah_umkm');
 
         return view('dashboard', compact(
             'penduduks',
@@ -115,12 +199,27 @@ class PendudukController extends Controller
             'totalUmkmPerdagangan',
             'totalUmkmPenyediaAkomodasi',
             'totalUmkmKonstruksi',
-            'totalUmkmJasaLainnya'
+            'totalUmkmJasaLainnya',
+            'dataByRw'
         ));
     }
 
+
+
+
     public function index()
     {
+        // Ambil data untuk grafik
+        $pendudukData = Penduduk::select('rw', 'jenis_kelamin', DB::raw('count(*) as total'))
+            ->whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])
+            ->groupBy('rw', 'jenis_kelamin')
+            ->get();
+
+        $dataByRw = [];
+        foreach ($pendudukData as $data) {
+            $dataByRw[$data->rw][$data->jenis_kelamin] = $data->total;
+        }
+
         // Ambil semua data yang diperlukan tanpa memerlukan login pengguna
         $penduduks = Penduduk::paginate(10);
         $totalPenduduk = Penduduk::whereNotIn('status_kependudukan', ['MENINGGAL', 'KELUAR'])->count();
@@ -153,9 +252,9 @@ class PendudukController extends Controller
         $proporsiPR = $totalPenduduk > 0 ? number_format(($totalPerempuan / $totalPenduduk) * 100, 2) : 0;
 
         // Update total penduduk dan jenis kelamin berdasarkan migrasi
-        $totalPenduduk += $totalLahir;
-        $totalLakiLaki += $totalLahirLakiLaki;
-        $totalPerempuan += $totalLahirPerempuan;
+        $totalPenduduk;
+        $totalLakiLaki;
+        $totalPerempuan;
 
         // Menghitung total jumlah UMKM dari kolom jumlah_umkm
         $totalUmkm = Umkm::sum('jumlah_umkm');
@@ -191,7 +290,8 @@ class PendudukController extends Controller
             'totalUmkmPerdagangan',
             'totalUmkmPenyediaAkomodasi',
             'totalUmkmKonstruksi',
-            'totalUmkmJasaLainnya'
+            'totalUmkmJasaLainnya',
+            'dataByRw'
         ));
     }
 
@@ -404,5 +504,21 @@ class PendudukController extends Controller
             'hubunganKeluarga' => $hubunganKeluarga,
             'meninggal' => $meninggal, // Tambahkan ini
         ]);
+    }
+
+
+
+
+
+
+    public function show($id)
+    {
+        // Logika untuk menampilkan data penduduk berdasarkan ID
+        $penduduk = Penduduk::find($id);
+        if ($penduduk) {
+            return view('penduduk.show', compact('penduduk'));
+        } else {
+            return redirect()->back()->with('error', 'Penduduk tidak ditemukan');
+        }
     }
 }

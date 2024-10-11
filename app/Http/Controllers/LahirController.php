@@ -7,9 +7,15 @@ use App\Models\Penduduk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Rw;
+use App\Exports\LahirExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LahirController extends Controller
 {
+    public function download()
+    {
+        return Excel::download(new LahirExport, 'table_lahir_data.xlsx');
+    }
     // Display the list of Lahir entries
     public function resident_born(Request $request)
     {
