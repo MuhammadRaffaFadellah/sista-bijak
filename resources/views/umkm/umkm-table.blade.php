@@ -95,17 +95,17 @@
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
                                             {{ $umkms->firstItem() + $index }}.
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->nik }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->nama_rw }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->rw }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->kategori_umkm }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->jumlah_umkm }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->jenis_umkm }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $umkm->nama_pemilik }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $umkm->nik }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $umkm->nama_rw }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $umkm->rw }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $umkm->kategori_umkm }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $umkm->jumlah_umkm }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $umkm->jenis_umkm }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $umkm->nama_pemilik }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
                                             <button class="bg-blue-500 text-white px-4 py-2 rounded"
                                                 onclick="showAddressModal('{{ $umkm->alamat }}')">
-                                                Lihat Alamat
+                                                Lihat
                                             </button>
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap flex space-x-2">
@@ -128,8 +128,9 @@
                             @endif
                         </tbody>
                     </table>
+                    <div class="mt-4">
+                    {{ $umkms->appends(request()->except('page'))->links() }} <!-- Pagination links -->
                 </div>
-                <div class="mt-4">{{ $umkms->links() }}</div>
             </div>
         </div>
         <!-- Modal Tambah Data -->

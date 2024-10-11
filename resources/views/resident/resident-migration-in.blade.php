@@ -161,34 +161,34 @@
                                     <tr class="hover:bg-gray-100 transition duration-200">
                                         <td class="px-4 py-2 whitespace-nowrap text-center">
                                             {{ $migrasiMasuk->firstItem() + $index }}.</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->nik }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap">{{ $migrasi->nama_lengkap }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->jenis_kelamin }}
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $migrasi->nik }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap uppercase">{{ $migrasi->nama_lengkap }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $migrasi->jenis_kelamin }}
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->tempat_lahir }}
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $migrasi->tempat_lahir }}
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->tanggal_lahir }}
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $migrasi->tanggal_lahir }}
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->status_hubkel }}
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $migrasi->status_hubkel }}
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
                                             {{ $migrasi->pendidikan_terakhir }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->jenis_pekerjaan }}
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $migrasi->jenis_pekerjaan }}
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->agama }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $migrasi->agama }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
                                             {{ $migrasi->status_perkawinan }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap">
+                                        <td class="px-4 py-2 whitespace-nowrap uppercase">
                                             <button
                                                 class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150"
-                                                onclick="showAddressModal('{{ $meninggal->alamat }}')">
+                                                onclick="showAddressModal('{{ $migrasi->alamat }}')">
                                                 Lihat
                                             </button>
                                         </td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->rw }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->rt }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->kelurahan }}</td>
-                                        <td class="px-4 py-2 whitespace-nowrap text-center">
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $migrasi->rw }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $migrasi->rt }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">{{ $migrasi->kelurahan }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center uppercase">
                                             {{ $migrasi->status_kependudukan }}</td>
                                         <td class="px-4 py-2 whitespace-nowrap text-center space-x-2">
                                             <a href="{{ route('migrasimasuk.edit', $migrasi->id) }}" title="Edit data"
