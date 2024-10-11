@@ -172,20 +172,20 @@
 
         {{-- Side UMKM --}}
         <div class="nav__link">
-    <a class="flex items-center px-6 py-2 mt-4 {{ request()->is('umkm-table') ? 'bg-gray-700 bg-opacity-25 text-gray-100' : 'text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100' }} group"
-        href="/umkm-table">
-        <i class="fas fa-store fa-lg {{ request()->is('umkm-table') ? 'text-gray-100' : 'text-gray-500 group-hover:text-gray-100' }}"></i>
-        <span class="mx-3">Data UMKM</span>
-    </a>
-</div>
+            <a class="flex items-center px-6 py-2 mt-4 {{ request()->is('umkm-table') ? 'bg-gray-700 bg-opacity-25 text-gray-100' : 'text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100' }} group"
+                href="/umkm-table">
+                <i
+                    class="fas fa-store fa-lg {{ request()->is('umkm-table') ? 'text-gray-100' : 'text-gray-500 group-hover:text-gray-100' }}"></i>
+                <span class="mx-3">Data UMKM</span>
+            </a>
+        </div>
 
-        @if (auth()->check() && Auth::user()->role_id === 1)
+        @if (auth()->check() && auth()->user()->role_id == 1)
             <div class="nav__link">
                 <a class="{{ request()->is('user-management') ? 'bg-gray-700 bg-opacity-25' : '' }} mt-4 flex items-center px-6 py-2 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                     href="/user-management">
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" height="20" width="17.5"
-                        fill="currentColor"
-                        viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                        fill="currentColor" viewBox="0 0 448 512">
                         <path
                             d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464l349.5 0c-8.9-63.3-63.3-112-129-112l-91.4 0c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3z" />
                     </svg>
