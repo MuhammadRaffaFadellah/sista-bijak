@@ -35,14 +35,14 @@ class Penduduk extends Model
     }
 
     public function user()
-{
-    return $this->belongsTo(User::class, 'rw', 'rw_id'); // Pastikan kunci asing benar
-}
-public function migrasiMasuk()
-{
-    return $this->belongsTo(MigrasiMasuk::class, 'nik', 'nik');
-}
-protected static function boot()
+    {
+        return $this->belongsTo(User::class, 'rw', 'rw_id'); // Pastikan kunci asing benar
+    }
+    public function migrasiMasuk()
+    {
+        return $this->belongsTo(MigrasiMasuk::class, 'nik', 'nik');
+    }
+    protected static function boot()
     {
         parent::boot();
         static::updating(function ($penduduk) {

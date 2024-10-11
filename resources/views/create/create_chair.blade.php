@@ -58,12 +58,10 @@
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
                                 <option value="LAKI-LAKI"
                                     {{ (isset($lahir) && $lahir->jenis_kelamin == 'LAKI-LAKI') || (isset($penduduk) && $penduduk->jenis_kelamin == 'LAKI-LAKI') ? 'selected' : '' }}>
-                                    LAKI-LAKI
-                                </option>
+                                    LAKI-LAKI</option>
                                 <option value="PEREMPUAN"
                                     {{ (isset($lahir) && $lahir->jenis_kelamin == 'PEREMPUAN') || (isset($penduduk) && $penduduk->jenis_kelamin == 'PEREMPUAN') ? 'selected' : '' }}>
-                                    PEREMPUAN
-                                </option>
+                                    PEREMPUAN</option>
                             </select>
                         </div>
                         <!-- Tempat Lahir -->
@@ -117,10 +115,57 @@
                             <select name="jenis_pekerjaan" id="jenis_pekerjaan"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
                                 <option value="" disabled {{ empty($lahir->jenis_pekerjaan) ? 'selected' : '' }}>
-                                    Pilih Jenis Pekerjaan</option>
-                                @foreach (['Dokter', 'Apoteker', 'Dosen', 'Guru', 'Anggota DPRD Kabupaten/Kota', 'Karyawan BUMN', 'Karyawan BUMD', 'Bidan', 'Juru Masak', 'Buruh Harian Lepas', 'Buruh Nelayan/Perikanan', 'Buruh Tani/Perkebunan', 'Pegawai Negeri Sipil (PNS)', 'Kepolisian RI', 'Karyawan Swasta', 'Konsultan', 'Notaris', 'Pedagang', 'Mekanik', 'Nelayan/Perikanan', 'Penata Rias', 'Pendeta', 'Pelajar/Mahasiswa', 'Pelaut', 'Karyawan Honorer', 'Pembantu Rumah Tangga', 'Pengacara', 'Perawat', 'Penyiar Radio', 'Wartawan', 'Ustadz/Mubaligh', 'Seniman', 'Perdagangan', 'Sopir', 'Tukang Cukur', 'Tukang Jahit', 'Tukang Kayu', 'Tukang Listrik'] as $pekerjaan)
+                                    Pilih Jenis Pekerjaan
+                                </option>
+                                @php
+                                    // Daftar pekerjaan yang ingin diurutkan
+                                    $pekerjaanList = [
+                                        'Dokter',
+                                        'Apoteker',
+                                        'Dosen',
+                                        'Guru',
+                                        'Anggota DPRD Kabupaten/Kota',
+                                        'Belum/Tidak Bekerja',
+                                        'Karyawan BUMN',
+                                        'Karyawan BUMD',
+                                        'Bidan',
+                                        'Juru Masak',
+                                        'Buruh Harian Lepas',
+                                        'Buruh Nelayan/Perikanan',
+                                        'Buruh Tani/Perkebunan',
+                                        'Pegawai Negeri Sipil (PNS)',
+                                        'Kepolisian RI',
+                                        'Karyawan Swasta',
+                                        'Konsultan',
+                                        'Notaris',
+                                        'Pedagang',
+                                        'Mekanik',
+                                        'Nelayan/Perikanan',
+                                        'Penata Rias',
+                                        'Pendeta',
+                                        'Pelajar/Mahasiswa',
+                                        'Pelaut',
+                                        'Karyawan Honorer',
+                                        'Pembantu Rumah Tangga',
+                                        'Pengacara',
+                                        'Perawat',
+                                        'Penyiar Radio',
+                                        'Wartawan',
+                                        'Ustadz/Mubaligh',
+                                        'Seniman',
+                                        'Perdagangan',
+                                        'Sopir',
+                                        'Tukang Cukur',
+                                        'Tukang Jahit',
+                                        'Tukang Kayu',
+                                        'Tukang Listrik',
+                                    ];
+                                    // Mengurutkan daftar pekerjaan secara alfabetis
+                                    sort($pekerjaanList);
+                                @endphp
+                                @foreach ($pekerjaanList as $pekerjaan)
                                     <option value="{{ $pekerjaan }}"
-                                        {{ ($lahir->jenis_pekerjaan ?? '') == $pekerjaan ? 'selected' : '' }}>
+                                        {{ ($lahir->jenis_pekerjaan ?? ($penduduk->jenis_pekerjaan ?? '')) == $pekerjaan ? 'selected' : '' }}>
                                         {{ $pekerjaan }}
                                     </option>
                                 @endforeach
@@ -131,33 +176,27 @@
                             <label for="agama" class="block text-sm font-medium text-gray-700">Agama</label>
                             <select name="agama" id="agama"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                <option value="" disabled
-                                    {{ empty($lahir->agama ?? $penduduk->agama) ? 'selected' : '' }}>Pilih Agama
+                                <option value="" disabled {{ empty($lahir->agama) ? 'selected' : '' }}>Pilih Agama
                                 </option>
-                                @foreach (['ISLAM', 'KRISTEN', 'KATOLIK', 'HINDU', 'BUDDHA', 'KONGHUCU', 'LAINNYA'] as $agama)
+                                @foreach (['ISLAM', 'KRISTEN', 'KATOLIK', 'HINDU', 'BUDHA', 'KONGHUCU'] as $agama)
                                     <option value="{{ $agama }}"
                                         {{ ($lahir->agama ?? ($penduduk->agama ?? '')) == $agama ? 'selected' : '' }}>
-                                        {{ ucfirst(strtolower($agama)) }}
-                                    </option>
+                                        {{ $agama }}</option>
                                 @endforeach
                             </select>
                         </div>
-
                         <!-- Status Perkawinan -->
                         <div>
                             <label for="status_perkawinan" class="block text-sm font-medium text-gray-700">Status
                                 Perkawinan</label>
                             <select name="status_perkawinan" id="status_perkawinan"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                <option value="" disabled
-                                    {{ empty($lahir->status_perkawinan ?? $penduduk->status_perkawinan) ? 'selected' : '' }}>
-                                    Pilih Status Perkawinan
-                                </option>
-                                @foreach (['BELUM MENIKAH', 'MENIKAH', 'CERAI HIDUP', 'CERAI MATI', 'DULU PERNAH MENIKAH'] as $status_perkawinan)
-                                    <option value="{{ $status_perkawinan }}"
-                                        {{ ($lahir->status_perkawinan ?? ($penduduk->status_perkawinan ?? '')) == $status_perkawinan ? 'selected' : '' }}>
-                                        {{ ucfirst(strtolower($status_perkawinan)) }}
-                                    </option>
+                                <option value="" disabled {{ empty($lahir->status_perkawinan) ? 'selected' : '' }}>
+                                    Pilih Status Perkawinan</option>
+                                @foreach (['Belum Menikah', 'Menikah', 'Cerai Hidup', 'Cerai Mati'] as $status)
+                                    <option value="{{ $status }}"
+                                        {{ ($lahir->status_perkawinan ?? ($penduduk->status_perkawinan ?? '')) == $status ? 'selected' : '' }}>
+                                        {{ $status }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -169,13 +208,48 @@
                                 value="{{ $lahir->alamat ?? ($penduduk->alamat ?? '') }}"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
+
+                        <!-- status kependudukan -->
+                        <div>
+                            <label for="status_kependudukan">Status Kependudukan</label>
+                            <select name="status_kependudukan" id="status_kependudukan"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"
+                                required>
+                                @if (isset($penduduk))
+                                    <option value="Menetap"
+                                        {{ $penduduk->status_kependudukan == 'Menetap' ? 'selected' : '' }}>Menetap
+                                    </option>
+                                    <option value="Keluar"
+                                        {{ $penduduk->status_kependudukan == 'Keluar' ? 'selected' : '' }}>Keluar
+                                    </option>
+                                    <option value="Masuk"
+                                        {{ $penduduk->status_kependudukan == 'Masuk' ? 'selected' : '' }}>Masuk</option>
+                                    <option value="Lahir"
+                                        {{ $penduduk->status_kependudukan == 'Lahir' ? 'selected' : '' }}>Lahir</option>
+                                    <!-- Opsi baru ditambahkan -->
+                                @else
+                                    <option value="Lahir" {{ old('status_kependudukan') == 'Lahir' ? 'selected' : '' }}>
+                                        Lahir</option>
+                                @endif
+                            </select>
+                        </div>
+
                         <!-- RW -->
                         <div>
                             <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
-                            <input type="text" name="rw" id="rw" placeholder="Masukkan RW"
-                                value="{{ $lahir->rw ?? ($penduduk->rw ?? '') }}"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                            <select name="rw" id="rw"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"
+                                required>
+                                <option value="" disabled {{ empty($lahir->rw) ? 'selected' : '' }}>Pilih RW
+                                </option>
+                                @foreach ($rws as $rw)
+                                    <option value="{{ $rw->id }}"
+                                        {{ ($lahir->rw ?? ($penduduk->rw ?? '')) == $rw->id ? 'selected' : '' }}>
+                                        {{ $rw->rukun_warga }}</option>
+                                @endforeach
+                            </select>
                         </div>
+
                         <!-- RT -->
                         <div>
                             <label for="rt" class="block text-sm font-medium text-gray-700">RT</label>
@@ -183,34 +257,37 @@
                                 value="{{ $lahir->rt ?? ($penduduk->rt ?? '') }}"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
-                        <!-- Status Perkawinan -->
-                        <div>
-                            <label for="status_kependudukan" class="block text-sm font-medium text-gray-700">Status
-                                Kependudukan</label>
-                            <select name="status_kependudukan" id="status_kependudukan"
-                                class="mt-1 uppercase block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                <option value="" disabled
-                                    {{ empty($lahir->status_kependudukan ?? $penduduk->status_kependudukan) ? 'selected' : '' }}>
-                                    Pilih Status Kependudukan
+
+                        <!-- Kelurahan -->
+                        <div class="hidden">
+                            <label for="kelurahan">Kelurahan</label>
+                            <select name="kelurahan" id="kelurahan"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"
+                                required>
+                                <option value="Kesambi"
+                                    {{ isset($penduduk) && $penduduk->kelurahan == 'Kesambi' ? 'selected' : '' }}>Kesambi
                                 </option>
-                                @foreach (['MASUK', 'LAHIR', 'MENETAP', 'KELUAR'] as $status_kependudukan)
-                                    <option value="{{ $status_kependudukan }}"
-                                        {{ ($lahir->status_kependudukan ?? ($penduduk->status_kependudukan ?? '')) == $status_kependudukan ? 'selected' : '' }}>
-                                        {{ ucfirst(strtolower($status_kependudukan)) }}
-                                    </option>
-                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="mt-20 flex justify-between">
-                        <a href="{{ isset($resident) ? route('resident-table') : route('resident-born') }}"
-                            class="inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                            Kembali
+                        <a href="{{ isset($penduduk) ? route('resident-table') : route('resident-born') }}"
+                            class="inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            @if (isset($penduduk))
+                                Kembali
+                            @else
+                                Kembali
+                            @endif
                         </a>
-                        <button type="submit"
+                        <button type="submit" onclick="@if (isset($penduduk)) editConfirm(event, this) @else addConfirm(event, this) @endif"
                             class="inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                            {{ isset($resident) ? 'Simpan' : 'Tambah' }}
+                            @if (isset($penduduk))
+                                Simpan
+                            @else
+                                Tambah
+                            @endif
                         </button>
+
                     </div>
                 </form>
             </div>

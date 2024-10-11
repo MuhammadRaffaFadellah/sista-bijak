@@ -453,8 +453,7 @@ class PendudukController extends Controller
                 ]);
             }
         }
-
-        return redirect()->route('resident.table')->with('success', 'Data penduduk berhasil diperbarui.');
+        return redirect()->route('resident-table')->with('success', 'Data penduduk berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -465,10 +464,10 @@ class PendudukController extends Controller
             // Hapus data penduduk
             $penduduk->delete();
             // Redirect ke halaman tabel dengan pesan sukses
-            return redirect()->route('resident.table')->with('success', 'Data penduduk berhasil dihapus.');
+            return redirect()->route('resident-table')->with('success', 'Data penduduk berhasil dihapus.');
         } catch (\Exception $e) {
             // Tangani jika ada kesalahan
-            return redirect()->route('resident.resident.table')->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+            return redirect()->route('resident-table')->with('error', 'Gagal menghapus data: ' . $e->getMessage());
         }
     }
 
@@ -485,17 +484,25 @@ class PendudukController extends Controller
         }
     }
 
-    public function createDied($nik)
+    public function createDied($id)
     {
-        // Ambil data penduduk berdasarkan NIK
-        $penduduk = Penduduk::where('nik', $nik)->first();
-        // Jika penduduk tidak ditemukan, kembalikan error
-        if (!$penduduk) {
-            return redirect()->back()->with('error', 'Penduduk tidak ditemukan.');
-        }
-        // Kirim data penduduk ke view create_died untuk digunakan di form
+        // Ambil data status_hubkel dari tabel penduduk
+        $hubunganKeluarga = DB::table('penduduk')
+            ->select('status_hubkel')
+            ->distinct()
+            ->pluck('status_hubkel')
+            ->toArray();
+        // Ambil data penduduk berdasarkan ID
+        $penduduk = Penduduk::find($id);
+        // Ambil data meninggal jika diperlukan
+        $meninggal = Meninggals::where('id', $id)->first();
+        $rws = rw::all();
+        // Jika penduduk ditemukan, kirim data ke view
         return view('create.create_died', [
             'penduduk' => $penduduk,
+            'rws' => $rws,
+            'hubunganKeluarga' => $hubunganKeluarga,
+            'meninggal' => $meninggal, // Tambahkan ini
         ]);
     }
 

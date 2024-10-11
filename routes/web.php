@@ -17,10 +17,6 @@ Route::get('/', function () {
     return view('index');
 });
 
-// Route untuk import
-Route::get('/import', function () {
-    return view('import');
-});
 Route::post('/import', [PendudukController::class, 'importData'])->name('import.data');
 
 // Route untuk dashboard
@@ -52,11 +48,13 @@ Route::delete('/umkm/{id}', [UmkmController::class, 'destroy'])->name('umkm.dest
 // Resident Route
 Route::middleware('auth')->group(function () {
     Route::resource('penduduk', PendudukController::class);
-
     // Route untuk profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route untuk menampilkan form1
+Route::get('/form1', [ProfileController::class, 'showForm1'])->name('form1');
+
 });
 Route::delete('/penduduk/{id}', [PendudukController::class, 'destroy'])->name('penduduk.destroy');
 Route::get('/penduduk/{id}/edit', [PendudukController::class, 'edit'])->name('penduduk.edit');

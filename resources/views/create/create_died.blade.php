@@ -26,14 +26,15 @@
                         @method('PUT')
                     @endif
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <input type="hidden" name="penduduk_id" value="{{ $penduduk->id ?? $meninggal->penduduk_id }}">
+                        <input type="hidden" name="id" value="{{ $penduduk->id ?? $meninggal->id }}">
                         <!-- NIK Penduduk -->
                         <div>
-                            <label for="nik" class="block text-sm font-medium text-gray-700">NIK Penduduk</label>
+                            <label for="nik" class="block text-sm font-medium text-gray-700">NIK</label>
                             <input type="text" name="nik" id="nik"
                                 value="{{ $penduduk->nik ?? $meninggal->nik }}" readonly
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
+
                         <!-- Nama Almarhum/Almarhumah -->
                         <div>
                             <label for="nama_almarhum" class="block text-sm font-medium text-gray-700">Nama
@@ -41,27 +42,76 @@
                             <input type="text" name="nama_almarhum" id="nama_almarhum"
                                 placeholder="Masukkan nama almarhum"
                                 value="{{ $penduduk->nama_lengkap ?? $meninggal->nama_almarhum }}"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                                class="mt-1 uppercase block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
-                        <!-- Hubungan Dengan KK -->
+                        <!-- Jenis Kelamin -->
                         <div>
-                            <label for="hubungan_dengan_kk" class="block text-sm font-medium text-gray-700">Hubungan Dengan
-                                KK</label>
-                            <input type="text" name="hubungan_dengan_kk" id="hubungan_dengan_kk"
-                                placeholder="Masukkan hubungan dengan KK"
-                                value="{{ $penduduk->status_hubkel ?? $meninggal->hubungan_dengan_kk }}"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                            <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis
+                                Kelamin</label>
+                            <?php
+                            $genderOptions = ['LAKI-LAKI', 'PEREMPUAN'];
+                            ?>
+                            <select name="jenis_kelamin" id="jenis_kelamin"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                @foreach ($genderOptions as $gender)
+                                    <option value="{{ $gender }}"
+                                        {{ old('jenis_kelamin', isset($meninggal) ? strtoupper($meninggal->jenis_kelamin) : (isset($penduduk) ? strtoupper($penduduk->jenis_kelamin) : '')) == $gender ? 'selected' : '' }}>
+                                        {{ $gender }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
+
+                        <!-- Hubungan dengan Kepala Keluarga -->
+                        <div>
+                            <label for="hubungan_dengan_kk" class="block text-sm font-medium text-gray-700">Hubungan dengan
+                                Kepala Keluarga</label>
+                            <select name="hubungan_dengan_kk" id="hubungan_dengan_kk"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                <option value="" disabled
+                                    {{ !isset($penduduk) && !isset($meninggal) ? 'selected' : '' }}>
+                                    Pilih Hubungan
+                                </option>
+
+                                <!-- Mengambil daftar hubungan dari array yang sudah didefinisikan -->
+                                @php
+                                    $hubunganKeluarga = [
+                                        'KEPALA KELUARGA',
+                                        'ISTRI',
+                                        'ANAK',
+                                        'CUCU',
+                                        'FAMILI LAIN',
+                                        'LAINNYA',
+                                        'MENANTU',
+                                        'MERTUA',
+                                        'ORANG TUA',
+                                        'PEMBANTU',
+                                    ];
+                                @endphp
+
+                                <!-- Looping untuk menampilkan setiap opsi hubungan -->
+                                @foreach ($hubunganKeluarga as $hubkk)
+                                    <option value="{{ $hubkk }}" @if (
+                                        (isset($penduduk) && $penduduk->status_hubkel == $hubkk) ||
+                                            (isset($meninggal) && $meninggal->hubungan_dengan_kk == $hubkk)) selected @endif>
+                                        {{ ucfirst(strtolower($hubkk)) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <!-- Tempat Lahir -->
                         <div>
-                            <label for="tempat_lahir" class="block text-sm font-medium text-gray-700">Tempat Lahir</label>
+                            <label for="tempat_lahir" class="block text-sm font-medium text-gray-700">Tempat
+                                Lahir</label>
                             <input type="text" name="tempat_lahir" id="tempat_lahir" placeholder="Masukkan tempat lahir"
                                 value="{{ $penduduk->tempat_lahir ?? $meninggal->tempat_lahir }}"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
                         <!-- Tanggal Lahir -->
                         <div>
-                            <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
+                            <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal
+                                Lahir</label>
                             <input type="date" name="tanggal_lahir" id="tanggal_lahir"
                                 value="{{ $penduduk->tanggal_lahir ?? $meninggal->tanggal_lahir }}"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
@@ -72,7 +122,7 @@
                                 Meninggal</label>
                             <input type="text" name="tempat_meninggal" id="tempat_meninggal"
                                 placeholder="Masukkan tempat meninggal" value="{{ $meninggal->tempat_meninggal ?? '' }}"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                                class="mt-1 uppercase block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
                         <!-- Tanggal Meninggal -->
                         <div>
@@ -82,13 +132,7 @@
                                 value="{{ $meninggal->tanggal_meninggal ?? '' }}"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
-                        <!-- Alamat -->
-                        <div>
-                            <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
-                            <input type="text" name="alamat" id="alamat" placeholder="Masukkan alamat"
-                                value="{{ $penduduk->alamat ?? $meninggal->alamat }}"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                        </div>
+
                         <!-- RW -->
                         <div>
                             <label for="rw" class="block text-sm font-medium text-gray-700">RW</label>
@@ -110,22 +154,15 @@
                                 value="{{ $penduduk->rt ?? $meninggal->rt }}"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
-                        <!-- Jenis Kelamin -->
+
+                        <!-- Alamat -->
                         <div>
-                            <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
-                            <?php
-                            $genderOptions = ['LAKI-LAKI', 'PEREMPUAN'];
-                            ?>
-                            <select name="jenis_kelamin" id="jenis_kelamin"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                                @foreach ($genderOptions as $gender)
-                                    <option value="{{ $gender }}"
-                                        {{ old('jenis_kelamin', isset($meninggal) ? strtoupper($meninggal->jenis_kelamin) : (isset($penduduk) ? strtoupper($penduduk->jenis_kelamin) : '')) == $gender ? 'selected' : '' }}>
-                                        {{ $gender }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
+                            <input type="text" name="alamat" id="alamat" placeholder="Masukkan alamat"
+                                value="{{ $penduduk->alamat ?? $meninggal->alamat }}"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
+
                         <!-- Status Kependudukan -->
                         <div class="hidden">
                             <label for="status_kependudukan" class="block text-sm font-medium text-gray-700">Status
@@ -138,9 +175,11 @@
                             </select>
                         </div>
                     </div>
-                    <div class="mt-10 flex justify-between">
-                        <a href="{{ route('resident-table') }}"
-                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:ring-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2">Kembali</a>
+                    <div class="mt-10 mb-4 flex justify-between">
+                        <a href="{{ isset($meninggal) ? route('resident-died') : route('resident-table') }}"
+                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:ring-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            Kembali
+                        </a>
                         <button type="submit"
                             onclick="{{ isset($meninggal) ? 'editConfirm(event, this)' : 'addConfirm(event, this)' }}"
                             class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:ring-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2">

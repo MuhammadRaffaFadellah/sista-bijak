@@ -6,11 +6,15 @@
     class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
     <div class="flex items-center justify-center">
         <div class="flex items-center max-w-full mt-7">
-            <img src="{{ asset('/img/logo-kel-kesambi.png') }}" alt="sista-bijak" class="w-auto h-28 ml-2">
-            <span class="mr-10 ml-3 text-30 font-semibold text-white">SISTA BIJAK</span>
+            <img src="{{ asset('/img/logo-kel-kesambi.png') }}" alt="sista-bijak" class="w-auto h-28">
+            <span class="mr-5 text-50 font-semibold text-white">SISTA BIJAK</span>
         </div>
     </div>
     <style>
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
         .active {
             background-color: rgba(55, 65, 81, 0.25);
         }
@@ -96,13 +100,12 @@
         </style>
 
         <!-- Dropdown Migrasi -->
-        <a href="javascript:void(0)" @click="sidebarOpen = !sidebarOpen"
+        <a href="javascript::void(0)"
             class="flex items-center text-decoration-none style-none px-6 py-2 mt-4 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 w-full transition duration-75 group"
             aria-controls="dropdown-migrasi" id="dropdownToggleMigrasi">
             <svg class="w-6 h-6 flex-shrink-0 text-gray-600 transition duration-100 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                    d="M12 2C11.4477 2 11 2.44772 11 3V5C11 5.55228 11.4477 6 12 6H15C16.1046 6 17 6.89543 17 8V9.58579L19.2929 7.29289C19.6834 6.90237 20.3166 6.90237 20.7071 7.29289C21.0976 7.68342 21.0976 8.31658 20.7071 8.70711L17 12.4142L13.2929 8.70711C12.9024 8.31658 12.9024 7.68342 13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289L17 9.58579V8C17 7.44772 16.5523 7 16 7H13V3C13 2.44772 12.5523 2 12 2ZM7 7C8.10457 7 9 7.89543 9 9V11H7C5.89543 11 5 11.8954 5 13V16C5 17.1046 5.89543 18 7 18H9V19C9 20.1046 8.10457 21 7 21C5.89543 21 5 20.1046 5 19V17C3.89543 17 3 16.1046 3 15V13C3 11.8954 3.89543 11 5 11V9C5 7.89543 5.89543 7 7 7Z" />
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" stroke="currentColor" fill="currentColor">
+                <path d="M32 2L2 32h10v30h16V42h8v20h16V32h10L32 2z" />
             </svg>
             <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Migrasi Penduduk</span>
             <svg id="iconArrowMigrasi" class="w-6 h-6 transition-transform duration-300" fill="currentColor"
@@ -192,83 +195,101 @@
         @endif
     </nav>
 
-
     <script>
         const navLinkEls = document.querySelectorAll('.nav__link a');
-        // Muat status aktif dan dropdown dari localStorage saat halaman dimuat
-        window.addEventListener('DOMContentLoaded', () => {
+
+        // Fungsi untuk memperbarui kelas aktif
+        function updateActiveLink() {
             // Hapus kelas 'active' dari semua link
             navLinkEls.forEach(navLinkEl => {
                 navLinkEl.classList.remove('active');
             });
 
-            let activePage = localStorage.getItem('activePage');
-            if (!activePage) {
-                activePage = '/dashboard';
-                localStorage.setItem('activePage', activePage);
-            }
-            const activeLink = document.querySelector(`a[href="${activePage}"]`);
+            // Ambil URL saat ini
+            const currentPage = window.location.pathname;
+
+            // Temukan tautan yang sesuai dengan URL saat ini
+            const activeLink = Array.from(navLinkEls).find(navLinkEl => {
+                return navLinkEl.getAttribute('href') === currentPage;
+            });
+
+            // Tambahkan kelas 'active' ke tautan yang sesuai
             if (activeLink) {
                 activeLink.classList.add('active');
             }
 
-            // Hapus status aktif dari localStorage saat logout
-            const logoutButton = document.getElementById('logoutButton');
-            if (logoutButton) {
-                logoutButton.addEventListener('click', () => {
-                    localStorage.removeItem('activePage');
-                });
-            }
+            // Simpan status aktif di localStorage
+            localStorage.setItem('activePage', currentPage);
+        }
 
-            // Dropdown Tabel
-            const dropdownToggleTabel = document.getElementById('dropdownToggleTabel');
-            const dropdownMenuTabel = document.getElementById('dropdown-tabel');
-            const iconArrowTabel = document.getElementById('iconArrowTabel');
+        // Muat status aktif saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            // Panggil fungsi untuk memperbarui tautan aktif
+            updateActiveLink();
+        });
 
-            // Cek status dropdown Tabel dari localStorage
-            const isTabelOpen = localStorage.getItem('dropdownTabel') === 'true';
-
-            // Set status dropdown dan ikon berdasarkan localStorage
-            if (isTabelOpen) {
-                dropdownMenuTabel.classList.remove('hidden');
-                iconArrowTabel.classList.add('icon-rotate');
-            } else {
-                dropdownMenuTabel.classList.add('hidden');
-                iconArrowTabel.classList.remove('icon-rotate');
-            }
-
-            // Event listener untuk toggle dropdown Tabel
-            dropdownToggleTabel.addEventListener('click', () => {
-                const isCurrentlyOpen = dropdownMenuTabel.classList.contains('hidden');
-                dropdownMenuTabel.classList.toggle('hidden');
-                iconArrowTabel.classList.toggle('icon-rotate');
-                localStorage.setItem('dropdownTabel', isCurrentlyOpen);
+        // Hapus status aktif dari localStorage saat logout
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', () => {
+                localStorage.removeItem('activePage');
             });
+        }
 
-            // Dropdown Migrasi
-            const dropdownToggleMigrasi = document.getElementById('dropdownToggleMigrasi');
-            const dropdownMenuMigrasi = document.getElementById('dropdown-migrasi');
-            const iconArrowMigrasi = document.getElementById('iconArrowMigrasi');
-
-            // Cek status dropdown Migrasi dari localStorage
-            const isMigrasiOpen = localStorage.getItem('dropdownMigrasi') === 'true';
-
-            // Set status dropdown dan ikon berdasarkan localStorage
-            if (isMigrasiOpen) {
-                dropdownMenuMigrasi.classList.remove('hidden');
-                iconArrowMigrasi.classList.add('icon-rotate');
-            } else {
-                dropdownMenuMigrasi.classList.add('hidden');
-                iconArrowMigrasi.classList.remove('icon-rotate');
-            }
-
-            // Event listener untuk toggle dropdown Migrasi
-            dropdownToggleMigrasi.addEventListener('click', () => {
-                const isCurrentlyOpen = dropdownMenuMigrasi.classList.contains('hidden');
-                dropdownMenuMigrasi.classList.toggle('hidden');
-                iconArrowMigrasi.classList.toggle('icon-rotate');
-                localStorage.setItem('dropdownMigrasi', isCurrentlyOpen);
+        // Memperbarui status aktif saat tautan diklik
+        navLinkEls.forEach(navLinkEl => {
+            navLinkEl.addEventListener('click', (event) => {
+                // Pastikan untuk memperbarui tautan aktif sebelum navigasi
+                updateActiveLink();
             });
+        });
+
+        // Dropdown Tabel
+        const dropdownToggleTabel = document.getElementById('dropdownToggleTabel');
+        const dropdownMenuTabel = document.getElementById('dropdown-tabel');
+        const iconArrowTabel = document.getElementById('iconArrowTabel');
+        // Cek status dropdown Tabel dari localStorage
+        const isTabelOpen = localStorage.getItem('dropdownTabel') === 'true';
+        // Set status dropdown dan ikon berdasarkan localStorage
+        if (isTabelOpen) {
+            dropdownMenuTabel.classList.remove('hidden');
+            iconArrowTabel.classList.add('icon-rotate');
+        } else {
+            dropdownMenuTabel.classList.add('hidden');
+            iconArrowTabel.classList.remove('icon-rotate');
+        }
+
+        // Event listener untuk toggle dropdown Tabel
+        dropdownToggleTabel.addEventListener('click', () => {
+            const isCurrentlyOpen = dropdownMenuTabel.classList.contains('hidden');
+            dropdownMenuTabel.classList.toggle('hidden');
+            iconArrowTabel.classList.toggle('icon-rotate');
+            localStorage.setItem('dropdownTabel', isCurrentlyOpen);
+        });
+
+        // Dropdown Migrasi
+        const dropdownToggleMigrasi = document.getElementById('dropdownToggleMigrasi');
+        const dropdownMenuMigrasi = document.getElementById('dropdown-migrasi');
+        const iconArrowMigrasi = document.getElementById('iconArrowMigrasi');
+
+        // Cek status dropdown Migrasi dari localStorage
+        const isMigrasiOpen = localStorage.getItem('dropdownMigrasi') === 'true';
+
+        // Set status dropdown dan ikon berdasarkan localStorage
+        if (isMigrasiOpen) {
+            dropdownMenuMigrasi.classList.remove('hidden');
+            iconArrowMigrasi.classList.add('icon-rotate');
+        } else {
+            dropdownMenuMigrasi.classList.add('hidden');
+            iconArrowMigrasi.classList.remove('icon-rotate');
+        }
+
+        // Event listener untuk toggle dropdown Migrasi
+        dropdownToggleMigrasi.addEventListener('click', () => {
+            const isCurrentlyOpen = dropdownMenuMigrasi.classList.contains('hidden');
+            dropdownMenuMigrasi.classList.toggle('hidden');
+            iconArrowMigrasi.classList.toggle('icon-rotate');
+            localStorage.setItem('dropdownMigrasi', isCurrentlyOpen);
         });
 
         // Set active link di sidebar

@@ -73,29 +73,31 @@
             <div class="bg-gray-800 text-white p-4 flex justify-between items-center">
                 <h3 class="text-lg font-bold">Tabel Migrasi Masuk</h3>
                 <div class="flex items-center space-x-2">
+                    @if (Auth::user()->role->id === 1)
+                        <!-- Tampilkan tombol download hanya untuk admin -->
+                        <button onclick="window.location='{{ route('migrasi-masuk.download') }}'" title="Download data"
+                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    @endif
                     <button id="addDataButton"
                         class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center">
                         <i class="fas fa-plus"></i>
                     </button>
-                    @if (Auth::user()->role->id === 1) <!-- Tampilkan tombol download hanya untuk admin -->
-                            <button onclick="window.location='{{ route('migrasi-masuk.download') }}'" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
-                                <i class="fas fa-download"></i>
-                            </button>
-                    @endif
                 </div>
             </div>
             <div class="p-4">
                 <form method="GET" action="{{ route('resident-migration-in') }}" class="mb-4">
                     <div class="flex items-center">
-                        <input type="text" name="search"
-                            placeholder="Cari Nama Lengkap Atau NIK"
+                        <input type="text" name="search" placeholder="Cari Nama Lengkap atau NIK"
                             class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
                         @if (Auth::user()->role->id === 1)
                             <!-- Tampilkan filter RW hanya untuk admin -->
-                            <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
+                            <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2" id="filterRw">
                                 <option value="">Semua</option>
                                 @for ($i = 1; $i <= 7; $i++)
-                                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>RW {{ $i }}</option>
+                                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>
+                                        RW {{ $i }}</option>
                                 @endfor
                             </select>
                         @endif
@@ -112,70 +114,106 @@
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white divide-y divide-gray-200 w-full">
                         <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">No</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">NIK</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Lengkap</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Jenis Kelamin</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Tempat Lahir</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Tanggal Lahir</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Status Hubkel</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Pendidikan Terakhir</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Jenis Pekerjaan</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Agama</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Status Perkawinan</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Alamat</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">RW</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">RT</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Kelurahan</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Status Kependudukan</th>
-                            <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">Aksi</th>
-                        </tr>
+                            <tr>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    No</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    NIK</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Nama Lengkap</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Jenis Kelamin</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Tempat Lahir</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Tanggal Lahir</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Status Hubkel</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Pendidikan Terakhir</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Jenis Pekerjaan</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Agama</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Status Perkawinan</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Alamat</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    RW</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    RT</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Kelurahan</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Status Kependudukan</th>
+                                <th class="px-4 py-2 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Aksi</th>
+                            </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                        @if ($migrasiMasuk->isEmpty())
-                            <tr>
-                                <td colspan="16" class="text-center px-4 py-2 font-bold">TIDAK ADA DATA</td>
-                            </tr>
-                        @else
-                            @foreach ($migrasiMasuk as $index => $migrasi)
-                            <tr class="hover:bg-gray-100 transition duration-200">
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasiMasuk->firstItem() + $index }}.</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->nik }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap">{{ $migrasi->nama_lengkap }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->jenis_kelamin }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->tempat_lahir }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->tanggal_lahir }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->status_hubkel }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->pendidikan_terakhir }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->jenis_pekerjaan }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->agama }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->status_perkawinan }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap">{{ $migrasi->alamat }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->rw }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->rt }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->kelurahan }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->status_kependudukan }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap text-center space-x-2">
-                                <a href="{{ route('migrasimasuk.edit', $migrasi->id) }}" title="Edit data" class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{ route('migrasimasuk.destroy', $migrasi->id) }}" method="POST" class="inline" id="deleteForm">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" onclick="deleteConfirm(event, this)" title="Hapus data" class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
+                            @if ($migrasiMasuk->isEmpty())
+                                <tr>
+                                    <td colspan="16" class="text-center px-4 py-2 font-bold">TIDAK ADA DATA</td>
+                                </tr>
+                            @else
+                                @foreach ($migrasiMasuk as $index => $migrasi)
+                                    <tr class="hover:bg-gray-100 transition duration-200">
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">
+                                            {{ $migrasiMasuk->firstItem() + $index }}.</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->nik }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap">{{ $migrasi->nama_lengkap }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->jenis_kelamin }}
+                                        </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->tempat_lahir }}
+                                        </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->tanggal_lahir }}
+                                        </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->status_hubkel }}
+                                        </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">
+                                            {{ $migrasi->pendidikan_terakhir }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->jenis_pekerjaan }}
+                                        </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->agama }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">
+                                            {{ $migrasi->status_perkawinan }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap">
+                                            <button
+                                                class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition ease-in-out duration-150"
+                                                onclick="showAddressModal('{{ $meninggal->alamat }}')">
+                                                Lihat
+                                            </button>
+                                        </td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->rw }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->rt }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">{{ $migrasi->kelurahan }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center">
+                                            {{ $migrasi->status_kependudukan }}</td>
+                                        <td class="px-4 py-2 whitespace-nowrap text-center space-x-2">
+                                            <a href="{{ route('migrasimasuk.edit', $migrasi->id) }}" title="Edit data"
+                                                class="text-blue-500 hover:text-blue-600 px-2 py-1 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ route('migrasimasuk.destroy', $migrasi->id) }}" method="POST"
+                                                class="inline" id="deleteForm">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" onclick="deleteConfirm(event, this)"
+                                                    title="Hapus data"
+                                                    class="text-red-500 hover:text-red-600 px-2 py-1 border border-red-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
                     </table>
                 </div>
                 <div class="mt-4">
-                    {{ $migrasiMasuk->links() }} <!-- Pagination links -->
+                    {{ $migrasiMasuk->appends(request()->except('page'))->links() }} <!-- Pagination links -->
                 </div>
             </div>
         </div>
@@ -214,6 +252,16 @@
         </form>
         @include('sweetalert')
         <script>
+            // auto submit
+            document.getElementById('filterRw').addEventListener('change', function() {
+                document.getElementById('filterForm').submit(); // Otomatis submit form saat RW dipilih
+            });
+            // filter rw menjadi tetap walaupun di paginate
+            document.getElementById('filterRw').addEventListener('change', function() {
+                this.form.submit(); // Otomatis submit form saat RW dipilih
+            });
+
+            // Modal Alamat
             function showAddressModal(address) {
                 const modal = document.getElementById('addressModal');
                 const modalContent = document.getElementById('modalContent');
@@ -221,21 +269,20 @@
                 document.getElementById('addressModalContent').textContent = address;
                 // Menampilkan modal dengan animasi masuk
                 modal.classList.remove('hidden');
-                modalContent.classList.remove('opacity-0', 'modal-leave'); // Reset kelas animasi
-                modalContent.classList.add('modal-enter'); // Tambahkan kelas animasi masuk
+                modalContent.classList.remove('opacity-0', 'modal-leave');
+                modalContent.classList.add('modal-enter');
             }
 
             function closeAddressModal() {
                 const modal = document.getElementById('addressModal');
                 const modalContent = document.getElementById('modalContent');
                 // Menambahkan animasi keluar
-                modalContent.classList.remove('modal-enter'); // Hapus kelas animasi masuk
-                modalContent.classList.add('modal-leave'); // Tambahkan kelas animasi keluar
+                modalContent.classList.remove('modal-enter');
+                modalContent.classList.add('modal-leave');
                 // Menyembunyikan modal setelah animasi keluar selesai
                 setTimeout(() => {
                     modal.classList.add('hidden');
-                    modalContent.classList.remove('modal-leave'); // Reset kelas animasi
-                }, 200); // Durasi animasi "modalOut"
+                }, 200); // durasi animasi "modalOut"
             }
 
             // Event Listener untuk tombol "Batal"
@@ -284,7 +331,7 @@
             });
             // Fungsi buat form
             function createForm(index) {
-    return `
+                return `
     <div class="card shadow-lg rounded-lg overflow-hidden mb-4">
         <div class="bg-gray-800 text-white p-4">
             <h3 class="text-lg font-bold">Data Migrasi ${index + 1}</h3>
@@ -292,9 +339,9 @@
         <div class="p-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 ${['nik', 'nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'status_hubkel', 'pendidikan_terakhir', 'jenis_pekerjaan', 'agama', 'status_perkawinan', 'alamat', 'rw', 'rt', 'kelurahan', 'status_kependudukan'].map(field => `
-                <div>
-                    <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
-                    ${field === 'nik' ? `
+                                <div>
+                                    <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
+                                    ${field === 'nik' ? `
                     <input type="number" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan NIK" required maxlength="16" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
                     ` : field === 'nama_lengkap' ? `
                     <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan Nama Lengkap" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
@@ -371,13 +418,13 @@
                     ` : `
                     <input type="${field === 'tanggal_lahir' ? 'date' : 'text'}" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                     `}
-                </div>
-                `).join('')}
+                                                </div>
+                                                `).join('')}
             </div>
         </div>
     </div>
     `;
-}
+            }
 
             // SweetAlert addConfirm
             function addConfirm(event) {
