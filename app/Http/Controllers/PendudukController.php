@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use App\Models\MigrasiKeluar;
 use App\Models\MigrasiMasuk;
-use App\Models\Rw;
+use App\Models\rw;
 use App\Exports\PendudukExport;
 
 class PendudukController extends Controller

@@ -6,7 +6,7 @@ use App\Models\Lahir;
 use App\Models\Penduduk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Rw;
+use App\Models\rw;
 use App\Exports\LahirExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -20,7 +20,7 @@ class LahirController extends Controller
     public function resident_born(Request $request)
     {
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
-        $rws = Rw::all();
+        $rws = rw::all();
         // Cek apakah user adalah admin berdasarkan ID role
         if ($user->role->id === 1) { // pastikan membandingkan dengan id, bukan role_id
             // Jika admin, ambil semua data lahir

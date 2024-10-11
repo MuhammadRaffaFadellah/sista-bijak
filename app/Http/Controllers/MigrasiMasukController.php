@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MigrasiMasuk;
 use Illuminate\Http\Request;
-use App\Models\Rw;
+use App\Models\rw;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -18,7 +18,7 @@ class MigrasiMasukController extends Controller
     {
         $query = MigrasiMasuk::query();
         $user = Auth::user();
-        $rws = Rw::all();
+        $rws = rw::all();
 
         if ($user->role->id === 1) {
             $dataMigrasiMasuk = MigrasiMasuk::query();
@@ -43,7 +43,7 @@ class MigrasiMasukController extends Controller
     // Menampilkan form untuk menambah data migrasi masuk
     public function create()
     {
-        $rws = Rw::all();
+        $rws = rw::all();
         return view('resident.migration-in-create', compact('rws'));
     }
 
@@ -114,7 +114,7 @@ class MigrasiMasukController extends Controller
     public function edit($id)
 {
     try {
-        $rws = Rw::all();
+        $rws = rw::all();
         Log::info('Edit method called with ID: ' . $id);
         $migrasiMasuk = MigrasiMasuk::findOrFail($id);
         Log::info('Migrasi Masuk data found', ['data' => $migrasiMasuk->toArray()]);

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Models\Rw;
+use App\Models\rw;
 use App\Exports\MigrasiKeluarExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -100,7 +100,7 @@ class MigrasiKeluarController extends Controller
 
     public function edit($id)
     {
-        $rws = Rw::all();
+        $rws = rw::all();
         $migrasiKeluar = MigrasiKeluar::findOrFail($id);
         return view('create_migration_out', compact('migrasiKeluar', 'rws'));
     }

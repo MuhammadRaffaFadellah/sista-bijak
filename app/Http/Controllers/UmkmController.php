@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Umkm;
-use App\Models\Rw;
+use App\Models\rw;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UmkmExport;
 
@@ -24,7 +24,7 @@ class UmkmController extends Controller
     public function umkm_table(Request $request)
     {
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
-        $rws = Rw::all();
+        $rws = rw::all();
         // Cek apakah user adalah admin berdasarkan ID role
         if ($user->role->id === 1) { // pastikan membandingkan dengan id, bukan role_id
             // Jika admin, ambil semua UMKM
