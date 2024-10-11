@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200 font-roboto">
+    <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200 font-roboto sidebar">
         @include('layouts.sidebar')
         <div class="flex-1 flex flex-col overflow-hidden">
             @include('layouts.header')

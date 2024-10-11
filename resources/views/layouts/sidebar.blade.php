@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 <div x-cloak :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false"
-    class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
+    class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden sidebar"></div>
 <div x-cloak :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
-    class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
+    class="fixed sidebar inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
     <div class="flex items-center justify-center">
         <div class="flex items-center max-w-full mt-7">
             <img src="{{ asset('/img/logo-kel-kesambi.png') }}" alt="sista-bijak" class="w-auto h-28">
@@ -11,18 +11,15 @@
         </div>
     </div>
     <style>
-        ::-webkit-scrollbar {
+        .sidebar::-webkit-scrollbar {
             display: none;
         }
-
         .active {
             background-color: rgba(55, 65, 81, 0.25);
         }
-
         .active span {
             color: #fff;
         }
-
         .active svg {
             color: #fff;
         }
