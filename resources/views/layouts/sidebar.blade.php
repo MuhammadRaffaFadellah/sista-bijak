@@ -14,12 +14,15 @@
         .sidebar::-webkit-scrollbar {
             display: none;
         }
+
         .active {
             background-color: rgba(55, 65, 81, 0.25);
         }
+
         .active span {
             color: #fff;
         }
+
         .active svg {
             color: #fff;
         }
@@ -100,10 +103,7 @@
         <a href="javascript::void(0)"
             class="flex items-center text-decoration-none style-none px-6 py-2 mt-4 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 w-full transition duration-75 group"
             aria-controls="dropdown-migrasi" id="dropdownToggleMigrasi">
-            <svg class="w-6 h-6 flex-shrink-0 text-gray-600 transition duration-100 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" stroke="currentColor" fill="currentColor">
-                <path d="M32 2L2 32h10v30h16V42h8v20h16V32h10L32 2z" />
-            </svg>
+            <i class="fas fa-home pt-0.5 pl-0.5 w-6 h-6"></i>
             <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Migrasi Penduduk</span>
             <svg id="iconArrowMigrasi" class="w-6 h-6 transition-transform duration-300" fill="currentColor"
                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -178,6 +178,19 @@
         </div>
 
         @if (auth()->check() && auth()->user()->role_id == 1)
+            <div class="nav__link">
+                <a class="{{ request()->is('images-table') ? 'bg-gray-700 bg-opacity-25' : '' }} mt-4 flex items-center px-6 py-2 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+                    href="/images-table">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                        height="24">
+                        <path
+                            d="M21 8V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v2H1v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8h-2zm-2 10H5v-2h14v2zm0-4H5v-2h14v2zm0-4H5V8h14v2z"
+                            fill="currentColor" />
+                    </svg>
+                    <span class="mx-3">Manajemen Gambar</span>
+                </a>
+            </div>
+
             <div class="nav__link">
                 <a class="{{ request()->is('user-management') ? 'bg-gray-700 bg-opacity-25' : '' }} mt-4 flex items-center px-6 py-2 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                     href="/user-management">
