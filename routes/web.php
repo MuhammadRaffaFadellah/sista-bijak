@@ -10,6 +10,7 @@ use App\Http\Controllers\UmkmController;
 use App\Http\Controllers\MigrasiMasukController;
 use App\Http\Controllers\MigrasiKeluarController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\MetadataController;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +19,12 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get("/import", function (){
+    return view('import');
+});
 Route::post('/import', [PendudukController::class, 'importData'])->name('import.data');
+
+Route::get("/metadata", [MetadataController::class, 'index'])->name('metadata-article');
 
 // Route untuk dashboard
 Route::get('/dashboard', [PendudukController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');

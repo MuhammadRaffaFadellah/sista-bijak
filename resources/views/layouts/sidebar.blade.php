@@ -44,6 +44,18 @@
 
         <div class="nav__link">
             <a class="flex items-center text-decoration-none style-none px-6 py-2 mt-4 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 w-full transition duration-75 group"
+                href="/metadata">
+                <svg class="w-6 h-6 flex-shrink-0 text-gray-600 transition duration-100 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M20 2H4C2.895 2 2 2.895 2 4v16c0 1.105.895 2 2 2h16c1.105 0 2-.895 2-2V4c0-1.105-.895-2-2-2zM4 0h16c2.211 0 4 1.789 4 4v16c0 2.211-1.789 4-4 4H4C1.789 24 0 22.211 0 20V4C0 1.789 1.789 0 4 0zM6 6h12v2H6V6zm0 4h12v2H6v-2zm0 4h12v2H6v-2zm0 4h12v2H6v-2z" />
+                </svg>
+                <span class="mx-3">Metadata</span>
+            </a>
+        </div>
+
+        <div class="nav__link">
+            <a class="flex items-center text-decoration-none style-none px-6 py-2 mt-4 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 w-full transition duration-75 group"
                 href="/resident-table">
                 <svg class="w-6 h-6 flex-shrink-0 text-gray-600 transition duration-100 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -178,7 +190,7 @@
         </div>
 
         @if (auth()->check() && auth()->user()->role_id == 1)
-            <div class="nav__link">
+            {{-- <div class="nav__link">
                 <a class="{{ request()->is('images-table') ? 'bg-gray-700 bg-opacity-25' : '' }} mt-4 flex items-center px-6 py-2 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
                     href="/images-table">
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
@@ -189,7 +201,7 @@
                     </svg>
                     <span class="mx-3">Manajemen Gambar</span>
                 </a>
-            </div>
+            </div> --}}
 
             <div class="nav__link">
                 <a class="{{ request()->is('user-management') ? 'bg-gray-700 bg-opacity-25' : '' }} mt-4 flex items-center px-6 py-2 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
