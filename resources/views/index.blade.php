@@ -193,6 +193,7 @@ h2 {
 html {
     scroll-behavior: smooth;
     /* Pastikan scroll smooth di html */
+    height: 100%;
 }
 
 body {
@@ -873,7 +874,7 @@ body {
 </script>
 
 
-            <div class="w-full p-3">
+            <div class="w-full p-3 mt-10">
     <!--Table Card-->
     <div class="bg-white border rounded shadow">
         <div class="containerg">
@@ -925,7 +926,7 @@ body {
 </div>
     <!--/container-->
 
-    <footer class="bg-white dark:bg-gray-900">
+    <footer class="bg-white dark:bg-gray-900 mt-10">
         <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
             <div class="md:flex md:justify-between">
                 <div class="flex items-center justify-center">
