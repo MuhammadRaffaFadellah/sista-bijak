@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="#">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,7 +17,7 @@
 </head>
 
 <body>
-    <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200 font-roboto">
+    <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200 font-roboto sidebar">
         @include('layouts.sidebar')
         <div class="flex-1 flex flex-col overflow-hidden">
             @include('layouts.header')

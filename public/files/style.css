@@ -1,0 +1,278 @@
+.cardg,
+.card1 {
+    position: relative;
+    overflow: hidden;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+    width: 100%;
+    height: 0;
+    transition: 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardg:hover .overlay,
+.card1:hover .overlay {
+    height: 50px; /* Adjust this value to control how much of the overlay is shown */
+}
+
+.overlay-text {
+    color: white;
+    font-size: 16px;
+    text-align: center;
+}
+
+.containerg {
+    height: auto;
+    width: auto;
+    max-height: 800px;
+    max-width: 1280px;
+    min-height: 600px;
+    min-width: 1000px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.card1-border,
+.borderg {
+    height: 369px;
+    width: 290px;
+    background: transparent;
+    border-radius: 10px;
+    transition: border 1s;
+    position: relative;
+}
+
+.card1-border:hover,
+.borderg:hover {
+    border: 1px solid #fff;
+}
+
+.card1-border {
+    height: 440px;
+}
+
+.big-card,
+.cardg {
+    height: 379px;
+    width: 300px;
+    background: #808080;
+    border-radius: 10px;
+    transition: background 0.8s;
+    overflow: hidden;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.card0 {
+    background: URL("https://upload.wikimedia.org/wikipedia/commons/1/19/Visit_of_Bill_Gates%2C_Chairman_of_Breakthrough_Energy_Ventures%2C_to_the_European_Commission_5_%28cropped%29_%28cropped%29.jpg")
+        center center no-repeat;
+    background-size: 350px;
+}
+
+.card0:hover {
+    background: URL("https://upload.wikimedia.org/wikipedia/commons/1/19/Visit_of_Bill_Gates%2C_Chairman_of_Breakthrough_Energy_Ventures%2C_to_the_European_Commission_5_%28cropped%29_%28cropped%29.jpg")
+        center center no-repeat;
+    background-size: 400px; /* Ukuran zoom yang lebih kecil */
+}
+
+.card0:hover h2 {
+    opacity: 1;
+}
+
+.card0:hover .fa {
+    opacity: 1;
+}
+
+.big-card {
+    height: 450px;
+    width: 300px;
+}
+
+.card1 {
+    background: url("https://kelkesambi.cirebonkota.go.id/wp-content/uploads/2024/09/Beige-Aesthetic-Feminine-Business-Twitter-Profile-Picture-eBook-1-963x1536.png")
+        center center no-repeat;
+    background-size: 300px;
+}
+
+.card1:hover {
+    background: url("https://kelkesambi.cirebonkota.go.id/wp-content/uploads/2024/09/Beige-Aesthetic-Feminine-Business-Twitter-Profile-Picture-eBook-1-963x1536.png")
+        center center no-repeat;
+    background-size: 400px; /* Ukuran zoom yang lebih kecil */
+}
+
+.card1:hover h2 {
+    opacity: 1;
+}
+
+.card1:hover .fa {
+    opacity: 1;
+}
+
+.card2 {
+    background: url("https://i.pinimg.com/564x/5b/a9/9a/5ba99a3fd59ca8a98d24f36debda382a.jpg")
+        center center no-repeat;
+    background-size: 350px;
+}
+
+.card2:hover {
+    background: url("https://i.pinimg.com/564x/5b/a9/9a/5ba99a3fd59ca8a98d24f36debda382a.jpg")
+        center center no-repeat;
+    background-size: 400px; /* Ukuran zoom yang lebih kecil */
+}
+
+.card2:hover h2 {
+    opacity: 1;
+}
+
+.card2:hover .fa {
+    opacity: 1;
+}
+
+h2 {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #fff;
+    margin: 20px;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.fa {
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.card1-icons,
+.icons {
+    position: absolute;
+    fill: #fff;
+    color: #fff;
+    height: 130px;
+    top: 226px;
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.card1-icons {
+    top: 295px;
+}
+
+.card1-icons:hover .fa,
+.icons:hover .fa {
+    transform: scale(1.025s);
+    transition: 1s;
+}
+
+html {
+    scroll-behavior: smooth;
+    /* Pastikan scroll smooth di html */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Untuk menyembunyikan card saat tidak di-hover */
+#loginButton {
+    position: relative;
+}
+
+/* Tampilkan card saat link atau logo di-hover */
+#loginButton:hover #brandCard {
+    display: block;
+}
+
+/* Mengatur elemen card */
+#brandCard {
+    opacity: 0;
+    visibility: hidden;
+    background-color: white;
+    border: 1px solid #ccc;
+    /* Border lebih halus */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    /* Shadow lebih lembut */
+    width: 180px;
+    z-index: 100;
+    position: absolute;
+    top: 90%;
+    /* Menaikkan card agar lebih dekat ke teks */
+    left: 50px;
+    /* Menggeser card lebih ke kanan, jika diperlukan */
+    font-size: 0.875rem;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Posisikan segitiga sedikit ke kiri dari tengah */
+#brandCard::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    /* Tetap di atas card */
+    left: 45%;
+    /* Geser segitiga sedikit ke kiri dari tengah */
+    transform: translateX(-50%);
+    /* Sesuaikan dengan pergeseran */
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid white;
+    border-bottom-color: #ccc;
+    /* Border mengikuti card */
+}
+
+/* Hover state: JS akan menangani efek fade, jadi ini dihilangkan dari hover CSS */
+/* CSS untuk kelas aktif dan tidak aktif */
+.nav-link.active {
+    font-weight: bold;
+}
+
+#navHome.active .fa-home {
+    color: rgb(219, 39, 119);
+    /* Warna merah untuk ikon rumah yang aktif */
+}
+
+#navGraph.active .fa-chart-area {
+    color: green;
+    /* Warna hijau untuk ikon graph yang aktif */
+}
+
+#navPayments.active .fa-wallet {
+    color: blue;
+    /* Warna biru untuk ikon payments yang aktif */
+}
+
+/* Warna abu-abu untuk link tidak aktif */
+.nav-link {
+    color: gray;
+    /* Warna default */
+}
+
+.nav-link:not(.active) {
+    color: gray;
+    /* Warna abu-abu untuk yang tidak aktif */
+}
+
+.nav-link.active .fas {
+    color: inherit;
+    /* Warna ikon mengikuti warna teks saat aktif */
+}

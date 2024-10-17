@@ -9,6 +9,8 @@ use App\Http\Controllers\MigrasiController;
 use App\Http\Controllers\UmkmController;
 use App\Http\Controllers\MigrasiMasukController;
 use App\Http\Controllers\MigrasiKeluarController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\MetadataController;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Route;
 
@@ -17,7 +19,12 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get("/import", function (){
+    return view('import');
+});
 Route::post('/import', [PendudukController::class, 'importData'])->name('import.data');
+
+Route::get("/metadata", [MetadataController::class, 'index'])->name('metadata-article');
 
 // Route untuk dashboard
 Route::get('/dashboard', [PendudukController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -53,8 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // Route untuk menampilkan form1
-Route::get('/form1', [ProfileController::class, 'showForm1'])->name('form1');
-
+    Route::get('/form1', [ProfileController::class, 'showForm1'])->name('form1');
 });
 Route::delete('/penduduk/{id}', [PendudukController::class, 'destroy'])->name('penduduk.destroy');
 Route::get('/penduduk/{id}/edit', [PendudukController::class, 'edit'])->name('penduduk.edit');
@@ -135,9 +141,14 @@ Route::get('/resident-migration/{id}/edit', [MigrasiController::class, 'edit'])-
 Route::get('/table-lahir/download', [LahirController::class, 'download'])->name('table-lahir.download');
 Route::get('/table-meninggal/download', [MeninggalController::class, 'download'])->name('table-meninggal.download');
 
-
 //Tampilan halaman awal
 Route::get('/dashboard', [PendudukController::class, 'dashboard'])->name('dashboard');
 Route::get('/', [PendudukController::class, 'index'])->name('index');
+
+// Images Route
+Route::resource('images', ImageController::class);
+Route::get("/images-table", [ImageController::class, "index"])->name("images.index");
+Route::delete("/images/{id}", [ImageController::class, "destroy"])->name("images.destroy");
+Route::get("/images/add-images", [ImageController::class, "show"])->name("images.show");
 
 require __DIR__ . '/auth.php';

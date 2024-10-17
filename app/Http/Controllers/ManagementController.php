@@ -12,7 +12,7 @@ class ManagementController extends Controller
 {
     public function users_management()
     {
-        $users = User::whereIn('role_id', [1, 2])->paginate(5);
+        $users = User::whereIn('role_id', [1, 2])->paginate(10);
         return view('management-user.user-management', compact('users'));
     }
 

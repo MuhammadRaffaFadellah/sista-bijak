@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 <div x-cloak :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false"
-    class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
+    class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden sidebar"></div>
 <div x-cloak :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
-    class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
+    class="fixed sidebar inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0">
     <div class="flex items-center justify-center">
         <div class="flex items-center max-w-full mt-7">
             <img src="{{ asset('/img/logo-kel-kesambi.png') }}" alt="sista-bijak" class="w-auto h-28">
@@ -11,7 +11,7 @@
         </div>
     </div>
     <style>
-        ::-webkit-scrollbar {
+        .sidebar::-webkit-scrollbar {
             display: none;
         }
 
@@ -39,6 +39,18 @@
                         d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
                 </svg>
                 <span class="mx-3">Dashboard</span>
+            </a>
+        </div>
+
+        <div class="nav__link">
+            <a class="flex items-center text-decoration-none style-none px-6 py-2 mt-4 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 w-full transition duration-75 group"
+                href="/metadata">
+                <svg class="w-6 h-6 flex-shrink-0 text-gray-600 transition duration-100 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M20 2H4C2.895 2 2 2.895 2 4v16c0 1.105.895 2 2 2h16c1.105 0 2-.895 2-2V4c0-1.105-.895-2-2-2zM4 0h16c2.211 0 4 1.789 4 4v16c0 2.211-1.789 4-4 4H4C1.789 24 0 22.211 0 20V4C0 1.789 1.789 0 4 0zM6 6h12v2H6V6zm0 4h12v2H6v-2zm0 4h12v2H6v-2zm0 4h12v2H6v-2z" />
+                </svg>
+                <span class="mx-3">Metadata</span>
             </a>
         </div>
 
@@ -103,10 +115,7 @@
         <a href="javascript::void(0)"
             class="flex items-center text-decoration-none style-none px-6 py-2 mt-4 text-base font-normal hover:bg-gray-700 hover:bg-opacity-25 text-gray-500 hover:text-gray-100 w-full transition duration-75 group"
             aria-controls="dropdown-migrasi" id="dropdownToggleMigrasi">
-            <svg class="w-6 h-6 flex-shrink-0 text-gray-600 transition duration-100 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" stroke="currentColor" fill="currentColor">
-                <path d="M32 2L2 32h10v30h16V42h8v20h16V32h10L32 2z" />
-            </svg>
+            <i class="fas fa-home pt-0.5 pl-0.5 w-6 h-6"></i>
             <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Migrasi Penduduk</span>
             <svg id="iconArrowMigrasi" class="w-6 h-6 transition-transform duration-300" fill="currentColor"
                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -172,24 +181,39 @@
 
         {{-- Side UMKM --}}
         <div class="nav__link">
-    <a class="flex items-center px-6 py-2 mt-4 {{ request()->is('umkm-table') ? 'bg-gray-700 bg-opacity-25 text-gray-100' : 'text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100' }} group"
-        href="/umkm-table">
-        <i class="fas fa-store fa-lg {{ request()->is('umkm-table') ? 'text-gray-100' : 'text-gray-500 group-hover:text-gray-100' }}"></i>
-        <span class="mx-3">Data UMKM</span>
-    </a>
-</div>
-
-@if (auth()->check() && auth()->user()->role_id == 1)
-        <div class="nav__link">
-            <a class="{{ request()->is('user-management') ? 'bg-gray-700 bg-opacity-25' : '' }} mt-4 flex items-center px-6 py-2 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-                href="/user-management">
-                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" height="20" width="17.5" fill="currentColor"
-                    viewBox="0 0 448 512">
-                    <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464l349.5 0c-8.9-63.3-63.3-112-129-112l-91.4 0c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3z"/>
-                </svg>
-                <span class="mx-3">Manajemen User</span>
+            <a class="flex items-center px-6 py-2 mt-4 {{ request()->is('umkm-table') ? 'bg-gray-700 bg-opacity-25 text-gray-100' : 'text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100' }} group"
+                href="/umkm-table">
+                <i
+                    class="fas fa-store fa-lg {{ request()->is('umkm-table') ? 'text-gray-100' : 'text-gray-500 group-hover:text-gray-100' }}"></i>
+                <span class="mx-3">Data UMKM</span>
             </a>
         </div>
+
+        @if (auth()->check() && auth()->user()->role_id == 1)
+            {{-- <div class="nav__link">
+                <a class="{{ request()->is('images-table') ? 'bg-gray-700 bg-opacity-25' : '' }} mt-4 flex items-center px-6 py-2 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+                    href="/images-table">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                        height="24">
+                        <path
+                            d="M21 8V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v2H1v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8h-2zm-2 10H5v-2h14v2zm0-4H5v-2h14v2zm0-4H5V8h14v2z"
+                            fill="currentColor" />
+                    </svg>
+                    <span class="mx-3">Manajemen Gambar</span>
+                </a>
+            </div> --}}
+
+            <div class="nav__link">
+                <a class="{{ request()->is('user-management') ? 'bg-gray-700 bg-opacity-25' : '' }} mt-4 flex items-center px-6 py-2 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
+                    href="/user-management">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" height="20" width="17.5"
+                        fill="currentColor" viewBox="0 0 448 512">
+                        <path
+                            d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464l349.5 0c-8.9-63.3-63.3-112-129-112l-91.4 0c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3z" />
+                    </svg>
+                    <span class="mx-3">Manajemen User</span>
+                </a>
+            </div>
         @endif
     </nav>
 
