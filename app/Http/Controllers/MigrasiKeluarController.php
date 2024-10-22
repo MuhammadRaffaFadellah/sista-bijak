@@ -17,27 +17,38 @@ class MigrasiKeluarController extends Controller
     //
     public function resident_migration_out(Request $request)
     {
-        $query = MigrasiKeluar::query();
         $user = Auth::user();
         $rws = rw::all();
-        if ($user && $user->role_id === 1) {
-            $dataMigrasiKeluar = MigrasiKeluar::query();
-        } elseif ($user && isset($user->rw_id)) {
-            $dataMigrasiKeluar = MigrasiKeluar::where('rw', $user->rw_id);
-        } else {
-            // Jika user tidak ditemukan atau tidak memiliki rw_id, lakukan penanganan yang sesuai
-            abort(403, 'User tidak memiliki RW atau akses tidak diizinkan.');
+
+        // Initialize the query
+        $dataMigrasiKeluar = MigrasiKeluar::query();
+
+        // Filter based on user role
+        if ($user && $user->role_id !== 1) {
+            if (isset($user->rw_id)) {
+                $dataMigrasiKeluar->where('rw', $user->rw_id);
+            } else {
+                abort(403, 'User tidak memiliki RW atau akses tidak diizinkan.');
+            }
         }
 
+        // Search by name or NIK
         if ($request->has('search')) {
-            $query->where('nama_lengkap', 'like', '%' . $request->search . '%')
-                ->orWhere('nik', 'like', '%' . $request->search . '%');
+            $search = $request->input('search');
+            $dataMigrasiKeluar->where(function ($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                    ->orWhere('nik', 'like', "%{$search}%");
+            });
         }
 
-        if ($request->has('filter_rw')) {
-            $query->where('rw', $request->filter_rw);
+        // Filter by RW
+        if ($request->has('filter_rw') && $request->input('filter_rw') != '') {
+            $dataMigrasiKeluar->where('rw', $request->input('filter_rw'));
         }
-        $migrasiKeluar = $query->paginate(10);
+
+        // Paginate the results
+        $migrasiKeluar = $dataMigrasiKeluar->paginate(10);
+
         return view('resident.resident-migration-out', compact('migrasiKeluar', 'rws'));
     }
 
@@ -103,36 +114,36 @@ class MigrasiKeluarController extends Controller
     {
         $rws = rw::all();
         $migrasiKeluar = MigrasiKeluar::findOrFail($id);
-        return view('create_migration_out', compact('migrasiKeluar', 'rws'));
+        return view('create.create_migration_out', compact('migrasiKeluar', 'rws'));
     }
 
     public function update(Request $request, $id)
-    {
-        // Validasi input berdasarkan field tabel
-        $validatedData = $request->validate([
-            'nik' => 'required|numeric|digits:16|unique:migrasi_masuk,nik,' . $id,
-            'nama_lengkap' => 'required|string|max:255',
-            'jenis_kelamin' => 'required|string|in:Laki-laki,Perempuan',
-            'tempat_lahir' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
-            'status_hubkel' => 'required|string|max:255',
-            'pendidikan_terakhir' => 'required|string|max:255',
-            'jenis_pekerjaan' => 'nullable|string|max:255',
-            'agama' => 'required|string|in:Islam,Kristen,Hindu,Buddha,Konghucu',
-            'status_perkawinan' => 'required|string|in:Belum Menikah,Menikah,Cerai Hidup,Cerai Mati',
-            'alamat' => 'required|string|max:255',
-            'rw' => 'required|integer',
-            'rt' => 'required|integer',
-            'kelurahan' => 'required|string|max:255',
-            'status_kependudukan' => 'required|string|max:255',
-        ]);
+{
+    // Validasi input
+    $validatedData = $request->validate([
+        'nik' => 'required|numeric|digits:16|unique:migrasi_keluar,nik,' . $id,
+        'nama_lengkap' => 'required|string|max:255',
+        'jenis_kelamin' => 'required|string|in:Laki-laki,Perempuan',
+        'tempat_lahir' => 'required|string|max:255',
+        'tanggal_lahir' => 'required|date',
+        'status_hubkel' => 'required|string|max:255',
+        'pendidikan_terakhir' => 'required|string|max:255',
+        'jenis_pekerjaan' => 'nullable|string|max:255',
+        'agama' => 'required|string|in:Islam,Kristen,Hindu,Buddha,Konghucu',
+        'status_perkawinan' => 'required|string|in:Belum Menikah,Menikah,Cerai Hidup,Cerai Mati',
+        'alamat' => 'required|string|max:255',
+        'rw' => 'required|integer',
+        'rt' => 'required|integer',
+        'kelurahan' => 'required|string|max:255',
+        'status_kependudukan' => 'required|string|max:255',
+    ]);
 
-        // Find the record and update it
-        $migrasiKeluar = MigrasiKeluar::findOrFail($id);
-        $migrasiKeluar->update($validatedData);
+    // Update data
+    $migrasiKeluar = MigrasiKeluar::findOrFail($id);
+    $migrasiKeluar->update($validatedData);
 
-        return redirect()->route('resident-migration-out')->with('success', 'Data migrasi keluar berhasil diperbarui.');
-    }
+    return redirect()->route('resident-migration-out')->with('success', 'Data migrasi keluar berhasil diperbarui.');
+}
 
     public function destroy($id)
     {
@@ -144,5 +155,18 @@ class MigrasiKeluarController extends Controller
     public function download()
     {
         return Excel::download(new MigrasiKeluarExport, 'migrasi_keluar_data.xlsx');
+    }
+
+    public function create(Request $request)
+    {
+        $nik = $request->query('nik');
+        $penduduk = Penduduk::where('nik', $nik)->first();
+        $rws = RW::all(); // Ambil data RW dari model
+
+        if (!$penduduk) {
+            return redirect()->route('resident-migration-out')->with('error', 'Penduduk tidak ditemukan.');
+        }
+
+        return view('create.create_migration_out', compact('penduduk', 'rws'));
     }
 }

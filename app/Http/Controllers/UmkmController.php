@@ -34,20 +34,21 @@ class UmkmController extends Controller
             $umkms = Umkm::where('rw', $user->rw_id);
         }
 
-        // Pencarian berdasarkan nama pemilik atau NIK
+        // Search by name or NIK
         if ($request->has('search')) {
             $search = $request->input('search');
-            $umkms->where(function($q) use ($search) {
+            $umkms->where(function ($q) use ($search) {
                 $q->where('nama_pemilik', 'like', "%{$search}%")
-                ->orWhere('nik', 'like', "%{$search}%");
+                    ->orWhere('nik', 'like', "%{$search}%");
             });
         }
 
-        // Filter berdasarkan RW
+        // Filter by RW
         if ($request->has('filter_rw') && $request->input('filter_rw') != '') {
             $umkms->where('rw', $request->input('filter_rw'));
         }
 
+        // Paginate the results
         $umkms = $umkms->paginate(10);
         return view("umkm.umkm-table", compact('umkms', 'rws'));
     }

@@ -37,11 +37,11 @@
 
                         <!-- Nama Almarhum/Almarhumah -->
                         <div>
-                            <label for="nama_almarhum" class="block text-sm font-medium text-gray-700">Nama
+                            <label for="nama_lengkap" class="block text-sm font-medium text-gray-700">Nama
                                 Almarhum/Almarhumah</label>
-                            <input type="text" name="nama_almarhum" id="nama_almarhum"
+                            <input type="text" name="nama_lengkap" id="nama_lengkap"
                                 placeholder="Masukkan nama almarhum"
-                                value="{{ $penduduk->nama_lengkap ?? $meninggal->nama_almarhum }}"
+                                value="{{ $penduduk->nama_lengkap ?? $meninggal->nama_lengkap }}"
                                 class="mt-1 uppercase block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
                         <!-- Jenis Kelamin -->
@@ -64,16 +64,15 @@
 
                         <!-- Hubungan dengan Kepala Keluarga -->
                         <div>
-                            <label for="hubungan_dengan_kk" class="block text-sm font-medium text-gray-700">Hubungan dengan
-                                Kepala Keluarga</label>
-                            <select name="hubungan_dengan_kk" id="hubungan_dengan_kk"
+                            <label for="status_hubkel" class="block text-sm font-medium text-gray-700">Status Hubungan
+                                Keluarga</label>
+                            <select name="status_hubkel" id="status_hubkel"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
                                 <option value="" disabled
                                     {{ !isset($penduduk) && !isset($meninggal) ? 'selected' : '' }}>
                                     Pilih Hubungan
                                 </option>
 
-                                <!-- Mengambil daftar hubungan dari array yang sudah didefinisikan -->
                                 @php
                                     $hubunganKeluarga = [
                                         'KEPALA KELUARGA',
@@ -89,11 +88,10 @@
                                     ];
                                 @endphp
 
-                                <!-- Looping untuk menampilkan setiap opsi hubungan -->
                                 @foreach ($hubunganKeluarga as $hubkk)
                                     <option value="{{ $hubkk }}" @if (
                                         (isset($penduduk) && $penduduk->status_hubkel == $hubkk) ||
-                                            (isset($meninggal) && $meninggal->hubungan_dengan_kk == $hubkk)) selected @endif>
+                                            (isset($meninggal) && $meninggal->status_hubkel == $hubkk)) selected @endif>
                                         {{ ucfirst(strtolower($hubkk)) }}
                                     </option>
                                 @endforeach
@@ -142,7 +140,7 @@
                                 @foreach ($rws as $rw)
                                     <option value="{{ $rw->id }}"
                                         {{ ($penduduk->rw ?? $meninggal->rw) == $rw->id ? 'selected' : '' }}>
-                                        {{ $rw->rukun_warga }} <!-- Menggunakan kolom rukun_warga -->
+                                        {{ $rw->rukun_warga }}
                                     </option>
                                 @endforeach
                             </select>
@@ -164,7 +162,7 @@
                         </div>
 
                         <!-- Status Kependudukan -->
-                        <div class="hidden">
+                        <div>
                             <label for="status_kependudukan" class="block text-sm font-medium text-gray-700">Status
                                 Kependudukan</label>
                             <select name="status_kependudukan" id="status_kependudukan"
@@ -196,107 +194,73 @@
     </div>
     @include('sweetalert')
     <script>
-        document.getElementById('nik').addEventListener('blur', function() {
-            const nik = this.value;
-            // Memanggil endpoint untuk mendapatkan data penduduk berdasarkan NIK
-            if (nik) {
-                fetch(`/penduduk/${nik}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data) {
-                            // Mengisi field dengan data dari tabel penduduk
-                            document.getElementById('nama_almarhum').value = data.nama_lengkap || '';
-                            document.getElementById('hubungan_dengan_kk').value = data.status_hubkel || '';
-                            document.getElementById('tanggal_lahir').value = data.tanggal_lahir || '';
-                            document.getElementById('tempat_lahir').value = data.tempat_lahir || '';
-                        } else {
-                            // Jika data tidak ditemukan, kosongkan input
-                            document.getElementById('nama_almarhum').value = '';
-                            document.getElementById('hubungan_dengan_kk').value = '';
-                            document.getElementById('tanggal_lahir').value = '';
-                            document.getElementById('tempat_lahir').value = '';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching data:', error);
-                    });
+        function addConfirm(event, button) {
+    event.preventDefault();
+    let form = button.closest('form');
+    let inputs = form.querySelectorAll('input, textarea, select');
+    let isEmpty = false;
+    inputs.forEach(function(input) {
+        if (input.value.trim() === '') {
+            isEmpty = true;
+        }
+    });
+    if (isEmpty) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Input Kosong!',
+            text: 'Harap isi semua field sebelum melanjutkan.',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6',
+        });
+    } else {
+        Swal.fire({
+            icon: 'question',
+            title: 'Apakah Anda yakin?',
+            text: 'Data akan disimpan.',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Simpan',
+            confirmButtonColor: '#3085d6',
+            cancelButtonText: 'Batal',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit(); // Use form.submit() directly
+                Swal.fire({
+                    title: "Berhasil!",
+                    text: "Perubahan berhasil disimpan.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#3085d6"
+                });
             }
         });
+    }
+}
 
-        function addConfirm(event, button) {
-            event.preventDefault();
-            // Validasi apakah semua input tidak kosong
-            let form = button.closest('form');
-            let inputs = form.querySelectorAll('input, textarea, select');
-            let isEmpty = false;
-            inputs.forEach(function(input) {
-                if (input.value.trim() === '') {
-                    isEmpty = true;
-                }
-            });
-            if (isEmpty) {
-                // SweetAlert untuk input kosong
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Input Kosong!',
-                    text: 'Harap isi semua field sebelum melanjutkan.',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#3085d6',
-                });
-            } else {
-                // SweetAlert untuk konfirmasi simpan
-                Swal.fire({
-                    icon: 'question',
-                    title: 'Apakah Anda yakin?',
-                    text: 'Data akan disimpan.',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, Simpan',
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonText: 'Batal',
-                    cancelButtonColor: '#d33',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Simpan data setelah konfirmasi
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil',
-                            text: 'Data berhasil disimpan.',
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#3085d6',
-                        }).then(() => {
-                            // Submit form setelah konfirmasi sukses
-                            form.submit();
-                        });
-                    }
-                });
-            }
-        }
-
-        function editConfirm(event, button) {
-            event.preventDefault(); // Mencegah form submit secara langsung
+function editConfirm(event, button) {
+    event.preventDefault();
+    let form = button.closest('form');
+    Swal.fire({
+        title: "Simpan?",
+        text: "Periksa ulang perubahan jika ragu!",
+        icon: "question",
+        confirmButtonText: "Ya, Simpan",
+        confirmButtonColor: "#3085d6",
+        cancelButtonText: "Tidak",
+        cancelButtonColor: "#d33",
+        showCancelButton: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit(); // Use form.submit() directly
             Swal.fire({
-                title: "Simpan?",
-                text: "Periksa ulang perubahan jika ragu!",
-                icon: "question",
-                confirmButtonText: "Ya, Simpan",
-                confirmButtonColor: "#3085d6",
-                cancelButtonText: "Tidak",
-                cancelButtonColor: "#d33",
-                showCancelButton: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: "Berhasil",
-                        text: "Perubahan berhasil disimpan!",
-                        icon: "success",
-                        confirmButtonText: "OK",
-                        confirmButtonColor: "#3085d6"
-                    }).then(() => {
-                        // Submit the form setelah pesan sukses muncul
-                        event.target.closest('form').submit();
-                    });
-                }
+                title: "Berhasil!",
+                text: "Perubahan berhasil disimpan.",
+                icon: "success",
+                confirmButtonText: "OK",
+                confirmButtonColor: "#3085d6"
             });
         }
+    });
+}
     </script>
 @endsection

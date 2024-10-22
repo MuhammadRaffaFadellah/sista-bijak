@@ -16,33 +16,33 @@ use Maatwebsite\Excel\Facades\Excel;
 class MeninggalController extends Controller
 {
     public function download()
-{
+    {
         return Excel::download(new MeninggalExport, 'table_meninggal_data.xlsx');
     }
+
     public function resident_died(Request $request)
     {
-        $user = Auth::user(); // Mendapatkan pengguna yang sedang login
+        $user = Auth::user();
         $rws = rw::all();
-        // Cek apakah user adalah admin berdasarkan ID role
-        if ($user->role->id === 1) { // pastikan membandingkan dengan id, bukan role_id
-            // Jika admin, ambil semua data meninggal
-            $dataMeninggal = Meninggals::query(); // Inisialisasi query
+
+        if ($user->role->id === 1) {
+            $dataMeninggal = Meninggals::query();
         } else {
-            // Jika bukan admin, ambil data meninggal sesuai RW pengguna
             $dataMeninggal = Meninggals::where('rw', $user->rw_id);
         }
-        // Pencarian berdasarkan nama atau NIK
+
         if ($request->has('search')) {
             $search = $request->input('search');
             $dataMeninggal->where(function ($q) use ($search) {
-                $q->where('nama_almarhum', 'like', "%{$search}%")
+                $q->where('nama_lengkap', 'like', "%{$search}%")
                     ->orWhere('nik', 'like', "%{$search}%");
             });
         }
-        // Filter berdasarkan RW
+
         if ($request->has('filter_rw') && $request->input('filter_rw') != '') {
             $dataMeninggal->where('rw', $request->input('filter_rw'));
         }
+
         $dataMeninggal = $dataMeninggal->paginate(10);
         return view('resident.resident-died', compact('dataMeninggal', 'rws'));
     }
@@ -55,47 +55,49 @@ class MeninggalController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input tanpa "nama kepala keluarga"
         $request->validate([
             'nik' => 'required|string',
-            'alamat' => 'required|string',
-            'rw' => 'required|numeric|exists:rw,id',
-            'rt' => 'required|numeric',
-            'nama_almarhum' => 'required|string',
-            'hubungan_dengan_kk' => 'required|string',
-            'tempat_lahir' => 'required|string',
-            'tanggal_lahir' => 'required|date',
+            'nama_lengkap' => 'required|string',
             'tempat_meninggal' => 'required|string',
             'tanggal_meninggal' => 'required|date',
         ]);
-        // Menyimpan data ke tabel meninggal
-        Meninggals::create([
-            'nik' => $request->nik,
-            'alamat' => $request->alamat,
-            'rw' => $request->rw,
-            'rt' => $request->rt,
-            'nama_almarhum' => $request->nama_almarhum,
-            'hubungan_dengan_kk' => $request->hubungan_dengan_kk,
-            'tempat_lahir' => $request->tempat_lahir,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'tempat_meninggal' => $request->tempat_meninggal,
-            'tanggal_meninggal' => $request->tanggal_meninggal,
-            'jenis_kelamin' => $request->jenis_kelamin, // Ambil dari form
-            'status_kependudukan' => 'MENINGGAL',
-        ]);
-        // Menghapus data penduduk berdasarkan NIK
-        $penduduk = Penduduk::where('nik', $request->nik)->first(); // Mengambil data penduduk berdasarkan NIK
-        if ($penduduk) {
-            $penduduk->forceDelete(); // Hapus data secara permanen
+
+        $penduduk = Penduduk::where('nik', $request->nik)->first();
+
+        if (!$penduduk) {
+            return redirect()->route('resident-died')->with('error', 'Penduduk tidak ditemukan.');
         }
-        // Menghapus data dari tabel lahir berdasarkan NIK
-        $lahir = Lahir::where('nik', $request->nik)->first(); // Mengambil data lahir berdasarkan NIK
-        if ($lahir) {
-            $lahir->forceDelete(); // Hapus data secara permanen dari tabel lahir
+
+        $meninggal = new Meninggals();
+        $meninggal->nik = $penduduk->nik;
+        $meninggal->nama_lengkap = $penduduk->nama_lengkap;
+        $meninggal->tempat_meninggal = $request->input('tempat_meninggal');
+        $meninggal->tanggal_meninggal = $request->input('tanggal_meninggal');
+        $meninggal->status_hubkel = $request->input('status_hubkel');
+        $meninggal->alamat = $penduduk->alamat;
+        $meninggal->rw = $penduduk->rw;
+        $meninggal->rt = $penduduk->rt;
+        $meninggal->status_kependudukan = 'Meninggal';
+        $meninggal->jenis_kelamin = $penduduk->jenis_kelamin;
+        $meninggal->tempat_lahir = $penduduk->tempat_lahir;
+        $meninggal->tanggal_lahir = $penduduk->tanggal_lahir;
+        $meninggal->save();
+
+        $penduduk->delete();
+
+        return redirect()->route('resident-died')->with('success', 'Data meninggal berhasil ditambahkan dan penduduk dihapus.');
+    }
+
+    public function checkDataExists(Request $request)
+    {
+        $nik = $request->query('nik');
+        if (empty($nik)) {
+            return response()->json(['exists' => false]);
         }
-        // Redirect ke halaman yang diinginkan
-        return redirect()->route('resident-died')->with('success', 'Data meninggal berhasil ditambahkan, penduduk dan data lahir dihapus.');
-    }    
+
+        $pendudukExists = Penduduk::where('nik', $nik)->exists();
+        return response()->json(['exists' => $pendudukExists]);
+    }
 
     public function edit($id)
     {
@@ -105,12 +107,10 @@ class MeninggalController extends Controller
             $meninggal = Meninggals::findOrFail($id);
             Log::info('Meninggal data found', ['data' => $meninggal->toArray()]);
 
-            // Cari data penduduk berdasarkan NIK dari data meninggal
             $penduduk = Penduduk::where('nik', $meninggal->nik)->first();
             Log::info('Penduduk data found', ['data' => $penduduk ? $penduduk->toArray() : null]);
-            // Tambahkan log untuk nilai jenis_kelamin
             Log::info('Jenis Kelamin Penduduk:', ['jenis_kelamin' => $penduduk->jenis_kelamin ?? null]);
-            // Kirim data meninggal, penduduk, dan semua data RW ke view
+
             return view('create.create_died', compact('meninggal', 'penduduk', 'rws'));
         } catch (\Exception $e) {
             Log::error('Error in edit method', ['error' => $e->getMessage()]);
@@ -121,11 +121,10 @@ class MeninggalController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validasi data input
         $request->validate([
             'nik' => 'required|numeric',
-            'nama_almarhum' => 'required|string',
-            'hubungan_dengan_kk' => 'required|string',
+            'nama_lengkap' => 'required|string',
+            'status_hubkel' => 'required|string',
             'alamat' => 'required|string',
             'rw' => 'required|numeric',
             'rt' => 'required|numeric',
@@ -136,11 +135,10 @@ class MeninggalController extends Controller
             'tanggal_meninggal' => 'required|date',
             'status_kependudukan' => 'required|string',
         ]);
-        // Mengambil data dari tabel meninggal berdasarkan id
+
         $meninggal = Meninggals::findOrFail($id);
-        // Update data meninggal dengan input baru
         $meninggal->update($request->all());
-        // Redirect ke halaman 'resident-died' dengan pesan sukses
+
         return redirect()->route('resident-died')->with('success', 'Data berhasil diupdate');
     }
 
@@ -150,4 +148,18 @@ class MeninggalController extends Controller
         $meninggal->delete();
         return redirect()->route('resident-died')->with('success', 'Data berhasil dihapus');
     }
+
+    public function create(Request $request)
+    {
+        $nik = $request->query('nik');
+        $penduduk = Penduduk::where('nik', $nik)->first();
+        $rws = RW::all(); // Ambil data RW dari model
+
+        if (!$penduduk) {
+            return redirect()->route('resident-died')->with('error', 'Penduduk tidak ditemukan.');
+        }
+
+        return view('create.create_died', compact('penduduk', 'rws'));
+    }
 }
+

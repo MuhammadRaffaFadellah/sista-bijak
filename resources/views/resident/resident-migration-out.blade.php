@@ -98,29 +98,33 @@ Sista Bijak - Tabel Migrasi Keluar
             </script>
             @endif
             <form method="GET" action="{{ route('resident-migration-out') }}" class="mb-4">
-                <div class="flex items-center">
-                    <input type="text" name="search"
-                        placeholder="Cari Nama Lengkap Atau NIK"
-                        class="border border-gray-300 rounded-md p-2 w-full" value="{{ request('search') }}">
-                    @if (Auth::user()->role->id === 1)
-                    <!-- Tampilkan filter RW hanya untuk admin -->
-                    <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2">
-                        <option value="">Semua</option>
-                        @for ($i = 1; $i <= 7; $i++)
-                            <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>RW {{ $i }}</option>
-                            @endfor
-                    </select>
-                    @endif
-                    <button type="submit"
-                        class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                    <a href="{{ route('resident-migration-out') }}"
-                        class="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                        <i class="fa-solid fa-xmark"></i>
-                    </a>
-                </div>
-            </form>
+    <div class="flex items-center relative">
+        <input type="text" id="searchInput" name="search"
+            placeholder="Cari Nama Lengkap atau NIK"
+            class="border border-gray-300 rounded-md p-2 w-full pr-10" value="{{ request('search') }}">
+        <button type="button" id="clearSearch" class="absolute right-2 top-2 text-gray-500 hidden"
+            style="cursor: pointer;">&times;
+        </button>
+        @if (Auth::user()->role->id === 1)
+            <!-- Tampilkan filter RW hanya untuk admin -->
+            <select name="filter_rw" class="border border-gray-300 rounded-md p-2 ml-2" id="filterRw">
+                <option value="">Semua</option>
+                @for ($i = 1; $i <= 7; $i++)
+                    <option value="{{ $i }}" {{ request('filter_rw') == $i ? 'selected' : '' }}>
+                        RW {{ $i }}</option>
+                @endfor
+            </select>
+        @endif
+        <button type="submit"
+            class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <a href="{{ route('resident-migration-out') }}"
+            class="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+            <i class="fa-solid fa-xmark"></i>
+        </a>
+    </div>
+</form>
             <div class="overflow-x-auto">
                 <table class="min-w-full bg-white divide-y divide-gray-200 w-full">
                     <thead class="bg-gray-100">
@@ -247,6 +251,32 @@ Sista Bijak - Tabel Migrasi Keluar
     @include('sweetalert')
     <!-- Script untuk membuka dan menutup modal pencarian dan tambah data -->
     <script>
+        // auto submit
+        document.getElementById('filterRw').addEventListener('change', function() {
+                document.getElementById('filterForm').submit(); // Otomatis submit form saat RW dipilih
+            });
+            // filter rw menjadi tetap walaupun di paginate
+            document.getElementById('filterRw').addEventListener('change', function() {
+                this.form.submit(); // Otomatis submit form saat RW dipilih
+            });
+            // X di input search
+            const searchInput = document.getElementById('searchInput');
+            const clearButton = document.getElementById('clearSearch');
+            // Tampilkan tombol "X" jika ada teks di input
+            searchInput.addEventListener('input', function() {
+                console.log(this.value); // Debug untuk cek apakah event input berjalan
+                if (this.value.length > 0) {
+                    clearButton.classList.remove('hidden');
+                } else {
+                    clearButton.classList.add('hidden');
+                }
+            });
+            // Bersihkan input ketika tombol "X" diklik
+            clearButton.addEventListener('click', function() {
+                searchInput.value = '';
+                clearButton.classList.add('hidden');
+            });
+
         // Deklarasi variabel allFilled
         let allFilled = true;
 
@@ -385,28 +415,15 @@ Sista Bijak - Tabel Migrasi Keluar
 
         // Event listener untuk mengonfirmasi data
         document.getElementById('confirmDataButton').addEventListener('click', async () => {
-            const nik = document.getElementById('nik').value; // Asumsi Anda memiliki input NIK dengan ID 'nik'
+            const nik = document.getElementById('nik').value;
 
             // Panggil fungsi untuk memeriksa apakah data ditemukan
             const exists = await checkDataExists(nik);
 
-            // Jika data ditemukan
             if (exists) {
-                // Jika data ditemukan, tampilkan SweetAlert
-                Swal.fire({
-                    title: "Data Ditemukan!",
-                    text: `Data penduduk ditemukan dengan NIK: ${nik}`, // Ganti dengan informasi yang sesuai
-                    icon: "success",
-                    confirmButtonText: "OK",
-                    confirmButtonColor: "#3085d6",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Kirim form jika diperlukan
-                        document.getElementById('dataForm').submit();
-                    }
-                });
+                // Jika data ditemukan, arahkan ke halaman create_migration_out
+                window.location.href = `/create_migration_out?nik=${nik}`;
             } else {
-                // Jika data tidak ditemukan
                 Swal.fire({
                     title: "Data Tidak Ditemukan!",
                     text: "Data dengan NIK atau Nama tersebut tidak ditemukan.",

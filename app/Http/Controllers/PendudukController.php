@@ -386,75 +386,66 @@ class PendudukController extends Controller
 
 
     public function update(Request $request, $id)
-    {
-        // Validasi data yang diupdate
-        $validatedData = $request->validate([
-            'nik' => 'required|numeric',
-            'nama_lengkap' => 'required|string|max:255',
-            'jenis_kelamin' => 'required|string|max:10',
-            'tempat_lahir' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
-            'status_hubkel' => 'required|string|max:50',
-            'pendidikan_terakhir' => 'required|string|max:50',
-            'jenis_pekerjaan' => 'nullable|string|max:50',
-            'agama' => 'required|string|max:50',
-            'status_perkawinan' => 'required|string|max:50',
-            'alamat' => 'required|string|max:255',
-            'rw' => 'required|exists:rw,id',
-            'rt' => 'required|numeric',
-            'kelurahan' => 'required|string|max:50',
-            'status_kependudukan' => 'required|string',
-        ]);
-        // Cari data penduduk berdasarkan ID
-        $penduduk = Penduduk::findOrFail($id);
-        // Update data penduduk
-        $penduduk->update($validatedData);
-        // Jika status kependudukan berubah menjadi 'Keluar', pindahkan data ke tabel migrasi keluar
-        if ($validatedData['status_kependudukan'] === 'Keluar') {
-            // Pindahkan data ke tabel migrasi keluar
-            $migrasiKeluar = new MigrasiKeluar();
-            $migrasiKeluar->nik = $penduduk->nik;
-            $migrasiKeluar->nama_lengkap = $penduduk->nama_lengkap;
-            $migrasiKeluar->jenis_kelamin = $penduduk->jenis_kelamin;
-            $migrasiKeluar->tempat_lahir = $penduduk->tempat_lahir;
-            $migrasiKeluar->tanggal_lahir = $penduduk->tanggal_lahir;
-            $migrasiKeluar->status_hubkel = $penduduk->status_hubkel;
-            $migrasiKeluar->pendidikan_terakhir = $penduduk->pendidikan_terakhir;
-            $migrasiKeluar->jenis_pekerjaan = $penduduk->jenis_pekerjaan;
-            $migrasiKeluar->agama = $penduduk->agama;
-            $migrasiKeluar->status_perkawinan = $penduduk->status_perkawinan;
-            $migrasiKeluar->alamat = $penduduk->alamat;
-            $migrasiKeluar->rw = $penduduk->rw;
-            $migrasiKeluar->rt = $penduduk->rt;
-            $migrasiKeluar->kelurahan = $penduduk->kelurahan;
-            $migrasiKeluar->status_kependudukan = 'Keluar'; // Tambahkan status kependudukan
-            $migrasiKeluar->save();
+{
+    // Validasi data yang diupdate
+    $validatedData = $request->validate([
+        'nik' => 'required|numeric',
+        'nama_lengkap' => 'required|string|max:255',
+        'jenis_kelamin' => 'required|string|max:10',
+        'tempat_lahir' => 'required|string|max:255',
+        'tanggal_lahir' => 'required|date',
+        'status_hubkel' => 'required|string|max:50',
+        'pendidikan_terakhir' => 'required|string|max:50',
+        'jenis_pekerjaan' => 'nullable|string|max:50',
+        'agama' => 'required|string|max:50',
+        'status_perkawinan' => 'required|string|max:50',
+        'alamat' => 'required|string|max:255',
+        'rw' => 'required|exists:rw,id',
+        'rt' => 'required|numeric',
+        'kelurahan' => 'required|string|max:50',
+        'status_kependudukan' => 'required|string',
+        'tempat_meninggal' => 'required_if:status_kependudukan,Meninggal|string|max:255',
+        'tanggal_meninggal' => 'required_if:status_kependudukan,Meninggal|date',
+    ]);
 
-            // Hapus data dari tabel penduduk
-            $penduduk->delete();
-        } else {
-            // Update juga data di tabel migrasi masuk jika status selain 'Keluar'
-            $migrasiMasuk = MigrasiMasuk::where('nik', $penduduk->nik)->first();
-            if ($migrasiMasuk) {
-                $migrasiMasuk->update([
-                    'nama_lengkap' => $penduduk->nama_lengkap,
-                    'jenis_kelamin' => $penduduk->jenis_kelamin,
-                    'tempat_lahir' => $penduduk->tempat_lahir,
-                    'tanggal_lahir' => $penduduk->tanggal_lahir,
-                    'status_hubkel' => $penduduk->status_hubkel,
-                    'pendidikan_terakhir' => $penduduk->pendidikan_terakhir,
-                    'jenis_pekerjaan' => $penduduk->jenis_pekerjaan,
-                    'agama' => $penduduk->agama,
-                    'status_perkawinan' => $penduduk->status_perkawinan,
-                    'alamat' => $penduduk->alamat,
-                    'rw' => $penduduk->rw,
-                    'rt' => $penduduk->rt,
-                    'kelurahan' => $penduduk->kelurahan,
-                ]);
-            }
+    // Cari data penduduk berdasarkan ID
+    $penduduk = Penduduk::findOrFail($id);
+
+    // Update data penduduk
+    $penduduk->update($validatedData);
+
+    // Jika status kependudukan berubah menjadi 'Keluar', pindahkan data ke tabel migrasi keluar
+    if ($validatedData['status_kependudukan'] === 'Keluar') {
+        $migrasiKeluar = new MigrasiKeluar();
+        $migrasiKeluar->fill($penduduk->toArray());
+        $migrasiKeluar->status_kependudukan = 'Keluar';
+        $migrasiKeluar->save();
+
+        // Hapus data dari tabel penduduk
+        $penduduk->delete();
+    } 
+    // Jika status kependudukan berubah menjadi 'Meninggal', pindahkan data ke tabel meninggal
+    elseif ($validatedData['status_kependudukan'] === 'Meninggal') {
+        $meninggal = new Meninggals();
+        $meninggal->fill($penduduk->toArray());
+        $meninggal->tempat_meninggal = $request->input('tempat_meninggal');
+        $meninggal->tanggal_meninggal = $request->input('tanggal_meninggal');
+        $meninggal->status_kependudukan = 'Meninggal';
+        $meninggal->save();
+
+        // Hapus data dari tabel penduduk
+        $penduduk->delete();
+    } 
+    else {
+        // Update juga data di tabel migrasi masuk jika status selain 'Keluar' atau 'Meninggal'
+        $migrasiMasuk = MigrasiMasuk::where('nik', $penduduk->nik)->first();
+        if ($migrasiMasuk) {
+            $migrasiMasuk->update($penduduk->toArray());
         }
-        return redirect()->route('resident-table')->with('success', 'Data penduduk berhasil diperbarui.');
     }
+
+    return redirect()->route('resident-table')->with('success', 'Data penduduk berhasil diperbarui.');
+}
 
     public function destroy($id)
     {
@@ -475,10 +466,11 @@ class PendudukController extends Controller
     {
         $query = $request->input('query');
         $penduduk = Penduduk::where('nik', $query)
-            ->orWhere('nama_lengkap', 'like', '%' . $query . '%')
-            ->first();
+                            ->orWhere('nama_lengkap', 'like', '%' . $query . '%')
+                            ->first();
+    
         if ($penduduk) {
-            return response()->json(['exists' => true, 'data' => $penduduk]);
+            return response()->json(['exists' => true, 'id' => $penduduk->id]);
         } else {
             return response()->json(['exists' => false]);
         }

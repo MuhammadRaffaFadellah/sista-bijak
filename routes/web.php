@@ -151,4 +151,6 @@ Route::get("/images-table", [ImageController::class, "index"])->name("images.ind
 Route::delete("/images/{id}", [ImageController::class, "destroy"])->name("images.destroy");
 Route::get("/images/add-images", [ImageController::class, "show"])->name("images.show");
 
+Route::get('/create_migration_out', [MigrasiKeluarController::class, 'create'])->name('create_migration_out');
+Route::get('/create_died', [MeninggalController::class, 'create'])->name('create_died');
 require __DIR__ . '/auth.php';
