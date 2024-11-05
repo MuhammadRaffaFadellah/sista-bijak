@@ -266,42 +266,44 @@
             </div>
             <div class="p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    ${[ 'nik', 'nama_rw', 'rw', 'jumlah_umkm', 'jenis_umkm', 'kategori_umkm', 'nama_pemilik', 'alamat'].map(field => `
-                                    <div>
-                                    <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
-                                    ${field === 'nik' ? `
-                    <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan NIK" required maxlength="16" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
-                    ` : field === 'nama_pemilik' ? `
-                    <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan Nama Pemilik" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                    ` : field === 'jenis_umkm' ? `
-                    <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                        <option value="Industri Pengolahan">Industri Pengolahan</option>
-                        <option value="Perdagangan besar/eceran">Perdagangan besar/eceran</option>
-                        <option value="Penyedia Akomodasi & Makan Minum">Penyedia Akomodasi & Makan Minum</option>
-                        <option value="Konstruksi">Konstruksi</option>
-                        <option value="Jasa Lainnya">Jasa Lainnya</option>
-                    </select>
-                    ` : field === 'rw' ? `
-                    <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                        @if (Auth::user()->role->id === 1) <!-- Admin -->
-                            @foreach ($rws as $rw)
-                                <option value="{{ $rw->id }}">{{ $rw->rukun_warga }}</option>
-                            @endforeach
-                        @else <!-- RW -->
-                            <option value="{{ Auth::user()->rw->id }}">{{ Auth::user()->rw->rukun_warga }}</option>
-                        @endif
-                    </select>
-                    ` : field === 'kategori_umkm' ? `
-                    <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
-                        <option value="Mikro">Mikro (penjualan < 300 juta/tahun)</option>
-                        <option value="Kecil">Kecil (penjualan 300 juta - 2,5M/tahun)</option>
-                        <option value="Menengah">Menengah (penjualan 2,5M - 30M/tahun)</option>
-                    </select>
-                    ` : `
-                    <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
-                    `}
-                                    </div>
-                                    `).join('')}
+                    ${['nik', 'nama_rw', 'rw', 'jumlah_umkm', 'jenis_umkm', 'kategori_umkm', 'nama_pemilik', 'alamat'].map(field => `
+                        <div>
+                            <label for="${field}_${index}" class="block text-sm font-medium text-gray-700">${field.replace(/_/g, ' ').toUpperCase()}</label>
+                            ${field === 'nik' ? `
+                                <input type="number" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan NIK" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" oninput="this.value = this.value.slice(0, 16)" />
+                            ` : field === 'nama_pemilik' ? `
+                                <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan Nama Pemilik" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                            ` : field === 'jenis_umkm' ? `
+                                <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                    <option value="Industri Pengolahan">Industri Pengolahan</option>
+                                    <option value="Perdagangan besar/eceran">Perdagangan besar/eceran</option>
+                                    <option value="Penyedia Akomodasi & Makan Minum">Penyedia Akomodasi & Makan Minum</option>
+                                    <option value="Konstruksi">Konstruksi</option>
+                                    <option value="Jasa Lainnya">Jasa Lainnya</option>
+                                </select>
+                            ` : field === 'rw' ? `
+                                <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                    @if (Auth::user()->role->id === 1) <!-- Admin -->
+                                        @foreach ($rws as $rw)
+                                            <option value="{{ $rw->id }}">{{ $rw->rukun_warga }}</option>
+                                        @endforeach
+                                    @else <!-- RW -->
+                                        <option value="{{ Auth::user()->rw->id }}">{{ Auth::user()->rw->rukun_warga }}</option>
+                                    @endif
+                                </select>
+                            ` : field === 'kategori_umkm' ? `
+                                <select name="${field}[]" id="${field}_${index}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500">
+                                    <option value="Mikro">Mikro (penjualan < 300 juta/tahun)</option>
+                                    <option value="Kecil">Kecil (penjualan 300 juta - 2,5M/tahun)</option>
+                                    <option value="Menengah">Menengah (penjualan 2,5M - 30M/tahun)</option>
+                                </select>
+                            ` : field === 'jumlah_umkm' ? `
+                                <input type="number" name="${field}[]" id="${field}_${index}" placeholder="Masukkan jumlah UMKM" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                            ` : `
+                                <input type="text" name="${field}[]" id="${field}_${index}" placeholder="Silakan masukkan ${field.replace(/_/g, ' ')}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
+                            `}
+                        </div>
+                    `).join('')}
                 </div>
             </div>
         </div>

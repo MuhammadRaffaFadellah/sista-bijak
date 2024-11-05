@@ -126,7 +126,7 @@
                                         </td>
                                         <td class="px-4 py-2 whitespace-nowrap flex space-x-2">
                                             <!-- Tambahkan 'inline-flex' untuk lebih fleksibel -->
-                                            <a href="{{ route('penduduk.edit', $penduduk->id) }}" title="Edit data"
+                                            <a href="{{ route('penduduk.edit', $penduduk->nik) }}" title="Edit data"
                                                 class="inline-flex px-2 py-2 text-blue-500 hover:text-blue-600 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                                 <i class="fas fa-edit"></i>
                                             </a>
@@ -144,7 +144,7 @@
                                             </form>
 
                                             <!-- Tombol Meninggal -->
-                                            <a href="{{ route('create_died', $penduduk->id) }}"
+                                            <a href="{{ route('create_died', ['nik' => $penduduk->nik]) }}"
                                                 onclick="diedConfirm(event, this)" title="Penduduk Meninggal"
                                                 class="text-gray-500 hover:text-gray-600 px-2 py-1 border border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                                 <i class="fas fa-skull"></i>

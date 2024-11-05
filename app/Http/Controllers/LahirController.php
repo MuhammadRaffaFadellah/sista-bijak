@@ -138,8 +138,32 @@ class LahirController extends Controller
             return redirect()->back()->with('error', 'Data lahir tidak ditemukan.');
         }
 
+        // Buat entri baru di tabel Penduduk
+    $penduduk = new Penduduk();
+    $penduduk->nik = $lahir->nik;
+    $penduduk->nama_lengkap = $lahir->nama_anak_lahir;
+    $penduduk->tempat_lahir = $lahir->tempat_lahir;
+    $penduduk->tanggal_lahir = $lahir->tanggal_lahir;
+    $penduduk->jenis_kelamin = $lahir->jenis_kelamin;
+    $penduduk->alamat = $lahir->alamat;
+    $penduduk->rw = $lahir->rw;
+    $penduduk->rt = $lahir->rt;
+    $penduduk->status_kependudukan = 'Menetap';
+    $penduduk->status_hubkel = ''; // Isi dengan nilai default atau sesuai kebutuhan
+    $penduduk->pendidikan_terakhir = ''; // Isi dengan nilai default atau sesuai kebutuhan
+    $penduduk->jenis_pekerjaan = ''; // Bisa nullable
+    $penduduk->agama = ''; // Isi dengan nilai default atau sesuai kebutuhan
+    $penduduk->status_perkawinan = ''; // Isi dengan nilai default atau sesuai kebutuhan
+    $penduduk->kelurahan = 'KESAMBI';
+    $penduduk->save();
+
+    // Hapus data dari tabel Lahir
+    $lahir->delete();
+
+    $statusKependudukanOptions = ['MENETAP'];
+
         // Kirim data dari tabel lahir dan penduduk ke view
-        return view('create.create_chair', compact('lahir', 'penduduk', 'rws'));
+        return view('create.create_chair', compact('lahir', 'penduduk', 'rws', 'statusKependudukanOptions'));
     }
 
 

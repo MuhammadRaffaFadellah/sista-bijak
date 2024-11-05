@@ -45,7 +45,6 @@ Route::get("/user-management/{id}/deleteUser", [ManagementController::class, "pr
 
 // UMKM CRUD Route
 Route::get("/umkm-table", [UmkmController::class, "umkm_table"])->middleware("auth", "verified")->name("umkm");
-Route::get("/umkm-table", [UmkmController::class, "umkm_table"])->middleware("auth", "verified")->name("umkm");
 Route::post('/umkm-store', [UmkmController::class, 'store'])->name('umkm.store');
 Route::get('/umkm/{id}/edit', [UmkmController::class, 'edit'])->name('umkm.edit');
 Route::put('/umkm/{id}', [UmkmController::class, 'update'])->name('umkm.update');
@@ -63,8 +62,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/form1', [ProfileController::class, 'showForm1'])->name('form1');
 });
 Route::delete('/penduduk/{id}', [PendudukController::class, 'destroy'])->name('penduduk.destroy');
-Route::get('/penduduk/{id}/edit', [PendudukController::class, 'edit'])->name('penduduk.edit');
-Route::put('/penduduk/{id}', [PendudukController::class, 'update'])->name('penduduk.update');
+Route::get('/penduduk/{nik}/edit', [PendudukController::class, 'edit'])->name('penduduk.edit');
+Route::put('/penduduk/{nik}', [PendudukController::class, 'update'])->name('penduduk.update');
 
 // Route untuk resident table
 Route::get('/resident-table', [PendudukController::class, 'resident_table'])->middleware(['auth', 'verified'])->name('resident-table');
@@ -78,6 +77,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('lahir/store', [LahirController::class, 'store_resident'])->name('store_resident');
     // Route untuk halaman create_chair
     Route::get('create_chair/create/{id}', [LahirController::class, 'create_resident'])->name('create_chair');
+    Route::get('/create_chair', [PendudukController::class, 'create'])->name('create.create_chair');
     Route::post('/penduduk/store', [LahirController::class, 'store_resident'])->name('penduduk.store');
 });
 
@@ -107,9 +107,9 @@ Route::get('/resident-migration-in/create', [MigrasiMasukController::class, 'cre
 // Rute untuk menyimpan data migrasi masuk baru
 Route::post('/resident-migration-in', [MigrasiMasukController::class, 'store'])->name('resident.migration-in-store');
 // Rute untuk menampilkan form edit data migrasi masuk
-Route::get('/resident-migration-in/{id}/edit', [MigrasiMasukController::class, 'edit'])->name('resident.migration-in-edit');
+Route::get('/resident-migration-in/{nik}/edit', [MigrasiMasukController::class, 'edit'])->name('resident.migration-in-edit');
 // Rute untuk memperbarui data migrasi masuk
-Route::put('/resident-migration-in/{id}', [MigrasiMasukController::class, 'update'])->name('resident.migration-in-update');
+Route::put('/resident-migration-in/{nik}', [MigrasiMasukController::class, 'update'])->name('resident.migration-in-update');
 // Rute untuk menghapus data migrasi masuk
 Route::delete('/resident-migration-in/{id}', [MigrasiMasukController::class, 'destroy'])->name('resident.migration-in-destroy');
 
@@ -152,5 +152,6 @@ Route::delete("/images/{id}", [ImageController::class, "destroy"])->name("images
 Route::get("/images/add-images", [ImageController::class, "show"])->name("images.show");
 
 Route::get('/create_migration_out', [MigrasiKeluarController::class, 'create'])->name('create_migration_out');
+Route::get('/create_migration_in', [MigrasiMasukController::class, 'create'])->name('create_migration_in');
 Route::get('/create_died', [MeninggalController::class, 'create'])->name('create_died');
 require __DIR__ . '/auth.php';

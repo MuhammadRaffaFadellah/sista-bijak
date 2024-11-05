@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MigrasiMasuk;
+use App\Models\Penduduk; // Menggunakan model Penduduk
 use Illuminate\Http\Request;
 use App\Models\rw;
-use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Exports\MigrasiMasukExport;
@@ -13,23 +12,19 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class MigrasiMasukController extends Controller
 {
-    // Menampilkan daftar migrasi masuk
+    // Menampilkan daftar penduduk dengan status "Masuk"
     public function resident_migration_in(Request $request)
     {
-        $query = MigrasiMasuk::query();
         $user = Auth::user();
         $rws = rw::all();
 
-        if ($user->role->id === 1) {
-            $dataMigrasiMasuk = MigrasiMasuk::query();
-        } else {
-            $dataMigrasiMasuk = MigrasiMasuk::where('rw', $user->rw_id);
-        }
+        // Ambil data penduduk dengan status "Masuk"
+        $dataPenduduk = Penduduk::where('status_kependudukan', 'Masuk');
 
         // Search by name or NIK
         if ($request->has('search')) {
             $search = $request->input('search');
-            $dataMigrasiMasuk->where(function ($q) use ($search) {
+            $dataPenduduk->where(function ($q) use ($search) {
                 $q->where('nama_lengkap', 'like', "%{$search}%")
                     ->orWhere('nik', 'like', "%{$search}%");
             });
@@ -37,23 +32,23 @@ class MigrasiMasukController extends Controller
 
         // Filter by RW
         if ($request->has('filter_rw') && $request->input('filter_rw') != '') {
-            $dataMigrasiMasuk->where('rw', $request->input('filter_rw'));
+            $dataPenduduk->where('rw', $request->input('filter_rw'));
         }
 
         // Paginate the results
-        $migrasiMasuk = $dataMigrasiMasuk->paginate(10);
+        $penduduk = $dataPenduduk->paginate(10);
 
-        return view('resident.resident-migration-in', compact('migrasiMasuk', 'rws'));
+        return view('resident.resident-migration-in', compact('penduduk', 'rws'));
     }
 
-    // Menampilkan form untuk menambah data migrasi masuk
+    // Menampilkan form untuk menambah data penduduk
     public function create()
     {
         $rws = rw::all();
-        return view('resident.migration-in-create', compact('rws'));
+        return view('create.create_migration_in', compact('rws'));
     }
 
-    // Menyimpan data migrasi masuk baru
+    // Menyimpan data penduduk baru
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -75,24 +70,6 @@ class MigrasiMasukController extends Controller
         ]);
 
         foreach ($validatedData['nik'] as $index => $nik) {
-            $migrasiMasuk = MigrasiMasuk::create([
-                'nik' => $nik,
-                'nama_lengkap' => $validatedData['nama_lengkap'][$index],
-                'jenis_kelamin' => $validatedData['jenis_kelamin'][$index],
-                'tempat_lahir' => $validatedData['tempat_lahir'][$index],
-                'tanggal_lahir' => $validatedData['tanggal_lahir'][$index],
-                'status_hubkel' => $validatedData['status_hubkel'][$index],
-                'pendidikan_terakhir' => $validatedData['pendidikan_terakhir'][$index],
-                'jenis_pekerjaan' => $validatedData['jenis_pekerjaan'][$index],
-                'agama' => $validatedData['agama'][$index],
-                'status_perkawinan' => $validatedData['status_perkawinan'][$index],
-                'alamat' => $validatedData['alamat'][$index],
-                'rw' => $validatedData['rw'][$index],
-                'rt' => $validatedData['rt'][$index],
-                'kelurahan' => $validatedData['kelurahan'][$index],
-                'status_kependudukan' => $validatedData['status_kependudukan'][$index],
-            ]);
-
             // Simpan ke Penduduk
             Penduduk::create([
                 'nik' => $nik,
@@ -113,99 +90,67 @@ class MigrasiMasukController extends Controller
             ]);
         }
 
-        return redirect()->route('resident-migration-in')->with('success', 'Data migrasi masuk berhasil disimpan.');
+        return redirect()->route('resident-migration-in')->with('success', 'Data penduduk berhasil disimpan.');
     }
 
-    // Menampilkan form untuk mengedit data migrasi masuk
-    public function edit($id)
-{
-    try {
-        $rws = rw::all();
-        Log::info('Edit method called with ID: ' . $id);
-        $migrasiMasuk = MigrasiMasuk::findOrFail($id);
-        Log::info('Migrasi Masuk data found', ['data' => $migrasiMasuk->toArray()]);
+    // Menampilkan form untuk mengedit data penduduk
+    public function edit($nik)
+    {
+        try {
+            $rws = rw::all();
+            Log::info('Edit method called with NIK: ' . $nik);
+            $penduduk = Penduduk::where('nik', $nik)->firstOrFail();
+            Log::info('Penduduk data found', ['data' => $penduduk->toArray()]);
 
-        // Find the corresponding penduduk data based on NIK
-        $penduduk = Penduduk::where('nik', $migrasiMasuk->nik)->first();
-        Log::info('Penduduk data found', ['data' => $penduduk ? $penduduk->toArray() : null]);
-
-        // Send migrasiMasuk, penduduk, and all RW data to the view
-        return view('create_migration_in', compact('migrasiMasuk', 'penduduk', 'rws'));
-    } catch (\Exception $e) {
-        Log::error('Error in edit method', ['error' => $e->getMessage()]);
-        return redirect()->route('create_migration_in')
-            ->with('error', 'Data tidak ditemukan');
-    }
-}
-
-public function update(Request $request, $id)
-{
-    // Validate input data
-    $request->validate([
-        'nik' => 'required|numeric',
-        'nama_lengkap' => 'required|string',
-        'jenis_kelamin' => 'required|string',
-        'tempat_lahir' => 'required|string',
-        'tanggal_lahir' => 'required|date',
-        'status_hubkel' => 'required|string',
-        'pendidikan_terakhir' => 'required|string',
-        'jenis_pekerjaan' => 'nullable|string',
-        'agama' => 'required|string',
-        'status_perkawinan' => 'required|string',
-        'alamat' => 'required|string',
-        'rw' => 'required|numeric',
-        'rt' => 'required|numeric',
-        'kelurahan' => 'required|string',
-        'status_kependudukan' => 'required|string',
-    ]);
-
-    // Retrieve the migrasi_masuk data by id
-    $migrasiMasuk = MigrasiMasuk::findOrFail($id);
-
-    // Update migrasi_masuk data with new input
-    $migrasiMasuk->update($request->all());
-
-    // Update the corresponding penduduk data
-    $penduduk = Penduduk::where('nik', $migrasiMasuk->nik)->first();
-    if ($penduduk) {
-        $penduduk->update($request->only([
-            'nama_lengkap',
-            'jenis_kelamin',
-            'tempat_lahir',
-            'tanggal_lahir',
-            'status_hubkel',
-            'pendidikan_terakhir',
-            'jenis_pekerjaan',
-            'agama',
-            'status_perkawinan',
-            'alamat',
-            'rw',
-            'rt',
-            'kelurahan',
-            'status_kependudukan',
-        ]));
+            // Kirim variabel ke view
+            return view('create.create_migration_in', compact('penduduk', 'rws'));
+        } catch (\Exception $e) {
+            Log::error('Error in edit method', ['error' => $e->getMessage()]);
+            return redirect()->route('resident-migration-in')->with('error', 'Data tidak ditemukan');
+        }
     }
 
-    // Redirect to the 'resident-migration-in' page with a success message
-    return redirect()->route('resident-migration-in')->with('success', 'Data berhasil diupdate');
-}
+    // Memperbarui data penduduk
+    public function update(Request $request, $nik)
+    {
+        $request->validate([
+            'nik' => 'required|numeric',
+            'nama_lengkap' => 'required|string',
+            'jenis_kelamin' => 'required|string',
+            'tempat_lahir' => 'required|string',
+            'tanggal_lahir' => 'required|date',
+            'status_hubkel' => 'required|string',
+            'pendidikan_terakhir' => 'required|string',
+            'jenis_pekerjaan' => 'nullable|string',
+            'agama' => 'required|string',
+            'status_perkawinan' => 'required|string',
+            'alamat' => 'required|string',
+            'rw' => 'required|numeric',
+            'rt' => 'required|numeric',
+            'kelurahan' => 'required|string',
+            'status_kependudukan' => 'required|string',
+        ]);
 
+        // Retrieve the penduduk data by nik
+        $penduduk = Penduduk::where('nik', $nik)->firstOrFail();
 
-    // Menghapus data migrasi masuk
+        // Update penduduk data with new input
+        $penduduk->update($request->all());
+
+        return redirect()->route('resident-migration-in')->with('success', 'Data berhasil diupdate');
+    }
+
+    // Menghapus data penduduk
     public function destroy($id)
     {
-        $migrasiMasuk = MigrasiMasuk::findOrFail($id);
-        $penduduk = Penduduk::where('nik', $migrasiMasuk->nik)->first();
-        if ($penduduk) {
-            $penduduk->delete();
-        }
-        $migrasiMasuk->delete();
+        $penduduk = Penduduk::findOrFail($id);
+        $penduduk->delete();
 
-        return redirect()->route('resident-migration-in')->with('success', 'Data migrasi masuk berhasil dihapus.');
+        return redirect()->route('resident-migration-in')->with('success', 'Data penduduk berhasil dihapus.');
     }
 
     public function download()
     {
-        return Excel::download(new MigrasiMasukExport, 'migrasi_masuk_data.xlsx');
+        return Excel::download(new MigrasiMasukExport, 'penduduk_data.xlsx');
     }
 }

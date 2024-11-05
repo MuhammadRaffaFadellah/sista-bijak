@@ -8,6 +8,15 @@
     <link rel="canonical" href="#">
     <meta name="description" content="#">
     <title>@yield('dashboard-title')</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPW8HG949Q"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-RPW8HG949Q');
+    </script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="icon" href="{{ asset('img/logo-kel-kesambi.png') }}" type="icon">
@@ -15,6 +24,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     @vite('resources/css/app.css')
 </head>
+<style>
+    /* Untuk browser Chrome, Safari, Edge, dan Opera */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Untuk Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+</style>
 
 <body>
     <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200 font-roboto sidebar">

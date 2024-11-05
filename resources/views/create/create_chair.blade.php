@@ -30,7 +30,7 @@
                 </div>
             @endif
             <div class="p-4">
-                <form action="{{ isset($penduduk) ? route('penduduk.update', $penduduk->id) : route('penduduk.store') }}"
+                <form action="{{ isset($penduduk) ? route('penduduk.update', $penduduk->nik) : route('penduduk.store') }}"
                     method="POST">
                     @csrf
                     @if (isset($penduduk))
@@ -209,7 +209,7 @@
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500" />
                         </div>
 
-                        <!-- status kependudukan -->
+                        <!-- Status Kependudukan -->
                         <div>
                             <label for="status_kependudukan">Status Kependudukan</label>
                             <select name="status_kependudukan" id="status_kependudukan"
@@ -226,7 +226,6 @@
                                         {{ $penduduk->status_kependudukan == 'Masuk' ? 'selected' : '' }}>Masuk</option>
                                     <option value="Lahir"
                                         {{ $penduduk->status_kependudukan == 'Lahir' ? 'selected' : '' }}>Lahir</option>
-                                    <!-- Opsi baru ditambahkan -->
                                 @else
                                     <option value="Lahir" {{ old('status_kependudukan') == 'Lahir' ? 'selected' : '' }}>
                                         Lahir</option>
@@ -273,11 +272,7 @@
                     <div class="mt-20 flex justify-between">
                         <a href="{{ isset($penduduk) ? route('resident-table') : route('resident-born') }}"
                             class="inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                            @if (isset($penduduk))
-                                Kembali
-                            @else
-                                Kembali
-                            @endif
+                            Kembali
                         </a>
                         <button type="submit" onclick="@if (isset($penduduk)) editConfirm(event, this) @else addConfirm(event, this) @endif"
                             class="inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
@@ -287,7 +282,6 @@
                                 Tambah
                             @endif
                         </button>
-
                     </div>
                 </form>
             </div>

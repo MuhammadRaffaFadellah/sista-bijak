@@ -20,6 +20,15 @@
         integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/16.1.3/smooth-scroll.polyfills.min.js"></script>
     <link rel="stylesheet" href="{{ url('files/style.css') }}" type="css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPW8HG949Q"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-RPW8HG949Q');
+    </script>
 </head>
 <style>
 .cardg, .card1 {
@@ -934,17 +943,30 @@ body {
                     <div class="flex items-center max-w-full mt-7">
                         <img src="{{ asset('/img/logo-kel-kesambi.png') }}" alt="sista-bijak" class="w-auto h-28 ml-2">
                         <span class="mr-10 ml-3 text-30 font-semibold text-black">SISTA BIJAK</span>
+                        
                     </div>
                 </div>
+                <ul class="text-gray-500 dark:text-gray-400 font-medium  mb-10"> <!-- Mengubah mt-5 menjadi mt-10 -->
+                <h2>kontak</h2>
+                    <li>
+                        Email : kesambi@gmail.com
+                    </li>
+                    <li>
+                        Phone : (0231) 203734
+                    </li>
+                    <li>
+                        Mobile : 0851-4773-2310 (Whatsapp Only)
+                    </li>
+                </ul>
                 <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                     <div>
                         <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
                         <ul class="text-gray-500 dark:text-gray-400 font-medium">
                             <li class="mb-4">
-                                <a href="https://flowbite.com/" class="hover:underline">Flowbite</a>
+                                <a href="#/" class="hover:underline">Resources</a>
                             </li>
                             <li>
-                                <a href="https://tailwindcss.com/" class="hover:underline">Tailwind CSS</a>
+                                <a href="#" class="hover:underline">About us</a>
                             </li>
                         </ul>
                     </div>
@@ -952,10 +974,10 @@ body {
                         <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Follow us</h2>
                         <ul class="text-gray-500 dark:text-gray-400 font-medium">
                             <li class="mb-4">
-                                <a href="https://github.com/themesberg/flowbite" class="hover:underline ">Github</a>
+                                <a href="3" class="hover:underline ">Blog</a>
                             </li>
                             <li>
-                                <a href="https://discord.gg/4eeurUVvTy" class="hover:underline">Discord</a>
+                                <a href="#" class="hover:underline">Countact Us</a>
                             </li>
                         </ul>
                     </div>
@@ -994,8 +1016,16 @@ body {
                         <span class="sr-only">Youtube</span>
                     </a>
                     <a href="https://www.instagram.com/kelkesambi/" class="text-gray-500 hover:text-gray-900 dark:hover:text-white mx-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-4 h-4">
-                            <path d="M12 2.2c3.2 0 3.6.012 4.85.07 1.17.054 1.97.24 2.43.41.59.23 1.01.51 1.46.96.45.45.73.87.96 1.46.17.46.36 1.26.41 2.43.058 1.25.07 1.65.07 4.85s-.012 3.6-.07 4.85c-.054 1.17-.24 1.97-.41 2.43-.23.59-.51 1.01-.96 1.46-.45.45-.87.73-1.46.96-.46.17-1.26.36-2.43.41-1.25.058-1.65.07-4.85.07s-3.6-.012-4.85-.07c-1.17-.054-1.97-.24-2.43-.41-.59-.23-1.01-.51-1.46-.96-.45-.45-.73-.87-.96-1.46-.17-.46-.36-1.26-.41-2.43C2.212 15.6 2.2 15.2 2.2 12s.012-3.6.07-4.85c.054-1.17.24-1.97.41-2.43.23-.59.51-1.01.96-1.46.45-.45.87-.73 1.46-.96.46-.17 1.26-.36 2.43-.41C8.4 2.212 8.8 2.2 12 2.2zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998 3.999 3.999 0 0 1 0 7.998zM18.7 5.3a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6z"/>
+                        <!-- Updated Instagram logo to the latest version -->
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 448 512"
+                            class="w-4 h-4">
+                            <path
+                                d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" 
+                                stroke="currentColor" 
+                                stroke-width="2" /> <!-- Menambahkan stroke -->
                         </svg>
                         <span class="sr-only">Instagram</span>
                     </a>

@@ -153,13 +153,33 @@ class MeninggalController extends Controller
     {
         $nik = $request->query('nik');
         $penduduk = Penduduk::where('nik', $nik)->first();
-        $rws = RW::all(); // Ambil data RW dari model
+        $rws = rw::all(); // Ambil data RW dari model
 
         if (!$penduduk) {
             return redirect()->route('resident-died')->with('error', 'Penduduk tidak ditemukan.');
         }
 
-        return view('create.create_died', compact('penduduk', 'rws'));
+    // Transfer data dari Penduduk ke Meninggals
+    $meninggal = new Meninggals();
+    $meninggal->nik = $penduduk->nik;
+    $meninggal->nama_lengkap = $penduduk->nama_lengkap;
+    $meninggal->tempat_lahir = $penduduk->tempat_lahir;
+    $meninggal->tanggal_lahir = $penduduk->tanggal_lahir;
+    $meninggal->jenis_kelamin = $penduduk->jenis_kelamin;
+    $meninggal->alamat = $penduduk->alamat;
+    $meninggal->rw = $penduduk->rw;
+    $meninggal->rt = $penduduk->rt;
+    $meninggal->status_hubkel = $penduduk->status_hubkel;
+    $meninggal->tanggal_meninggal = now(); // Setel tanggal saat ini sebagai default sementara
+    $meninggal->tempat_meninggal = ''; // Setel nilai default sementara
+    $meninggal->status_kependudukan = 'Meninggal';
+    $meninggal->save();
+
+    // Hapus data penduduk
+    $penduduk->delete();
+
+    // Tampilkan form edit dengan data Meninggal baru
+    return view('create.create_died', compact('meninggal', 'rws'));
     }
 }
 
