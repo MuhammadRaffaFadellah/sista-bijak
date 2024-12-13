@@ -200,7 +200,6 @@
                 @csrf
                 <input type="hidden" id="penduduk_id" name="penduduk_id" value="{{ old('penduduk_id') }}">
                 <input type="number" id="nik" name="nik" placeholder="NIK" class="block w-full border border-gray-300 rounded-md p-2 mb-4" maxlength="16" oninput="this.value = this.value.slice(0, 16)">
-                <input type="text" id="nama_lengkap" name="nama_lengkap" placeholder="Nama Lengkap" class="block w-full border border-gray-300 rounded-md p-2 mb-4">
                 <button type="button" onclick="validateFormFields()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Konfirmasi</button>
             </form>
         </div>
@@ -273,7 +272,7 @@
 
         // Fungsi untuk memvalidasi form
         function validateFormFields() {
-            const requiredFields = ['nik', 'nama_lengkap']; // Tambahkan ID field yang diperlukan di sini
+            const requiredFields = ['nik']; // Tambahkan ID field yang diperlukan di sini
             allFilled = requiredFields.every(fieldId => {
                 const field = document.getElementById(fieldId);
                 return field && field.value.trim() !== "";
@@ -290,10 +289,8 @@
             } else {
                 // Tampilkan modal konfirmasi dengan data
                 const nik = document.getElementById('nik').value;
-                const namaLengkap = document.getElementById('nama_lengkap').value;
                 const confirmationDetails = `
                 <p><strong>NIK:</strong> ${nik}</p>
-                <p><strong>Nama Lengkap:</strong> ${namaLengkap}</p>
             `;
                 document.getElementById('confirmationDetails').innerHTML = confirmationDetails;
                 document.getElementById('dataConfirmationModal').classList.remove('hidden');
@@ -308,7 +305,7 @@
             if (!searchInput) {
                 Swal.fire({
                     title: "Input Kosong!",
-                    text: "Silakan masukkan NIK atau Nama.",
+                    text: "Silakan masukkan NIK.",
                     icon: "warning",
                     confirmButtonText: "OK",
                     confirmButtonColor: "#d33",
@@ -328,7 +325,7 @@
             } else {
                 Swal.fire({
                     title: "Data Tidak Ditemukan!",
-                    text: "Data dengan NIK atau Nama tersebut tidak ditemukan.",
+                    text: "Data dengan NIK tersebut tidak ditemukan.",
                     icon: "error",
                     confirmButtonText: "OK",
                     confirmButtonColor: "#d33",

@@ -12,7 +12,7 @@
             <div class="bg-gray-800 text-white p-4">
                 <h3 class="text-lg font-bold">
                     @if (isset($meninggal))
-                        Edit Data Meninggal
+                        Data Meninggal
                     @else
                         Tambah Data Meninggal
                     @endif

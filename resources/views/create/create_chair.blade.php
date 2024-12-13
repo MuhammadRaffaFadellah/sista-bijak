@@ -224,11 +224,6 @@
                                     </option>
                                     <option value="Masuk"
                                         {{ $penduduk->status_kependudukan == 'Masuk' ? 'selected' : '' }}>Masuk</option>
-                                    <option value="Lahir"
-                                        {{ $penduduk->status_kependudukan == 'Lahir' ? 'selected' : '' }}>Lahir</option>
-                                @else
-                                    <option value="Lahir" {{ old('status_kependudukan') == 'Lahir' ? 'selected' : '' }}>
-                                        Lahir</option>
                                 @endif
                             </select>
                         </div>

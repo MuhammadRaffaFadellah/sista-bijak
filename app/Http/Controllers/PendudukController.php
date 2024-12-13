@@ -191,8 +191,8 @@ class PendudukController extends Controller
         'totalMeninggal',
         'totalMeninggalLakiLaki',
         'totalMeninggalPerempuan',
-        'totalMigrasiMasuk', // Hanya data dengan status "MASUK"
-        'totalMigrasiKeluar', // Hanya data dengan status "KELUAR"
+        'totalMigrasiMasuk', 
+        'totalMigrasiKeluar',
         'totalMigrasiMasukPerempuan',
         'totalMigrasiKeluarPerempuan',
         'totalMigrasiMasukLakiLaki',
@@ -279,8 +279,8 @@ class PendudukController extends Controller
         'totalMeninggal',
         'totalMeninggalLakiLaki',
         'totalMeninggalPerempuan',
-        'totalMigrasiMasuk', // Hanya data dengan status "MASUK"
-        'totalMigrasiKeluar', // Hanya data dengan status "KELUAR"
+        'totalMigrasiMasuk', 
+        'totalMigrasiKeluar', 
         'totalMigrasiMasukPerempuan',
         'totalMigrasiKeluarPerempuan',
         'totalMigrasiMasukLakiLaki',
